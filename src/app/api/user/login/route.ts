@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 // Для POST запросов
 export async function POST(request: Request) {
@@ -7,9 +7,9 @@ export async function POST(request: Request) {
 
     // Ваша логика аутентификации
     if (email === "testemail@email.ru" && password === "2222") {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: true,
-        message: "Authentication successful"
+        message: "Authentication successful",
       });
     }
 
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     return NextResponse.json(
-      { success: false, message: "Internal server error" },
+      { success: false, message: `Internal server error: ${error}` },
       { status: 500 }
     );
   }
@@ -27,8 +27,5 @@ export async function POST(request: Request) {
 
 // Для GET запросов (если нужно)
 export async function GET() {
-  return NextResponse.json(
-    { message: "Method not allowed" },
-    { status: 405 }
-  );
+  return NextResponse.json({ message: "Method not allowed" }, { status: 405 });
 }
