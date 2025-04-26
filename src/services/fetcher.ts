@@ -4,13 +4,13 @@ class RequestData {
   requestInit: RequestInit = {};
 }
 
-interface IServerAnswer<T = any> {
+interface IServerAnswer<T = unknown> {
   code: number;
   message: string;
   data: T;
 }
 
-export interface IServerAnswerDto<T = any> {
+export interface IServerAnswerDto<T = unknown> {
   success: boolean;
   message: string;
   data?: T;
@@ -40,7 +40,7 @@ export class FetchService {
     return this;
   }
 
-  async send<T = any>(): Promise<IServerAnswerDto<T>> {
+  async send<T = unknown>(): Promise<IServerAnswerDto<T>> {
     try {
       const response = await fetch(this.request.url, this.request.requestInit);
 
