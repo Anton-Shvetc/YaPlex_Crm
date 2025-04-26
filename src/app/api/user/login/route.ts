@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 // Для POST запросов
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const { login, password } = await request.json();
 
     // Ваша логика аутентификации
-    if (email === "testemail@email.ru" && password === "2222") {
+    if (login === "admin" && password === "root") {
       return NextResponse.json({
         success: true,
         message: "Authentication successful",
