@@ -48,12 +48,12 @@ export default function LoginPage() {
       localStorage.setItem("token", data.token);
     }
 
-    console.log(success, "success");
+
 
     if (success) reset();
   };
 
-  console.log("showAuthForm", activeForm, showMobileForm);
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-950 relative overflow-hidden">

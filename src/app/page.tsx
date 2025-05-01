@@ -17,7 +17,7 @@ export default function Home() {
     const token = localStorage.getItem("token");
     if (!token) {
       router.push("/login");
-      return
+      return;
     }
 
     const decoded = jwt.decode(token);
@@ -26,16 +26,13 @@ export default function Home() {
       throw new Error("Невалидный токен");
     }
     if (decoded.exp && Date.now() >= decoded.exp * 1000) {
-      console.log("ERROR", "Токен просрочен")
+      console.log("ERROR", "Токен просрочен");
     }
 
     // Дополнительные проверки (если нужно)
     if (!decoded.userId || !decoded.email) {
-    
-      console.log("ERROR", "В токене нет нужных данных")
+      console.log("ERROR", "В токене нет нужных данных");
     }
-
-
   }, []);
 
   return (

@@ -4,8 +4,6 @@ import { createClient } from '@libsql/client';
 const url = process.env.TURSO_DB_URL;
 const authToken = process.env.TURSO_DB_AUTH_TOKEN;
 
-console.log("begug url", url, authToken)
-
 if (!url || !authToken) {
   throw new Error(
     'Turso DB credentials missing. Check your .env file and ensure TURSO_DB_URL and TURSO_DB_AUTH_TOKEN are set.'
