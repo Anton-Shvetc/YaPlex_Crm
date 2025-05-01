@@ -34,6 +34,7 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
       inputClassName = "",
       labelClassName = "",
       errorClassName = "",
+      placeholder = undefined,
       helpText,
       onFocus,
       onBlur,
@@ -64,7 +65,7 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
         {label && (
           <label
             htmlFor={props.id}
-            className={`block text-sm font-medium mb-1 ${labelClassName}`}
+            className={`block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300 ${labelClassName}`}
           >
             {label}
           </label>
@@ -77,21 +78,29 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
             w-full px-3 py-2 
             border border-solid ${getBorderClasses()}
             rounded-[4px] shadow-sm 
-            focus:outline-none focus:ring-2 focus:ring-[${colors.border.focus}]
+            bg-white dark:bg-gray-800
+            text-gray-900 dark:text-white
+            placeholder-gray-400 dark:placeholder-gray-500
+            focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600
             transition-colors duration-200
             ${inputClassName}
           `}
+          placeholder={placeholder || label}
           onFocus={handleFocus}
           onBlur={handleBlur}
           {...props}
         />
 
         {helpText && !error && (
-          <p className="mt-1 text-xs text-gray-500">{helpText}</p>
+          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+            {helpText}
+          </p>
         )}
 
         {error && (
-          <p className={`mt-1 text-xs text-red-500 ${errorClassName}`}>
+          <p
+            className={`mt-1 text-xs text-red-500 dark:text-red-400 ${errorClassName}`}
+          >
             {error}
           </p>
         )}
@@ -101,4 +110,3 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
 );
 
 InputFieldUi.displayName = "InputField";
-

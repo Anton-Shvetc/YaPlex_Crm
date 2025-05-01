@@ -8,8 +8,10 @@ import { useForm } from "react-hook-form";
 
 export const LoginForm = ({
   onSubmit,
+  showMobileForm
 }: {
   onSubmit: (data: { email: string; password: string }) => void;
+  showMobileForm: boolean;
 }) => {
   const {
     register,
@@ -22,6 +24,7 @@ export const LoginForm = ({
     <FormWrapper
       title="Вход в систему"
       btnTitle="Войти"
+      showMobileForm={showMobileForm}
       onSubmit={handleSubmit(onSubmit)}
     >
       <InputFieldUi

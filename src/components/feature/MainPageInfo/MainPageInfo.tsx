@@ -13,36 +13,45 @@ export const MainPageInfo: React.FC<MainPageInfoI> = ({
   showMobileForm,
   setShowMobileForm,
 }) => {
-  console.log("showMobileForm", showMobileForm);
-
   return (
     <div
       className={`flex flex-col justify-center ${
         showMobileForm ? "hidden md:flex" : ""
       }`}
     >
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+      {/* Заголовок - белый в темной теме */}
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-6">
         YaPlex
       </h1>
-      <p className="text-base md:text-lg text-gray-600 mb-6">
-        Платформа для управления клиентами, сделками и задачами. Эффективно
-        управляйте бизнес-процессами, отслеживайте ключевые показатели
-        и выстраивайте продуктивные отношения с клиентами.
+
+      {/* Основной текст - светло-серый в темной теме */}
+      <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6">
+        Платформа для управления клиентами, сделками и задачами. Эффективно
+        управляйте бизнес-процессами, отслеживайте ключевые показатели и
+        выстраивайте продуктивные отношения с клиентами.
       </p>
 
-      {activeForm === "register" && (
-        <div>
-          Уже зарегистрированы?
-          <button onClick={() => setActiveForm("login")}>
+      {activeForm === "register" && !showMobileForm && (
+        <div className="hidden flex-col md:flex">
+          <p className="text-white">Уже зарегистрированы?</p>
+
+          <button
+            className="text-[#2563EB] w-fit"
+            onClick={() => setActiveForm("login")}
+          >
             Войти в аккаунт
           </button>
         </div>
       )}
 
-      {activeForm === "login" && (
-        <div>
-          У вас еще нет аккаунта
-          <button onClick={() => setActiveForm("register")}>
+      {activeForm === "login" && !showMobileForm && (
+        <div className="hidden flex-col md:flex">
+          <p className="text-white"> У вас еще нет аккаунта</p>
+
+          <button
+            className="text-[#2563EB] w-fit"
+            onClick={() => setActiveForm("register")}
+          >
             Зарегестрироваться
           </button>
         </div>
