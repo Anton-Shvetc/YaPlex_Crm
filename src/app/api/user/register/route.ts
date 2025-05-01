@@ -24,6 +24,13 @@ export async function POST(request: Request) {
       );
     }
 
+    // ЗАписть в бд
+//     const hashedPassword = await bcrypt.hash(password, 10);
+// await turso.execute({
+//   sql: "INSERT INTO users (id, email, password_hash) VALUES (?, ?, ?)",
+//   args: [crypto.randomUUID(), email, hashedPassword]
+// });
+
     // 3. Проверка существующего пользователя
     // const existingUser = await db.user.findUnique({
     //   where: { email: data.email }

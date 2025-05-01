@@ -1,6 +1,18 @@
 import { UserLoginI } from "@/utils/interfaces/UserI";
 import { FetchService } from "./fetcher";
 
-export const auth = async (userData: UserLoginI) => {
+interface AuthResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    token?: string;
+    // другие данные, если они есть
+  };
+}
+export const auth = async (userData: UserLoginI): Promise<AuthResponse> => {
   return await new FetchService().POST("/api/user/login", userData).send();
 };
+
+// export const getUsers = async () => {
+//   return await new FetchService().GET("/api/user/login").send();
+// };

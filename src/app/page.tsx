@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import jwt from "jsonwebtoken";
 
 import { useRouter } from "next/navigation";
 
@@ -17,7 +17,25 @@ export default function Home() {
     const token = localStorage.getItem("token");
     if (!token) {
       router.push("/login");
+      return
     }
+
+    const decoded = jwt.decode(token);
+
+    if (!decoded || typeof decoded !== "object") {
+      throw new Error("Невалидный токен");
+    }
+    if (decoded.exp && Date.now() >= decoded.exp * 1000) {
+      console.log("ERROR", "Токен просрочен")
+    }
+
+    // Дополнительные проверки (если нужно)
+    if (!decoded.userId || !decoded.email) {
+    
+      console.log("ERROR", "В токене нет нужных данных")
+    }
+
+
   }, []);
 
   return (

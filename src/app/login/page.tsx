@@ -43,12 +43,18 @@ export default function LoginPage() {
     if (success) reset();
   };
 
-  const handleLogin = async (data: UserLoginI) => {
-    console.log("Login data:", data);
-    const { success } = await auth(data);
+  const handleLogin = async (requestData: UserLoginI) => {
+    console.log("Login data:", requestData);
+    const { success, data } = await auth(requestData);
+
+    if(success && data?.token) {
+      localStorage.setItem("token", data.token);
+    }
+
+    console.log(success,"success")
 
     if (success) reset();
-    // Обработка входа
+ 
   };
 
   console.log("showAuthForm", activeForm, showMobileForm);
