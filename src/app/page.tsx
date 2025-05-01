@@ -3,6 +3,7 @@
 import jwt from "jsonwebtoken";
 
 import { useRouter } from "next/navigation";
+import { enqueueSnackbar } from "notistack";
 
 import { useEffect } from "react";
 
@@ -23,15 +24,28 @@ export default function Home() {
     const decoded = jwt.decode(token);
 
     if (!decoded || typeof decoded !== "object") {
-      throw new Error("Невалидный токен");
+      enqueueSnackbar("Невалидный токен", {
+        variant: "error",
+      });
+      router.push("/login");
+      // throw new Error("Невалидный токен");
+      return;
     }
     if (decoded.exp && Date.now() >= decoded.exp * 1000) {
-      console.log("ERROR", "Токен просрочен");
+      enqueueSnackbar("Токен просрочен", {
+        variant: "error",
+      });
+      router.push("/login");
+      return;
     }
 
     // Дополнительные проверки (если нужно)
     if (!decoded.userId || !decoded.email) {
-      console.log("ERROR", "В токене нет нужных данных");
+      enqueueSnackbar("Ошибка токена", {
+        variant: "error",
+      });
+      router.push("/login");
+      return;
     }
   }, []);
 
