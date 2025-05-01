@@ -1,6 +1,6 @@
 "use client";
 
-import InputFieldUi from "@/components/ui/InputFieldUi";
+import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import Link from "next/link";
 
 export default function Home() {
@@ -16,10 +16,6 @@ export default function Home() {
         <div className="flex flex-col bg-primary bg-white dark:bg-black">
           <Link href={"/login"}>Войти</Link>
         </div>
-
-   
-
-     
 
         <button onClick={changeDarkMode}>Переключатель темы</button>
       </div>
@@ -39,8 +35,7 @@ export default function Home() {
           className="mt-4"
           helpText="Не более 500 символов"
         />
-
-        </div>
+      </div>
     </div>
   );
 }

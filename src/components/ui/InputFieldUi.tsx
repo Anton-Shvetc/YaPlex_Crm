@@ -24,7 +24,7 @@ const colors = {
   },
 };
 
-const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
+export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
   (
     {
       label,
@@ -102,4 +102,3 @@ const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
 
 InputFieldUi.displayName = "InputField";
 
-export default InputFieldUi;
