@@ -1,6 +1,7 @@
 "use client";
 
 import { auth } from "@/services/auth";
+import { registerUser } from "@/services/registerUser";
 
 import { useState } from "react";
 
@@ -13,9 +14,10 @@ import { UserLoginI } from "@/utils/interfaces/UserI";
 import { LoginForm } from "@/components/feature/LoginForm/LoginForm";
 import { MainPageInfo } from "@/components/feature/MainPageInfo/MainPageInfo";
 import { RegisterForm } from "@/components/feature/RegisterForm/RegisterForm";
+import { RegisterFormDataType } from "@/utils/types/types";
 
 const loginSchema = z.object({
-  login: z.string().min(1, "Поле Логин обязательно"),
+  email: z.string().min(1, "Поле Email обязательно"),
   password: z.string().min(4, "Пароль должен содержать минимум 6 символов"),
 });
 
@@ -29,22 +31,23 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (userData: UserLoginI) => {
-    const { success } = await auth(userData);
-
-    if (success) reset();
-  };
   const [showMobileForm, setShowMobileForm] = useState(false);
 
   const [activeForm, setActiveForm] = useState<"login" | "register">("login");
 
-  const handleRegister = (data: any) => {
+  const handleRegister = async (data: RegisterFormDataType) => {
     console.log("Register data:", data);
-    // Обработка регистрации
+
+    const { success } = await registerUser(data);
+
+    if (success) reset();
   };
 
-  const handleLogin = (data: any) => {
+  const handleLogin = async (data: UserLoginI) => {
     console.log("Login data:", data);
+    const { success } = await auth(data);
+
+    if (success) reset();
     // Обработка входа
   };
 

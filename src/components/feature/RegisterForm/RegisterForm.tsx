@@ -8,7 +8,7 @@ import { RegisterFormDataType } from '@/utils/types/types'
 export const RegisterForm = ({
   onSubmit,
 }: {
-  onSubmit: (data: RegisterFormDataType) => void
+  onSubmit:  (data: RegisterFormDataType) => Promise<void>
 }) => {
   const {
     register,
