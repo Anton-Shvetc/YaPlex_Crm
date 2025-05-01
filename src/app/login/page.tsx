@@ -23,10 +23,7 @@ const loginSchema = z.object({
 
 export default function LoginPage() {
   const {
-    register,
-    handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
   } = useForm<UserLoginI>({
     resolver: zodResolver(loginSchema),
   });
@@ -47,14 +44,13 @@ export default function LoginPage() {
     console.log("Login data:", requestData);
     const { success, data } = await auth(requestData);
 
-    if(success && data?.token) {
+    if (success && data?.token) {
       localStorage.setItem("token", data.token);
     }
 
-    console.log(success,"success")
+    console.log(success, "success");
 
     if (success) reset();
- 
   };
 
   console.log("showAuthForm", activeForm, showMobileForm);

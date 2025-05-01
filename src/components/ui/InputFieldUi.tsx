@@ -13,16 +13,16 @@ type InputFieldProps = {
 } & InputHTMLAttributes<HTMLInputElement>;
 
 // Цветовые переменные (можно вынести в отдельный файл)
-const colors = {
-  border: {
-    default: "#D1D5DB", // gray-300
-    focus: "#3B82F6", // blue-500
-    error: "#EF4444", // red-500
-  },
-  text: {
-    error: "#EF4444", // red-500
-  },
-};
+// const colors = {
+//   border: {
+//     default: "#D1D5DB", // gray-300
+//     focus: "#3B82F6", // blue-500
+//     error: "#EF4444", // red-500
+//   },
+//   text: {
+//     error: "#EF4444", // red-500
+//   },
+// };
 
 export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
   (
