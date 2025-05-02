@@ -3,6 +3,7 @@ import turso from "@/lib/db";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export type RegisterFormDataType = {
   firstName: string;
@@ -68,11 +69,24 @@ export async function POST(request: Request) {
     });
 
     if (result) {
+      const token = jwt.sign(
+        { userId: userId, email: data.email },
+        process.env.JWT_SECRET!,
+        { expiresIn: "1d" }
+      );
+
+      // 5. Возвращаем успешный ответ с токеном
       return NextResponse.json(
         {
           success: true,
           message: "Регистрация прошла успешно",
-          user: result,
+          data: {
+            token,
+            user: {
+              id: userId,
+              email: data.email,
+            },
+          },
         },
         { status: 200 }
       );

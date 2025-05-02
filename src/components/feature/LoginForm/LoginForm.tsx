@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 
 export const LoginForm = ({
   onSubmit,
-  showMobileForm
+  showMobileForm,
 }: {
   onSubmit: (data: { email: string; password: string }) => void;
   showMobileForm: boolean;
@@ -41,7 +41,7 @@ export const LoginForm = ({
       />
 
       <InputFieldUi
-        label="Придумайте пароль"
+        label="Пароль"
         type="password"
         {...register("password", {
           required: "Обязательное поле",
@@ -51,6 +51,7 @@ export const LoginForm = ({
           },
         })}
         error={errors.password?.message}
+        placeholder="******"
       />
 
       <div className="flex justify-end">

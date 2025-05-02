@@ -14,6 +14,12 @@ export default function Home() {
 
   const router = useRouter();
 
+  // Временная функция, удалить после тестов
+  const exitUser = () => {
+    localStorage.removeItem("token");
+    router.push("/login");
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -55,6 +61,8 @@ export default function Home() {
         <div className="flex flex-col justify-center">Главная страница</div>
 
         <button onClick={changeDarkMode}>Переключатель темы</button>
+
+        <button onClick={exitUser}>Выход </button>
       </div>
     </div>
   );

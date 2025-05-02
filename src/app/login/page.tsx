@@ -16,6 +16,7 @@ import { MainPageInfo } from "@/components/feature/MainPageInfo/MainPageInfo";
 import { RegisterForm } from "@/components/feature/RegisterForm/RegisterForm";
 import { RegisterFormDataType } from "@/utils/types/types";
 import { enqueueSnackbar } from "notistack";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Поле Email обязательно"),
@@ -27,18 +28,23 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
+  const router = useRouter();
+
   const [showMobileForm, setShowMobileForm] = useState(false);
 
   const [activeForm, setActiveForm] = useState<"login" | "register">("login");
 
-  const handleRegister = async (data: RegisterFormDataType) => {
-    console.log("Register data:", data);
+  const handleRegister = async (requestData: RegisterFormDataType) => {
+    console.log("Register data:", requestData);
 
-    const { success, message } = await registerUser(data);
+    const { success, message, data } = await registerUser(requestData);
 
     enqueueSnackbar(message, { variant: success ? "success" : "error" });
 
-    if (success) reset();
+    if (success && data?.token) {
+      localStorage.setItem("token", data.token);
+      router.push("/");
+    }
   };
 
   const handleLogin = async (requestData: UserLoginI) => {
@@ -49,9 +55,8 @@ export default function LoginPage() {
 
     if (success && data?.token) {
       localStorage.setItem("token", data.token);
+      router.push("/");
     }
-
-    if (success) reset();
   };
 
   return (

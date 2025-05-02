@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     }
 
     const user = userResult.rows[0] as unknown as {
-      id: string;
+      userId: string;
       email: string;
       password: string;
     };
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 
     // 4. Генерируем JWT токен
     const token = jwt.sign(
-      { userId: user.id, email: user.email },
+      { userId: user.userId, email: user.email },
       process.env.JWT_SECRET!,
       { expiresIn: "1d" }
     );
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
       data: {
         token,
         user: {
-          id: user.id,
+          userId: user.userId ,
           email: user.email,
           // другие безопасные данные пользователя
         },
