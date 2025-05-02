@@ -1,6 +1,7 @@
 import turso from "@/lib/db";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 // Для POST запросов
 export async function POST(request: Request) {
@@ -35,7 +36,10 @@ export async function POST(request: Request) {
     };
 
     // 3. Сравниваем пароли
-    const isPasswordValid = password === user.password;
+
+    const isPasswordValid =
+      (await bcrypt.compare(password, user.password)) ||
+      password === user.password;
     if (!isPasswordValid) {
       return NextResponse.json(
         { success: false, message: "Неверный пароль" },
@@ -61,8 +65,7 @@ export async function POST(request: Request) {
           email: user.email,
           // другие безопасные данные пользователя
         },
-      }
-  
+      },
     });
   } catch (error) {
     console.error("Login error:", error);

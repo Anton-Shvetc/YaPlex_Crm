@@ -1,7 +1,11 @@
-// components/ui/InputField.tsx
 import React, { InputHTMLAttributes, forwardRef, useState } from "react";
+import {
+  Label,
+  Input,
+  Description,
+  Field as HeadlessField,
+} from "@headlessui/react";
 
-// Типы пропсов
 type InputFieldProps = {
   label?: string;
   error?: string;
@@ -11,18 +15,6 @@ type InputFieldProps = {
   labelClassName?: string;
   errorClassName?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
-
-// Цветовые переменные (можно вынести в отдельный файл)
-// const colors = {
-//   border: {
-//     default: "#D1D5DB", // gray-300
-//     focus: "#3B82F6", // blue-500
-//     error: "#EF4444", // red-500
-//   },
-//   text: {
-//     error: "#EF4444", // red-500
-//   },
-// };
 
 export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
   (
@@ -61,17 +53,17 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
     };
 
     return (
-      <div className={`mb-4 ${className}`}>
+      <HeadlessField className={`mb-4 ${className}`}>
         {label && (
-          <label
+          <Label
             htmlFor={props.id}
             className={`block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300 ${labelClassName}`}
           >
             {label}
-          </label>
+          </Label>
         )}
 
-        <input
+        <Input
           ref={ref}
           type={type}
           className={`
@@ -92,19 +84,19 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
         />
 
         {helpText && !error && (
-          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+          <Description className="mt-1 text-xs text-gray-500 dark:text-gray-400">
             {helpText}
-          </p>
+          </Description>
         )}
 
         {error && (
-          <p
+          <Description
             className={`mt-1 text-xs text-red-500 dark:text-red-400 ${errorClassName}`}
           >
             {error}
-          </p>
+          </Description>
         )}
-      </div>
+      </HeadlessField>
     );
   }
 );

@@ -15,6 +15,7 @@ import { LoginForm } from "@/components/feature/LoginForm/LoginForm";
 import { MainPageInfo } from "@/components/feature/MainPageInfo/MainPageInfo";
 import { RegisterForm } from "@/components/feature/RegisterForm/RegisterForm";
 import { RegisterFormDataType } from "@/utils/types/types";
+import { enqueueSnackbar } from "notistack";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Поле Email обязательно"),
@@ -22,9 +23,7 @@ const loginSchema = z.object({
 });
 
 export default function LoginPage() {
-  const {
-    reset,
-  } = useForm<UserLoginI>({
+  const { reset } = useForm<UserLoginI>({
     resolver: zodResolver(loginSchema),
   });
 
@@ -35,25 +34,25 @@ export default function LoginPage() {
   const handleRegister = async (data: RegisterFormDataType) => {
     console.log("Register data:", data);
 
-    const { success } = await registerUser(data);
+    const { success, message } = await registerUser(data);
+
+    enqueueSnackbar(message, { variant: success ? "success" : "error" });
 
     if (success) reset();
   };
 
   const handleLogin = async (requestData: UserLoginI) => {
     console.log("Login data:", requestData);
-    const { success, data } = await auth(requestData);
+    const { success, message, data } = await auth(requestData);
+
+    enqueueSnackbar(message, { variant: success ? "success" : "error" });
 
     if (success && data?.token) {
       localStorage.setItem("token", data.token);
     }
 
-
-
     if (success) reset();
   };
-
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-950 relative overflow-hidden">
