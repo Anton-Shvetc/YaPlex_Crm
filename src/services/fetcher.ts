@@ -40,7 +40,7 @@ export class FetchService {
     return this;
   }
 
-  async send<T = unknown>(): Promise<IServerAnswerDto<T>> {
+  async send<T>(): Promise<IServerAnswerDto<T>> {
     try {
       const response = await fetch(this.request.url, this.request.requestInit);
 
