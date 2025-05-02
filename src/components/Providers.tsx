@@ -1,6 +1,7 @@
 "use client";
 
 import { SnackbarProvider } from "notistack";
+import Navbar from "./Navbar";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -11,6 +12,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
         horizontal: "right",
       }}
     >
+      <Navbar />
+
       {children}
     </SnackbarProvider>
   );

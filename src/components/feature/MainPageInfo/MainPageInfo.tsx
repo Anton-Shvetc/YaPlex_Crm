@@ -33,7 +33,7 @@ export const MainPageInfo: React.FC<MainPageInfoI> = ({
 
       {activeForm === "register" && !showMobileForm && (
         <div className="hidden flex-col md:flex">
-          <p className="text-white">Уже зарегистрированы?</p>
+          <p className="text-gray-500 dark:text-white">Уже зарегистрированы?</p>
 
           <button
             className="text-[#2563EB] w-fit"
@@ -46,7 +46,10 @@ export const MainPageInfo: React.FC<MainPageInfoI> = ({
 
       {activeForm === "login" && !showMobileForm && (
         <div className="hidden flex-col md:flex">
-          <p className="text-white"> У вас еще нет аккаунта</p>
+          <p className="text-gray-500 dark:text-white">
+            {" "}
+            У вас еще нет аккаунта
+          </p>
 
           <button
             className="text-[#2563EB] w-fit"

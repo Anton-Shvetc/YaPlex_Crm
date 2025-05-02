@@ -2,6 +2,7 @@ import turso from "@/lib/db";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { cookies } from "next/headers";
 
 // Для POST запросов
 export async function POST(request: Request) {
@@ -55,6 +56,16 @@ export async function POST(request: Request) {
     );
 
     // 5. Возвращаем успешный ответ с токеном
+
+    (await
+      // localStorage.setItem("token", data.token);
+      cookies()).set('token',token, {
+      httpOnly: true, // Защита от XSS
+      secure: process.env.NODE_ENV === 'production', // HTTPS-only в продакшене
+      maxAge: 60 * 60 * 24 * 7, // 7 дней
+      path: '/', // Доступно на всех путях
+    });
+
     return NextResponse.json({
       success: true,
       message: "Аутентификация успешна",

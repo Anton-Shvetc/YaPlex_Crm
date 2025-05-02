@@ -4,10 +4,11 @@ import { auth } from "@/services/auth";
 import { registerUser } from "@/services/registerUser";
 
 import { useState } from "react";
+// import { cookies } from 'next/headers';
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+// import { useForm } from "react-hook-form";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { z } from "zod";
 import { UserLoginI } from "@/utils/interfaces/UserI";
 // import { AuthForm } from "@/components/feature/AuthForm/AuthForm";
 
@@ -18,15 +19,15 @@ import { RegisterFormDataType } from "@/utils/types/types";
 import { enqueueSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 
-const loginSchema = z.object({
-  email: z.string().min(1, "Поле Email обязательно"),
-  password: z.string().min(4, "Пароль должен содержать минимум 6 символов"),
-});
+// const loginSchema = z.object({
+//   email: z.string().min(1, "Поле Email обязательно"),
+//   password: z.string().min(4, "Пароль должен содержать минимум 6 символов"),
+// });
 
 export default function LoginPage() {
-  const { reset } = useForm<UserLoginI>({
-    resolver: zodResolver(loginSchema),
-  });
+  // const { reset } = useForm<UserLoginI>({
+  //   resolver: zodResolver(loginSchema),
+  // });
 
   const router = useRouter();
 
@@ -42,7 +43,6 @@ export default function LoginPage() {
     enqueueSnackbar(message, { variant: success ? "success" : "error" });
 
     if (success && data?.token) {
-      localStorage.setItem("token", data.token);
       router.push("/");
     }
   };
@@ -54,7 +54,6 @@ export default function LoginPage() {
     enqueueSnackbar(message, { variant: success ? "success" : "error" });
 
     if (success && data?.token) {
-      localStorage.setItem("token", data.token);
       router.push("/");
     }
   };

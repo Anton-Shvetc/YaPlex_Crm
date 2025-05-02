@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 
 export type RegisterFormDataType = {
   firstName: string;
@@ -74,6 +75,16 @@ export async function POST(request: Request) {
         process.env.JWT_SECRET!,
         { expiresIn: "1d" }
       );
+
+         (await
+            // localStorage.setItem("token", data.token);
+            cookies()).set('token',token, {
+            httpOnly: true, // Защита от XSS
+            secure: process.env.NODE_ENV === 'production', // HTTPS-only в продакшене
+            maxAge: 60 * 60 * 24 * 7, // 7 дней
+            path: '/', // Доступно на всех путях
+          });
+      
 
       // 5. Возвращаем успешный ответ с токеном
       return NextResponse.json(
