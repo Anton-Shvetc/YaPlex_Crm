@@ -49,7 +49,7 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
     const getBorderClasses = () => {
       if (error) return "border-red-500";
       if (isFocused) return "border-blue-500";
-      return "border-gray-300";
+      return "border-gray-300 dark:border-gray-600";
     };
 
     return (
@@ -70,7 +70,7 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
             w-full px-3 py-2 
             border border-solid ${getBorderClasses()}
             rounded-[4px] shadow-sm 
-            bg-white dark:bg-gray-800
+            bg-white dark:bg-gray-700
             text-gray-900 dark:text-white
             placeholder-gray-400 dark:placeholder-gray-500
             focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600
