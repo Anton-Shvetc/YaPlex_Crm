@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 export type DealFormData = {
   name: string;
@@ -12,104 +13,91 @@ export type DealFormData = {
 };
 
 type DealFormProps = {
-  initialData?: Partial<DealFormData>;
-  onSubmit: (formData: DealFormData) => void;
+  register: UseFormRegister<DealFormData>;
+  errors: FieldErrors<DealFormData>;
 };
 
-export const DealForm: React.FC<DealFormProps> = ({
-  initialData = {},
-  onSubmit,
-}) => {
-  const [formData, setFormData] = useState<DealFormData>({
-    name: initialData.name || "",
-    client: initialData.client || "",
-    amount: initialData.amount || "",
-    status: initialData.status || "Новая",
-    description: initialData.description || "",
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
+export const DealForm: React.FC<DealFormProps> = ({ register, errors }) => {
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSubmit(formData);
-      }}
-      className="space-y-4"
-    >
-      <div className="grid grid-cols-1 gap-4">
-        <div className="grid grid-cols-2 gap-4">
-          <InputFieldUi
-            label="Название"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
+    <>
+      <div className="grid grid-cols-2 gap-4">
+        <InputFieldUi
+          label="Название"
+          {...register("name", { required: "Обязательное поле" })}
+          error={errors.name?.message}
+        />
 
-          <InputFieldUi
-            label="Клиент"
-            name="client"
-            value={formData.client}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <InputFieldUi
+          label="Клиент"
+          {...register("client", { required: "Обязательное поле" })}
+          error={errors.client?.message}
+        />
+      </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <InputFieldUi
-            label="Сумма"
-            name="amount"
-            value={formData.amount}
-            onChange={handleChange}
-            type="text"
-          />
-
-          <div>
-            <label
-              htmlFor="status"
-              className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
-            >
-              Статус
-            </label>
-            <select
-              id="status"
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-[4px] shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
-            >
-              <option value="Новая">Новая</option>
-              <option value="В работе">В работе</option>
-              <option value="Завершена">Завершена</option>
-              <option value="Отменена">Отменена</option>
-            </select>
-          </div>
-        </div>
+      <div className="grid grid-cols-2 gap-4">
+        <InputFieldUi
+          label="Сумма"
+          type="text"
+          {...register("amount", {
+            required: "Обязательное поле",
+            pattern: {
+              value: /^\d+(\.\d{1,2})?$/,
+              message: "Введите корректную сумму"
+            }
+          })}
+          error={errors.amount?.message}
+        />
 
         <div>
           <label
-            htmlFor="description"
+            htmlFor="status"
             className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
           >
-            Описание
+            Статус
           </label>
-          <textarea
-            id="description"
-            name="description"
-            rows={4}
-            value={formData.description}
-            onChange={handleChange}
+          <select
+            id="status"
+            {...register("status", { required: "Выберите статус" })}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-[4px] shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
-          />
+          >
+            <option value="">Выберите статус</option>
+            <option value="Новая">Новая</option>
+            <option value="В работе">В работе</option>
+            <option value="Завершена">Завершена</option>
+            <option value="Отменена">Отменена</option>
+          </select>
+          {errors.status && (
+            <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              {errors.status.message}
+            </p>
+          )}
         </div>
       </div>
-    </form>
+
+      <div>
+        <label
+          htmlFor="description"
+          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+        >
+          Описание
+        </label>
+        <textarea
+          id="description"
+          rows={4}
+          {...register("description", {
+            maxLength: {
+              value: 500,
+              message: "Максимальная длина 500 символов"
+            }
+          })}
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-[4px] shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
+        />
+        {errors.description && (
+          <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+            {errors.description.message}
+          </p>
+        )}
+      </div>
+    </>
   );
-}; 
+};
