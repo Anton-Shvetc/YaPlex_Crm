@@ -64,7 +64,7 @@ export const ClientForm: React.FC<ClientFormProps> = ({ register, errors }) => {
 
       <InputFieldUi
         rows={4}
-        label="Comment"
+        label="Комментарий"
         type="textarea"
         {...register("comment")}
       />

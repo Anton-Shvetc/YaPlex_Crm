@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, ReactNode } from "react";
-import { ModalsContainer } from "@/components/feature/ModalsContainer/ModalsContainer";
+import { useState } from "react";
+
 import { ButtonUi } from "@/components/ui/ButtonUi";
 import { ClientFormData } from "@/components/feature/ClientForm/ClientForm";
 import { DealFormData } from "@/components/feature/DealForm/DealForm";
@@ -17,25 +17,16 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 
-import { ClientForm } from "@/components/feature/ClientForm/ClientForm";
-
 import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
 import {
+  getPrimaryActionText,
   getSecondaryActionClass,
   getSecondaryActionText,
 } from "@/utils/actionButtonsUtils";
+import { getModalTitle } from "@/utils/modalUtils";
 
 type EntityType = "client" | "deal" | "task";
 type PageType = "clients" | "deals" | "tasks";
-type FormDataType = ClientFormData | DealFormData | TaskFormData;
-
-// type EntityPageContainerProps = {
-//   entityType: EntityType;
-//   pageType: PageType;
-//   extraContent?: ReactNode;
-//   tsType: string;
-//   formComponent?: React.ReactNode;
-// };
 
 type EntityFormMap = {
   client: ClientFormData;
@@ -43,7 +34,6 @@ type EntityFormMap = {
   task: TaskFormData;
 };
 
-// 2. Типизируем пропсы компонента
 interface EntityPageContainerProps<T extends EntityType> {
   entityType: T;
   pageTitle: string;
@@ -52,7 +42,6 @@ interface EntityPageContainerProps<T extends EntityType> {
   formComponent: React.FC<{
     register: UseFormRegister<EntityFormMap[T]>;
     errors: FieldErrors<EntityFormMap[T]>;
-    // onSubmit: SubmitHandler<EntityFormMap[T]>;
   }>;
   extraContent?: React.ReactNode;
 }
@@ -63,7 +52,7 @@ export const EntityPageContainer = <T extends EntityType>({
   extraContent,
   pageType,
   actionButtonText,
-  pageTitle
+  pageTitle,
 }: EntityPageContainerProps<T>) => {
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
@@ -82,13 +71,11 @@ export const EntityPageContainer = <T extends EntityType>({
   } = useForm<EntityFormMap[T]>();
 
   const onSubmit: SubmitHandler<EntityFormMap[T]> = (data) => {
-    console.log("asd", data);
+    console.log("submit data", data);
     // Обработка данных формы
   };
 
-  const openModal = (
-    type: "new" | "edit" | "view",
-  ) => {
+  const openModal = (type: "new" | "edit" | "view") => {
     setModalState({
       isOpen: true,
       type,
@@ -98,11 +85,6 @@ export const EntityPageContainer = <T extends EntityType>({
   const closeModal = () => {
     setModalState((prev) => ({ ...prev, isOpen: false }));
   };
-
-  // const handleSubmit = (data: FormDataType) => {
-  //   console.log(`Submitting ${entityType} data:`, data);
-  //   // Под логику сохранения данных
-  // };
 
   const getDemoButtonsTitle = (
     entityType: EntityType
@@ -130,8 +112,6 @@ export const EntityPageContainer = <T extends EntityType>({
         };
     }
   };
-
- 
 
   const buttonTitles = getDemoButtonsTitle(entityType);
 
@@ -187,38 +167,28 @@ export const EntityPageContainer = <T extends EntityType>({
       </div>
 
       {/* Модальное окно */}
-      {/* <ModalsContainer
-        entityType={entityType}
-        modalType={modalState.type}
-        isOpen={modalState.isOpen}
-        onClose={closeModal}
-        initialData={modalState.data}
-        onSubmit={handleSubmit}
-      /> */}
 
-      <ModalContainer<EntityTypeMap["client"]>
-        entityType={entityType}
-        modalType={modalState.type}
+      <ModalContainer<EntityTypeMap[T]>
+        modalTitle={getModalTitle(modalState.type, entityType)}
         isOpen={modalState.isOpen}
         onClose={closeModal}
-        // onSubmit={handleSubmit}
         children={
           <FormWrapper
             onSubmit={handleSubmit(onSubmit)}
             primaryAction={{
-              text: "Редактировать",
+              text: getPrimaryActionText(modalState.type),
               type: "submit",
             }}
             secondaryAction={{
-              text: "Удалить клиента",
+              text: getSecondaryActionText(modalState.type, pageType),
               onClick: () => {
-                console.log("delete", "Запрос на удаление клиента");
+                // TODO - прописано хардкодом, заменить
+                console.log("delete", "Запрос на удаление");
+                closeModal();
               },
-              className: getSecondaryActionClass("edit", "client"),
+              className: getSecondaryActionClass(modalState.type, pageType),
             }}
           >
-            {/* <div className="grid grid-cols-1 gap-4">{renderForm()}</div> */}
-
             <div className="grid grid-cols-1 gap-4">
               <FormComponent register={register} errors={errors} />
             </div>
