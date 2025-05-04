@@ -15,13 +15,11 @@ export type ClientFormData = {
 type ClientFormProps = {
   initialData?: Partial<ClientFormData>;
   onSubmit: (formData: ClientFormData) => void;
-  formType: "new" | "edit";
 };
 
 export const ClientForm: React.FC<ClientFormProps> = ({
   initialData = {},
   onSubmit,
-  formType,
 }) => {
   const [formData, setFormData] = useState<ClientFormData>({
     name: initialData.name || "",

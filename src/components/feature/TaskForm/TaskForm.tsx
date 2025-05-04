@@ -15,13 +15,11 @@ export type TaskFormData = {
 type TaskFormProps = {
   initialData?: Partial<TaskFormData>;
   onSubmit: (formData: TaskFormData) => void;
-  formType: "new" | "edit";
 };
 
 export const TaskForm: React.FC<TaskFormProps> = ({
   initialData = {},
   onSubmit,
-  formType,
 }) => {
   const [formData, setFormData] = useState<TaskFormData>({
     name: initialData.name || "",

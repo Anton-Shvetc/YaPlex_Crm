@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { ModalUi } from "@/components/ui/ModalUi";
 import { ClientForm, ClientFormData } from "@/components/feature/ClientForm/ClientForm";
 import { DealForm, DealFormData } from "@/components/feature/DealForm/DealForm";
@@ -8,15 +8,15 @@ import { TaskForm, TaskFormData } from "@/components/feature/TaskForm/TaskForm";
 
 type EntityType = "client" | "deal" | "task";
 type ModalType = "new" | "edit" | "view";
-type FormType = "new" | "edit";
+type FormDataType = ClientFormData | DealFormData | TaskFormData;
 
 type ModalsContainerProps = {
   entityType: EntityType;
   modalType: ModalType;
   isOpen: boolean;
   onClose: () => void;
-  initialData?: any;
-  onSubmit: (data: any) => void;
+  initialData?: Record<string, unknown>;
+  onSubmit: (data: FormDataType) => void;
 };
 
 export const ModalsContainer: React.FC<ModalsContainerProps> = ({
@@ -86,7 +86,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = ({
     return dateString;
   };
 
-  const formatValueForDisplay = (key: string, value: any): string => {
+  const formatValueForDisplay = (key: string, value: unknown): string => {
     if (key === 'dueDate' || key === 'deadline') {
       return formatDate(String(value));
     }
@@ -164,7 +164,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = ({
     return "";
   };
 
-  const handleSubmit = (data: ClientFormData | DealFormData | TaskFormData) => {
+  const handleSubmit = (data: FormDataType) => {
     onSubmit(data);
     onClose();
   };
@@ -191,15 +191,12 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = ({
       );
     }
 
-    const formTypeForComponents: FormType = modalType === "new" ? "new" : "edit";
-
     switch (entityType) {
       case "client":
         return (
           <ClientForm
             initialData={initialData}
             onSubmit={handleSubmit}
-            formType={formTypeForComponents}
           />
         );
       case "deal":
@@ -207,7 +204,6 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = ({
           <DealForm
             initialData={initialData}
             onSubmit={handleSubmit}
-            formType={formTypeForComponents}
           />
         );
       case "task":
@@ -215,7 +211,6 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = ({
           <TaskForm
             initialData={initialData}
             onSubmit={handleSubmit}
-            formType={formTypeForComponents}
           />
         );
       default:

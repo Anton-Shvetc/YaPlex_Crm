@@ -14,13 +14,11 @@ export type DealFormData = {
 type DealFormProps = {
   initialData?: Partial<DealFormData>;
   onSubmit: (formData: DealFormData) => void;
-  formType: "new" | "edit";
 };
 
 export const DealForm: React.FC<DealFormProps> = ({
   initialData = {},
   onSubmit,
-  formType,
 }) => {
   const [formData, setFormData] = useState<DealFormData>({
     name: initialData.name || "",

@@ -152,7 +152,7 @@ export const EntityPageContainer: React.FC<EntityPageContainerProps> = ({
         <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
           {/* Здесь будет содержимое таблицы, которое будет отличаться для каждого типа данных */}
           <div className="p-8 text-center text-gray-500 dark:text-gray-400">
-            Данные для таблицы "{pageTitle}" будут загружены здесь
+            Данные для таблицы &ldquo;{pageTitle}&rdquo; будут загружены здесь
           </div>
         </div>
       </div>

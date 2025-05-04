@@ -98,7 +98,7 @@ export default function Navbar() {
 function LogoutButton({ isCollapsed, mounted, router }: { 
   isCollapsed: boolean; 
   mounted: boolean; 
-  router: any; 
+  router: ReturnType<typeof useRouter>; 
 }) {
   const buttonClasses = `flex items-center rounded p-2 ${
     isCollapsed ? "justify-center" : "px-4"
