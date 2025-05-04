@@ -60,6 +60,22 @@ export const RegisterForm = ({
       />
 
       <InputFieldUi
+        label="Название организации"
+        {...register("userCompanyKey", {
+          required: "Обязательное поле",
+          minLength: {
+            value: 3,
+            message: "Минимум 3 символа",
+          },
+          // pattern: {
+          //   value: /^[A-Za-z]+$/, // Разрешаем только латинские буквы
+          //   message: "Только латинские буквы", // Сообщение об ошибке
+          // },
+        })}
+        error={errors.username?.message}
+      />
+
+      <InputFieldUi
         label="Придумайте пароль"
         type="password"
         {...register("password", {
