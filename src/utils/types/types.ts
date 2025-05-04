@@ -5,7 +5,7 @@ export type RegisterFormDataType = {
   username: string;
   userCompanyKey: string;
   password: string;
-  confirmPassword: string;
+  confirmPassword?: string;
   
 };
 

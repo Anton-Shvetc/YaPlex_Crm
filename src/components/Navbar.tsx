@@ -14,6 +14,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { MobileNavBar } from "./MobileNavBar";
 import { ThemeToggle } from "./ThemeToggle";
+import { logout } from "@/services/auth";
 
 export default function Navbar() {
   const router = useRouter();
@@ -42,9 +43,10 @@ export default function Navbar() {
   }
 
   const collapseButtonClasses = `absolute -right-3 top-4 rounded-full p-1 z-10 border-2 hover:bg-gray-300 
-    ${mounted
-      ? 'bg-gray-200 dark:bg-gray-700 border-gray-100 dark:border-gray-800 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
-      : 'bg-gray-200 border-gray-100'
+    ${
+      mounted
+        ? "bg-gray-200 dark:bg-gray-700 border-gray-100 dark:border-gray-800 dark:hover:bg-gray-600 text-gray-800 dark:text-white"
+        : "bg-gray-200 border-gray-100"
     }`;
 
   return (
@@ -63,60 +65,94 @@ export default function Navbar() {
         </button>
 
         {/* Навигационные ссылки */}
-        <NavLink href="/dashboard" icon={<HomeIcon />} collapsed={isCollapsed} mounted={mounted}>
+        <NavLink
+          href="/dashboard"
+          icon={<HomeIcon />}
+          collapsed={isCollapsed}
+          mounted={mounted}
+        >
           Главная
         </NavLink>
-        
+
         {/* Новые разделы */}
-        <NavLink href="/clients" icon={<ClientsIcon />} collapsed={isCollapsed} mounted={mounted}>
+        <NavLink
+          href="/clients"
+          icon={<ClientsIcon />}
+          collapsed={isCollapsed}
+          mounted={mounted}
+        >
           Клиенты
         </NavLink>
-        <NavLink href="/deals" icon={<DealsIcon />} collapsed={isCollapsed} mounted={mounted}>
+        <NavLink
+          href="/deals"
+          icon={<DealsIcon />}
+          collapsed={isCollapsed}
+          mounted={mounted}
+        >
           Сделки
         </NavLink>
-        <NavLink href="/tasks" icon={<TasksIcon />} collapsed={isCollapsed} mounted={mounted}>
+        <NavLink
+          href="/tasks"
+          icon={<TasksIcon />}
+          collapsed={isCollapsed}
+          mounted={mounted}
+        >
           Задачи
         </NavLink>
-        
-        <NavLink href="/profile" icon={<UserIcon />} collapsed={isCollapsed} mounted={mounted}>
+
+        <NavLink
+          href="/profile"
+          icon={<UserIcon />}
+          collapsed={isCollapsed}
+          mounted={mounted}
+        >
           Профиль
         </NavLink>
-        
+
         {/* Переключатель темы - только на клиенте */}
         {mounted && (
           <div className={`flex ${isCollapsed ? "hidden" : "px-4"} mt-auto`}>
             <ThemeToggle />
           </div>
         )}
-        
-        <LogoutButton isCollapsed={isCollapsed} mounted={mounted} router={router} />
+
+        <LogoutButton
+          isCollapsed={isCollapsed}
+          mounted={mounted}
+          router={router}
+        />
       </nav>
     </div>
   );
 }
 
-function LogoutButton({ isCollapsed, mounted, router }: { 
-  isCollapsed: boolean; 
-  mounted: boolean; 
-  router: ReturnType<typeof useRouter>; 
+function LogoutButton({
+  isCollapsed,
+  mounted,
+  router,
+}: {
+  isCollapsed: boolean;
+  mounted: boolean;
+  router: ReturnType<typeof useRouter>;
 }) {
+  const handleLogout = async () => {
+    const { success } = await logout();
+
+    if (success) {
+      router.push("/");
+    }
+  };
+
   const buttonClasses = `flex items-center rounded p-2 ${
     isCollapsed ? "justify-center" : "px-4"
   } ${
-    mounted 
-      ? 'text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700' 
-      : 'hover:bg-gray-200'
+    mounted
+      ? "text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
+      : "hover:bg-gray-200"
   }`;
 
   return (
-    <button
-      onClick={() => {
-        localStorage.removeItem("token");
-        router.push("/login");
-      }}
-      className={buttonClasses}
-      title="Выйти"
-    >
+    <button onClick={handleLogout} className={buttonClasses} title="Выйти">
       <LogoutIcon />
       {!isCollapsed && <span className="ml-3">Выйти</span>}
     </button>
@@ -143,7 +179,9 @@ function NavLink({
   const linkClasses = `flex items-center rounded p-2 ${
     isActive ? (mounted ? "bg-gray-200 dark:bg-gray-700" : "bg-gray-200") : ""
   } ${collapsed ? "justify-center" : "px-4"} ${
-    mounted ? "text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" : "hover:bg-gray-200"
+    mounted
+      ? "text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
+      : "hover:bg-gray-200"
   }`;
 
   return (
