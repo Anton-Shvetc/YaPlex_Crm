@@ -3,8 +3,10 @@ export type RegisterFormDataType = {
   lastName: string;
   email: string;
   username: string;
+  userCompanyKey: string;
   password: string;
-  confirmPassword: string;
+  confirmPassword?: string;
+  
 };
 
 export type LoginFormDataType = {
