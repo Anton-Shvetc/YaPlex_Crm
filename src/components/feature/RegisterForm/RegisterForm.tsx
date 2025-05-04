@@ -7,8 +7,10 @@ import { RegisterFormDataType } from "@/utils/types/types";
 
 export const RegisterForm = ({
   onSubmit,
+  showMobileForm
 }: {
   onSubmit: (data: RegisterFormDataType) => Promise<void>;
+  showMobileForm: boolean;
 }) => {
   const {
     register,
@@ -22,6 +24,12 @@ export const RegisterForm = ({
       title="Регистрация"
       btnTitle="Зарегистрироваться"
       onSubmit={handleSubmit(onSubmit)}
+
+      additionalStyle={      
+        !showMobileForm
+          ? "bg-white/80 dark:bg-gray-900 backdrop-blur-sm rounded-2xl shadow-xl p-6"
+          : "bg-transparent"
+      }
     >
       <InputFieldUi
         label="Имя"

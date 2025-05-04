@@ -2,35 +2,56 @@
 
 import React from "react";
 import { ModalUi } from "@/components/ui/ModalUi";
-import {
-  ClientForm,
-  ClientFormData,
-} from "@/components/feature/ClientForm/ClientForm";
+import { ClientForm } from "@/components/feature/ClientForm/ClientForm";
 import { DealForm, DealFormData } from "@/components/feature/DealForm/DealForm";
 import { TaskForm, TaskFormData } from "@/components/feature/TaskForm/TaskForm";
-import { getPrimaryActionText, getSecondaryActionClass, getSecondaryActionText } from "@/utils/actionButtonsUtils";
+import { FormWrapper } from "../FormWrapper/FormWrapper";
+import {
+  FieldErrors,
+  FieldValues,
+  useForm,
+  UseFormRegister,
+} from "react-hook-form";
 
 type EntityType = "client" | "deal" | "task";
 type ModalType = "new" | "edit" | "view";
 type FormDataType = ClientFormData | DealFormData | TaskFormData;
 
-type ModalsContainerProps = {
-  entityType: EntityType;
-  modalType: ModalType;
+type ModalsContainerProps<T> = {
+  entityType: string;
+  modalType: string;
   isOpen: boolean;
   onClose: () => void;
-  initialData?: Record<string, unknown>;
-  onSubmit: (data: FormDataType) => void;
+  // initialData?: Partial<T>;
+  onSubmit?: () => void;
+  children: React.ReactNode;
 };
 
-export const ModalsContainer: React.FC<ModalsContainerProps> = ({
+export type EntityTypeMap = {
+  client: ClientFormData;
+  deal: DealFormData;
+  task: TaskFormData;
+};
+
+export type ClientFormData = {
+  name: string;
+  phone: string;
+  company: string;
+  website: string;
+  email: string;
+  comment: string;
+};
+
+export const ModalContainer = <T extends FieldValues>({
   entityType,
   modalType,
   isOpen,
   onClose,
-  initialData,
   onSubmit,
-}) => {
+  children
+}: ModalsContainerProps<T>) => {
+
+
   const getFieldLabel = (key: string, entityType: EntityType): string => {
     const commonFields: Record<string, string> = {
       description: "Описание",
@@ -152,6 +173,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = ({
   //   }
   //   return "Отменить";
   // };
+  
 
   // const getSecondaryActionClass = (): string => {
   //   if (modalType === "edit") {
@@ -167,10 +189,12 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = ({
   //   return "";
   // };
 
-  const handleSubmit = (data: FormDataType) => {
-    onSubmit(data);
-    onClose();
-  };
+  // const handleSubmit = (data: FormDataType) => {
+  //   onSubmit(data);
+  //   onClose();
+  // };
+
+  
 
   const handleSecondaryAction = () => {
     if (modalType === "edit") {
@@ -180,65 +204,51 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = ({
     onClose();
   };
 
-  const renderForm = () => {
-    if (modalType === "view") {
-      return (
-        <div className="space-y-4 text-gray-800 dark:text-white">
-          {Object.entries(initialData || {}).map(([key, value]) => (
-            <div key={key} className="mb-2">
-              <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                {getFieldLabel(key, entityType)}
-              </div>
-              <div>{formatValueForDisplay(key, value)}</div>
-            </div>
-          ))}
-        </div>
-      );
-    }
+  // const renderForm = () => {
+  //   if (modalType === "view") {
+  //     return (
+  //       <div className="space-y-4 text-gray-800 dark:text-white">
+  //         {Object.entries(initialData || {}).map(([key, value]) => (
+  //           <div key={key} className="mb-2">
+  //             <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+  //               {getFieldLabel(key, entityType)}
+  //             </div>
+  //             <div>{formatValueForDisplay(key, value)}</div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     );
+  //   }
 
-    switch (entityType) {
-      // case "client":
-      //   return (
-      //     <ClientForm
-      //       initialData={initialData}
-      //       onSubmit={handleSubmit}
-      //     />
-      //   );
-      case "deal":
-        return <DealForm initialData={initialData} onSubmit={handleSubmit} />;
-      case "task":
-        return <TaskForm initialData={initialData} onSubmit={handleSubmit} />;
-      default:
-        return null;
-    }
-  };
+  //   switch (entityType) {
+  //     case "client":
+  //       return <ClientForm  register={register} />;
+  //     // case "deal":
+  //     //   return <DealForm initialData={initialData} register={register}/>;
+  //     // case "task":
+  //     //   return <TaskForm initialData={initialData} register={register} />;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   return (
     <ModalUi
       isOpen={isOpen}
-      onClose={onClose}
       title={getModalTitle()}
+      onClose={onClose}
       // primaryAction={{
-      //   text: getPrimaryActionText(modalType),
+      //   text: getPrimaryActionText(),
       //   type: "submit",
-      //   onClick: () => {
-      //     if (modalType === "view") {
-      //       onClose();
-      //       return;
-      //     }
-
-      //     const form = document.querySelector("form");
-      //     if (form)
-      //       form.dispatchEvent(new Event("submit", { cancelable: true }));
-      //   },
+      //   // onClick: onSubmit,
       // }}
       // secondaryAction={{
-      //   text: getSecondaryActionText(modalType, entityType),
+      //   text: getSecondaryActionText(),
       //   onClick: handleSecondaryAction,
-      //   className: getSecondaryActionClass(modalType, entityType),
+      //   className: getSecondaryActionClass(),
       // }}
     >
-      {renderForm()}
+      {children}
     </ModalUi>
   );
 };

@@ -85,7 +85,9 @@ export default function LoginPage() {
             }`}
           >
             {activeForm === "register" && (
-              <RegisterForm onSubmit={handleRegister} />
+              <RegisterForm onSubmit={handleRegister} 
+              showMobileForm={showMobileForm}
+              />
             )}
           </div>
 
