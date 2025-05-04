@@ -16,7 +16,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         horizontal: "right",
       }}
     >
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen bg-white dark:bg-gray-900">
         {pathname !== "/login" && <Navbar />}
         <div className="flex-1 overflow-auto">{children}</div>
       </div>
