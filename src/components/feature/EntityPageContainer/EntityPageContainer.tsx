@@ -7,7 +7,6 @@ import { ClientFormData } from "@/components/feature/ClientForm/ClientForm";
 import { DealFormData } from "@/components/feature/DealForm/DealForm";
 import { TaskFormData } from "@/components/feature/TaskForm/TaskForm";
 import {
-  EntityTypeMap,
   ModalContainer,
 } from "@/components/shared/ModalContainer/ModalContainer";
 import {
