@@ -1,5 +1,5 @@
 import { FetchService } from "./fetcher";
-import { RegisterFormDataType } from "@/utils/types/types";
+import { RegisterFormDataType } from "@/utils/types";
 
 interface AuthResponse {
   success: boolean;

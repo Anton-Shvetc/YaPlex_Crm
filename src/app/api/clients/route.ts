@@ -1,9 +1,10 @@
 import turso from "@/lib/db";
 import { handleDatabaseQuery } from "@/utils/handleDatabaseQuery";
-import { CreateClientDataType } from "@/utils/types/types";
+import { CreateClientDataType } from "@/utils/types";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+
 
 export async function GET() {
   return handleDatabaseQuery("clients");

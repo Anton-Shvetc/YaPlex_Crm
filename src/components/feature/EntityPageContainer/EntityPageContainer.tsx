@@ -24,6 +24,9 @@ import { getModalTitle } from "@/utils/modalUtils";
 import { FetchService } from "@/services/fetcher";
 
 import { enqueueSnackbar } from "notistack";
+import { TableContainer } from "@/components/shared/TableContainer/TableContainer";
+
+import { Client } from "@/utils/types";
 
 type EntityType = "client" | "deal" | "task";
 type PageType = "clients" | "deals" | "tasks";
@@ -34,10 +37,18 @@ type EntityFormMap = {
   task: TaskFormData;
 };
 
+type EntityTableRowMap = {
+  client: Client[];
+  deal: undefined;
+  task: undefined;
+};
+
 interface EntityPageContainerProps<T extends EntityType> {
   entityType: T;
   pageTitle: string;
   requestLink?: string;
+  updateTableData?: () => void;
+  tableData?: EntityTableRowMap[T];
   actionButtonText: string;
   pageType: PageType;
   formComponent: React.FC<{
@@ -52,6 +63,8 @@ export const EntityPageContainer = <T extends EntityType>({
   formComponent: FormComponent,
   extraContent,
   requestLink = undefined,
+  tableData,
+  updateTableData,
   pageType,
   actionButtonText,
   pageTitle,
@@ -73,25 +86,22 @@ export const EntityPageContainer = <T extends EntityType>({
     formState: { errors },
   } = useForm<EntityFormMap[T]>();
 
-  const [tableData, setTableData] = useState<Array<Record<string, unknown>>>(
-    []
-  );
+  // const getTableData = async (): Promise<void> => {
+  //   if (!requestLink) return;
+  //   try {
+  //     const { success, data } = await new FetchService()
+  //       .GET(requestLink) // Указываем тип ответа
+  //       .send();
 
-  const getTableData = async (): Promise<void> => {
-    if (!requestLink) return;
-    try {
-      const { success, data } = await new FetchService()
-        .GET(requestLink) // Указываем тип ответа
-        .send();
-
-      if (success && Array.isArray(data)) {
-        setTableData(data);
-      }
-    } catch (error) {
-      console.error(error);
-      enqueueSnackbar("Ошибка при получении данных", { variant: "error" });
-    }
-  };
+  //     if (success && Array.isArray(data)) {
+  //       console.log("table data", data);
+  //       // setTableData(data);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     enqueueSnackbar("Ошибка при получении данных", { variant: "error" });
+  //   }
+  // };
 
   const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
     console.log("submit data", data);
@@ -107,7 +117,8 @@ export const EntityPageContainer = <T extends EntityType>({
       if (success) {
         reset();
         setModalState((prev) => ({ ...prev, isOpen: false }));
-        getTableData();
+
+        if (updateTableData) updateTableData();
       }
     } catch (error) {
       console.error(error);
@@ -125,6 +136,10 @@ export const EntityPageContainer = <T extends EntityType>({
   const closeModal = () => {
     setModalState((prev) => ({ ...prev, isOpen: false }));
   };
+
+  useEffect(() => {
+    if (updateTableData) updateTableData();
+  }, []);
 
   const getDemoButtonsTitle = (
     entityType: EntityType
@@ -166,10 +181,6 @@ export const EntityPageContainer = <T extends EntityType>({
     </div>
   );
 
-  useEffect(() => {
-    getTableData();
-  }, []);
-
   return (
     <>
       <div className="flex-1 p-4">
@@ -199,6 +210,7 @@ export const EntityPageContainer = <T extends EntityType>({
         <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
           {/* Здесь будет содержимое таблицы, которое будет отличаться для каждого типа данных */}
           <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+            {pageType === "clients" && <TableContainer />}
             Данные для таблицы &ldquo;{pageTitle}&rdquo; будут загружены здесь
           </div>
         </div>

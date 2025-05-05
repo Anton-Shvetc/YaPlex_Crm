@@ -41,7 +41,9 @@ export async function handleDatabaseQuery(tableName: string) {
     );
   } catch (error) {
     console.error(error);
+    return NextResponse.json(
+      { message: "Method not allowed" },
+      { status: 405 }
+    );
   }
-
-  return NextResponse.json({ message: "Method not allowed" }, { status: 405 });
 }

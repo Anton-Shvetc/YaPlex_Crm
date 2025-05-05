@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
-import { RegisterFormDataType } from "@/utils/types/types";
+import { RegisterFormDataType } from "@/utils/types";
 
 export const RegisterForm = ({
   onSubmit,
