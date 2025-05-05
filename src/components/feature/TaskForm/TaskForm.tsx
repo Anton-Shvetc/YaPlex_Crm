@@ -8,8 +8,8 @@ export type TaskFormData = {
   name: string;
   deal: string;
   description: string;
-  dueDate: string;
-  assignee: string;
+  deadline: string;
+  executor: string;
   status: string;
 };
 
@@ -63,14 +63,14 @@ export const TaskForm: React.FC<TaskFormProps> = ({ register, errors }) => {
         <InputFieldUi
           label="Выполнить до"
           type="date"
-          {...register("dueDate", { required: "Укажите дату выполнения" })}
-          error={errors.dueDate?.message}
+          {...register("deadline", { required: "Укажите дату выполнения" })}
+          error={errors.deadline?.message}
         />
 
         <InputFieldUi
           label="Исполнитель"
-          {...register("assignee")}
-          error={errors.assignee?.message}
+          {...register("executor")}
+          error={errors.executor?.message}
         />
       </div>
 

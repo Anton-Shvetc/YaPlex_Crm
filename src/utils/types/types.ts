@@ -14,3 +14,15 @@ export type LoginFormDataType = {
 
   password: string;
 };
+
+export type CreateClientDataType = {
+  name: string;
+  tel: string;
+  email: string;
+  website: string;
+  userCompanyKey: string;
+  authorId: string;
+  comment: string;
+  company: string;
+  
+};

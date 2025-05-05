@@ -34,6 +34,7 @@ export async function POST(request: Request) {
       userId: string;
       email: string;
       password: string;
+      userCompanyKey: string;
     };
 
     // 3. Сравниваем пароли
@@ -50,7 +51,7 @@ export async function POST(request: Request) {
 
     // 4. Генерируем JWT токен
     const token = jwt.sign(
-      { userId: user.userId, email: user.email },
+      { userId: user.userId, email: user.email, userCompanyKey: user.userCompanyKey },
       process.env.JWT_SECRET!,
       { expiresIn: "1d" }
     );
