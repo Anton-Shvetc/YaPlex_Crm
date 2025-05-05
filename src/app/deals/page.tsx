@@ -8,7 +8,7 @@ export default function DealsPage() {
     <EntityPageContainer
       entityType="deal"
       pageType="deals"
-      actionButtonText="Новвя сделка"
+      actionButtonText="Новая сделка"
       pageTitle="Сделки"
       formComponent={DealForm}
     />

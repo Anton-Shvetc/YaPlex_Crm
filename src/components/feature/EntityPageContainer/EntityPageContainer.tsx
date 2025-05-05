@@ -168,33 +168,32 @@ export const EntityPageContainer = <T extends EntityType>({
 
       {/* Модальное окно */}
 
-      <ModalContainer<EntityTypeMap[T]>
+      <ModalContainer
         modalTitle={getModalTitle(modalState.type, entityType)}
         isOpen={modalState.isOpen}
         onClose={closeModal}
-        children={
-          <FormWrapper
-            onSubmit={handleSubmit(onSubmit)}
-            primaryAction={{
-              text: getPrimaryActionText(modalState.type),
-              type: "submit",
-            }}
-            secondaryAction={{
-              text: getSecondaryActionText(modalState.type, pageType),
-              onClick: () => {
-                // TODO - прописано хардкодом, заменить
-                console.log("delete", "Запрос на удаление");
-                closeModal();
-              },
-              className: getSecondaryActionClass(modalState.type, pageType),
-            }}
-          >
-            <div className="grid grid-cols-1 gap-4">
-              <FormComponent register={register} errors={errors} />
-            </div>
-          </FormWrapper>
-        }
-      />
+      >
+        <FormWrapper
+          onSubmit={handleSubmit(onSubmit)}
+          primaryAction={{
+            text: getPrimaryActionText(modalState.type),
+            type: "submit",
+          }}
+          secondaryAction={{
+            text: getSecondaryActionText(modalState.type, pageType),
+            onClick: () => {
+              // TODO - прописано хардкодом, заменить
+              console.log("delete", "Запрос на удаление");
+              closeModal();
+            },
+            className: getSecondaryActionClass(modalState.type, pageType),
+          }}
+        >
+          <div className="grid grid-cols-1 gap-4">
+            <FormComponent register={register} errors={errors} />
+          </div>
+        </FormWrapper>
+      </ModalContainer>
     </>
   );
 };

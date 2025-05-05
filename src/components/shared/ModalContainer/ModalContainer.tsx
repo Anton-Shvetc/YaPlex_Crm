@@ -6,13 +6,10 @@ import { ModalUi } from "@/components/ui/ModalUi";
 import { DealFormData } from "@/components/feature/DealForm/DealForm";
 import { TaskFormData } from "@/components/feature/TaskForm/TaskForm";
 
-import { FieldValues } from "react-hook-form";
-
-type ModalsContainerProps<T> = {
+export type ModalsContainerProps = {
   modalTitle: string;
   isOpen: boolean;
   onClose: () => void;
-
   onSubmit?: () => void;
   children: React.ReactNode;
 };
@@ -32,13 +29,13 @@ export type ClientFormData = {
   comment: string;
 };
 
-export const ModalContainer = <T extends FieldValues>({
+export const ModalContainer = ({
   modalTitle,
   isOpen,
   onClose,
 
   children,
-}: ModalsContainerProps<T>) => {
+}: ModalsContainerProps) => {
   return (
     <ModalUi isOpen={isOpen} title={modalTitle} onClose={onClose}>
       {children}

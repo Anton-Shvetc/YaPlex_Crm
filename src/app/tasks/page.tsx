@@ -8,7 +8,7 @@ export default function TasksPage() {
     <EntityPageContainer
       entityType="task"
       pageType="tasks"
-      actionButtonText="Новвя задача"
+      actionButtonText="Новая задача"
       pageTitle="Задачи"
       formComponent={TaskForm}
     />

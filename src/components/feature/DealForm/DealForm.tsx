@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
@@ -42,8 +42,8 @@ export const DealForm: React.FC<DealFormProps> = ({ register, errors }) => {
             required: "Обязательное поле",
             pattern: {
               value: /^\d+(\.\d{1,2})?$/,
-              message: "Введите корректную сумму"
-            }
+              message: "Введите корректную сумму",
+            },
           })}
           error={errors.amount?.message}
         />
@@ -87,8 +87,8 @@ export const DealForm: React.FC<DealFormProps> = ({ register, errors }) => {
           {...register("description", {
             maxLength: {
               value: 500,
-              message: "Максимальная длина 500 символов"
-            }
+              message: "Максимальная длина 500 символов",
+            },
           })}
           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-[4px] shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
         />
