@@ -24,8 +24,12 @@ export const LoginForm = ({
     <FormWrapper
       title="Вход в систему"
       btnTitle="Войти"
-      showMobileForm={showMobileForm}
       onSubmit={handleSubmit(onSubmit)}
+      additionalStyle={
+        !showMobileForm
+          ? "bg-white/80 dark:bg-gray-900 backdrop-blur-sm rounded-2xl shadow-xl p-6"
+          : "bg-transparent"
+      }
     >
       <InputFieldUi
         label="Email"
