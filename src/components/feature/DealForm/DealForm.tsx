@@ -6,7 +6,7 @@ import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 export type DealFormData = {
   name: string;
-  client: string;
+  clientId: string;
   amount: string;
   status: string;
   description: string;
@@ -29,8 +29,8 @@ export const DealForm: React.FC<DealFormProps> = ({ register, errors }) => {
 
         <InputFieldUi
           label="Клиент"
-          {...register("client", { required: "Обязательное поле" })}
-          error={errors.client?.message}
+          {...register("clientId", { required: "Обязательное поле" })}
+          error={errors.clientId?.message}
         />
       </div>
 

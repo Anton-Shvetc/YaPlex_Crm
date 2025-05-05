@@ -65,30 +65,32 @@ export async function POST(request: Request) {
 
     if (!authorId || !userCompanyKey) {
       return NextResponse.json(
-        { success: false, message: "Непредвиденная ошибка" },
+        { success: false, message: "Ошибка токена, выполните вход снова." },
         { status: 400 }
       );
     }
 
+    const args = [
+      data.name,
+      data.email,
+      data.tel,
+      data.website,
+      data.comment,
+      data.company,
+      userCompanyKey,
+      authorId,
+      createdAt,
+      updatedAt,
+    ].map((value) => value ?? null);
+
     // SQL-запрос для создания пользователя
     const result = await turso.execute({
       sql: `
-        INSERT INTO users (
-           name, email, tel, website, comment,  company, userCompanyKey,  authorId, createdAt, updatedAt
+        INSERT INTO clients (
+           name, email, phone, website, comment,  company, userCompanyKey,  authorId, created_at, update_at
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
-      args: [
-        data.name,
-        data.email,
-        data.tel,
-        data.website,
-        data.comment,
-        data.company,
-        userCompanyKey,
-        authorId,
-        createdAt,
-        updatedAt,
-      ],
+      args: args,
     });
 
     if (result) {

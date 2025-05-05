@@ -69,6 +69,7 @@ export const EntityPageContainer = <T extends EntityType>({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<EntityFormMap[T]>();
 
@@ -76,9 +77,42 @@ export const EntityPageContainer = <T extends EntityType>({
     []
   );
 
-  const onSubmit: SubmitHandler<EntityFormMap[T]> = (data) => {
+  const getTableData = async (): Promise<void> => {
+    if (!requestLink) return;
+    try {
+      const { success, data } = await new FetchService()
+        .GET(requestLink) // Указываем тип ответа
+        .send();
+
+      if (success && Array.isArray(data)) {
+        setTableData(data);
+      }
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar("Ошибка при получении данных", { variant: "error" });
+    }
+  };
+
+  const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
     console.log("submit data", data);
-    // Обработка данных формы
+
+    if (!requestLink) return;
+    try {
+      const { success, message } = await new FetchService()
+        .POST(requestLink, data) // Указываем тип ответа
+        .send();
+
+      enqueueSnackbar(message, { variant: success ? "success" : "error" });
+
+      if (success) {
+        reset();
+        setModalState((prev) => ({ ...prev, isOpen: false }));
+        getTableData();
+      }
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar("Ошибка при создании ", { variant: "error" });
+    }
   };
 
   const openModal = (type: "new" | "edit" | "view") => {
@@ -90,22 +124,6 @@ export const EntityPageContainer = <T extends EntityType>({
 
   const closeModal = () => {
     setModalState((prev) => ({ ...prev, isOpen: false }));
-  };
-
-  const getTableData = async (): Promise<void> => {
-    if (!requestLink) return;
-    try {
-      const { success, data } = await new FetchService()
-        .GET(requestLink) // Указываем тип ответа
-        .send();
-
-      if (Array.isArray(data)) {
-        setTableData(data);
-      }
-    } catch (error) {
-      console.error(error);
-      enqueueSnackbar("Ошибка при получении данных", { variant: "error" });
-    }
   };
 
   const getDemoButtonsTitle = (
