@@ -18,6 +18,7 @@ export default function ClientsPage() {
       entityType="client"
       pageType="clients"
       actionButtonText="Новый клиент"
+      requestLink="api/clients"
       pageTitle="Клиенты"
       formComponent={ClientForm}
     />
