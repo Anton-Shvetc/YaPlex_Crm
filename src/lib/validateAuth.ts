@@ -1,5 +1,5 @@
 // lib/auth.ts
-import { cookies } from 'next/headers';
+import { cookies } from "next/headers";
 // import { redirect } from 'next/navigation';
 
 // Тип пользователя (замените на свой)
@@ -11,7 +11,7 @@ import { cookies } from 'next/headers';
 // Проверяем, авторизован ли пользователь
 export async function validateAuth(): Promise<boolean | null> {
   const cookieStore = cookies();
-  const token = (await cookieStore).get('auth-token')?.value; // Или 'session-token'
+  const token = (await cookieStore).get("auth-token")?.value; // Или 'session-token'
 
   if (!token) {
     return null; // Нет токена → не авторизован
@@ -24,11 +24,11 @@ export async function validateAuth(): Promise<boolean | null> {
     // });
 
     // if (!res.ok) throw new Error('Invalid token');
-    
+
     // const user: User = await res.json();
     return true;
   } catch (error) {
-    console.error('Auth error:', error);
+    console.error("Auth error:", error);
     return null;
   }
 }

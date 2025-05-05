@@ -7,8 +7,10 @@ import { RegisterFormDataType } from "@/utils/types/types";
 
 export const RegisterForm = ({
   onSubmit,
+  showMobileForm
 }: {
   onSubmit: (data: RegisterFormDataType) => Promise<void>;
+  showMobileForm: boolean;
 }) => {
   const {
     register,
@@ -22,6 +24,12 @@ export const RegisterForm = ({
       title="Регистрация"
       btnTitle="Зарегистрироваться"
       onSubmit={handleSubmit(onSubmit)}
+
+      additionalStyle={      
+        !showMobileForm
+          ? "bg-white/80 dark:bg-gray-900 backdrop-blur-sm rounded-2xl shadow-xl p-6"
+          : "bg-transparent"
+      }
     >
       <InputFieldUi
         label="Имя"
@@ -55,6 +63,22 @@ export const RegisterForm = ({
             value: 3,
             message: "Минимум 3 символа",
           },
+        })}
+        error={errors.username?.message}
+      />
+
+      <InputFieldUi
+        label="Название организации"
+        {...register("userCompanyKey", {
+          required: "Обязательное поле",
+          minLength: {
+            value: 3,
+            message: "Минимум 3 символа",
+          },
+          // pattern: {
+          //   value: /^[A-Za-z]+$/, // Разрешаем только латинские буквы
+          //   message: "Только латинские буквы", // Сообщение об ошибке
+          // },
         })}
         error={errors.username?.message}
       />

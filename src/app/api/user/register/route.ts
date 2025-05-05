@@ -5,14 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-
-export type RegisterFormDataType = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  username: string;
-  password: string;
-};
+import { RegisterFormDataType } from "@/utils/types/types";
 
 export async function POST(request: Request) {
   try {
@@ -54,8 +47,8 @@ export async function POST(request: Request) {
     const result = await turso.execute({
       sql: `
         INSERT INTO users (
-          userId, firstName, lastName, email, username, password, createdAt, updatedAt
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+          userId, firstName, lastName, email, username, userCompanyKey,  password, createdAt, updatedAt
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       args: [
         userId,
@@ -63,6 +56,7 @@ export async function POST(request: Request) {
         data.lastName,
         data.email,
         data.username,
+        data.userCompanyKey,
         hashedPassword,
         createdAt,
         updatedAt,
@@ -76,15 +70,15 @@ export async function POST(request: Request) {
         { expiresIn: "1d" }
       );
 
-         (await
-            // localStorage.setItem("token", data.token);
-            cookies()).set('token',token, {
-            httpOnly: true, // Защита от XSS
-            secure: process.env.NODE_ENV === 'production', // HTTPS-only в продакшене
-            maxAge: 60 * 60 * 24 * 7, // 7 дней
-            path: '/', // Доступно на всех путях
-          });
-      
+      (
+        await // localStorage.setItem("token", data.token);
+        cookies()
+      ).set("token", token, {
+        httpOnly: true, // Защита от XSS
+        secure: process.env.NODE_ENV === "production", // HTTPS-only в продакшене
+        maxAge: 60 * 60 * 24 * 7, // 7 дней
+        path: "/", // Доступно на всех путях
+      });
 
       // 5. Возвращаем успешный ответ с токеном
       return NextResponse.json(

@@ -9,10 +9,11 @@ interface AuthResponse {
     // другие данные, если они есть
   };
 }
-export const auth = async (userData: UserLoginI): Promise<AuthResponse> => {
+export const login = async (userData: UserLoginI): Promise<AuthResponse> => {
   return await new FetchService().POST("/api/user/login", userData).send();
 };
 
-// export const getUsers = async () => {
-//   return await new FetchService().GET("/api/user/login").send();
-// };
+export const logout = async () => {
+  return await new FetchService().GET("/api/user/logout").send();
+};
+

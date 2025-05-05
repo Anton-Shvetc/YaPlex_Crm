@@ -1,6 +1,6 @@
 "use client";
 
-import { auth } from "@/services/auth";
+import { login } from "@/services/auth";
 import { registerUser } from "@/services/registerUser";
 
 import { useState } from "react";
@@ -49,7 +49,7 @@ export default function LoginPage() {
 
   const handleLogin = async (requestData: UserLoginI) => {
     console.log("Login data:", requestData);
-    const { success, message, data } = await auth(requestData);
+    const { success, message, data } = await login(requestData);
 
     enqueueSnackbar(message, { variant: success ? "success" : "error" });
 
@@ -85,7 +85,9 @@ export default function LoginPage() {
             }`}
           >
             {activeForm === "register" && (
-              <RegisterForm onSubmit={handleRegister} />
+              <RegisterForm onSubmit={handleRegister} 
+              showMobileForm={showMobileForm}
+              />
             )}
           </div>
 
