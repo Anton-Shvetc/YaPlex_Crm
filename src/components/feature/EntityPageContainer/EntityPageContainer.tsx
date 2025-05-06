@@ -210,7 +210,7 @@ export const EntityPageContainer = <T extends EntityType>({
         <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
           {/* Здесь будет содержимое таблицы, которое будет отличаться для каждого типа данных */}
           <div className="p-8 text-center text-gray-500 dark:text-gray-400">
-            {tableData && <TableContainer />}
+            {tableData && <TableContainer tableData={tableData}/>}
             Данные для таблицы &ldquo;{pageTitle}&rdquo; будут загружены здесь
           </div>
         </div>
