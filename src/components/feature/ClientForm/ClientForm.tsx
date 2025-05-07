@@ -4,18 +4,11 @@ import React from "react";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 
-export type ClientFormData = {
-  name: string;
-  phone: string;
-  company: string;
-  website: string;
-  email: string;
-  comment: string;
-};
+import { Client } from "@/utils/types/index";
 
 type ClientFormProps = {
-  register: UseFormRegister<ClientFormData>;
-  errors: FieldErrors<ClientFormData>;
+  register: UseFormRegister<Client>;
+  errors: FieldErrors<Client>;
 };
 export const ClientForm: React.FC<ClientFormProps> = ({ register, errors }) => {
   return (

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { ButtonUi } from "@/components/ui/ButtonUi";
-import { ClientFormData } from "@/components/feature/ClientForm/ClientForm";
+
 import { DealFormData } from "@/components/feature/DealForm/DealForm";
 import { TaskFormData } from "@/components/feature/TaskForm/TaskForm";
 import { ModalContainer } from "@/components/shared/ModalContainer/ModalContainer";
@@ -32,15 +32,34 @@ type EntityType = "client" | "deal" | "task";
 type PageType = "clients" | "deals" | "tasks";
 
 type EntityFormMap = {
-  client: ClientFormData;
+  client: Client;
   deal: DealFormData;
   task: TaskFormData;
 };
 
+interface Deal {
+  id: number;
+  title: string;
+  description: string;
+  client_id: number;
+}
+
+type Task = {
+  id: number;
+  title: string;
+  description: string;
+  deal_id: number;
+};
+
 type EntityTableRowMap = {
-  client: Client[];
-  deal: undefined;
-  task: undefined;
+  client: Client;
+  deal: Deal;
+  task: Task;
+};
+type ColumnDefinition<T> = {
+  key: string;
+  label: string;
+  render?: (value: any, row: T) => React.ReactNode;
 };
 
 interface EntityPageContainerProps<T extends EntityType> {
@@ -48,9 +67,10 @@ interface EntityPageContainerProps<T extends EntityType> {
   pageTitle: string;
   requestLink?: string;
   updateTableData?: () => void;
-  tableData?: EntityTableRowMap[T];
+  tableData?: EntityTableRowMap[T][];
   actionButtonText: string;
   pageType: PageType;
+  columns: ColumnDefinition<EntityTableRowMap[T]>[];
   formComponent: React.FC<{
     register: UseFormRegister<EntityFormMap[T]>;
     errors: FieldErrors<EntityFormMap[T]>;
@@ -65,6 +85,7 @@ export const EntityPageContainer = <T extends EntityType>({
   requestLink = undefined,
   tableData,
   updateTableData,
+  columns,
   pageType,
   actionButtonText,
   pageTitle,
@@ -210,7 +231,12 @@ export const EntityPageContainer = <T extends EntityType>({
         <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
           {/* Здесь будет содержимое таблицы, которое будет отличаться для каждого типа данных */}
           <div className="p-8 text-center text-gray-500 dark:text-gray-400">
-            {tableData && <TableContainer tableData={tableData}/>}
+            {tableData && (
+              <TableContainer<EntityTableRowMap[T]>
+                tableData={tableData}
+                columns={columns}
+              />
+            )}
             Данные для таблицы &ldquo;{pageTitle}&rdquo; будут загружены здесь
           </div>
         </div>

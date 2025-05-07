@@ -26,18 +26,20 @@ export type CreateClientDataType = {
 };
 
 // Тип для клиента
+
 export interface Client {
   id?: number;
   name: string;
-  phone?: string | null;
-  email?: string | null;
-  website?: string | null;
-  clientCompanyName?: string | null;
+  phone?: string;
+  email: string;
+  website?: string;
+  company?: string;
   userCompanyKey: string;
-  comment?: string | null;
-  created_at?: string;
-  update_at?: string;
-  is_active?: boolean;
+  comment?: string ;
+  created_at: string; 
+  update_at: string;  
+  is_active: boolean; 
+  authorId: string;
 }
 
 // Тип для сделки
