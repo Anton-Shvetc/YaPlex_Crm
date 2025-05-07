@@ -12,10 +12,9 @@ type DealFormProps = {
 };
 
 export const DealForm: React.FC<DealFormProps> = ({ register, errors }) => {
-
   const { clients } = useClientStore();
 
-  console.log("888",clients);
+  console.log("888", clients);
 
   return (
     <>
@@ -26,11 +25,31 @@ export const DealForm: React.FC<DealFormProps> = ({ register, errors }) => {
           error={errors.name?.message}
         />
 
-        <InputFieldUi
-          label="Клиент"
-          {...register("clientId", { required: "Обязательное поле" })}
-          error={errors.clientId?.message}
-        />
+        <div className="mb-4">
+          <label
+            htmlFor="clientId"
+            className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+          >
+            Клиент
+          </label>
+          <select
+            id="clientId"
+            {...register("clientId", { required: "Выберите клиента" })}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-[4px] shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
+          >
+            <option value="">Выберите клиента</option>
+            {clients.map((client) => (
+              <option key={client.id} value={client.id}>
+                {client.name}
+              </option>
+            ))}
+          </select>
+          {errors.clientId && (
+            <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              {errors.clientId.message}
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">

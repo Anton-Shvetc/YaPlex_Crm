@@ -22,7 +22,7 @@ export const ButtonUi: React.FC<ButtonUiProps> = ({
 }) => {
   return (
     <button
-      type="button"
+      type={type}
       disabled={disabled}
       className={`
         px-4 py-2 rounded transition-colors

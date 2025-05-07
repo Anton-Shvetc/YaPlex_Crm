@@ -91,6 +91,9 @@ export const EntityPageContainer = <T extends EntityType>({
   const {isLoading} = useLoaderStore()
 
   const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
+
+    console.log('2222', data)
+
     if (!requestLink) return;
     try {
       let response;

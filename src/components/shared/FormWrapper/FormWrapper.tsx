@@ -28,13 +28,16 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
   primaryAction,
   secondaryAction,
 }) => {
+
+
   return (
     <form onSubmit={onSubmit} className={`space-y-4 ${additionalStyle}`}>
       <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
         {title}
       </h2>
       {children}
-
+      {/* 
+ TODO - пока нужно для авторизации, регистрации, потом тоже перевести на primaryAction и тд */}
       {btnTitle && (
         <button
           type="submit"
@@ -67,7 +70,6 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
           {secondaryAction && (
             <ButtonUi
               type="button"
-        
               label={secondaryAction.text}
               onClick={secondaryAction.onClick}
             />
