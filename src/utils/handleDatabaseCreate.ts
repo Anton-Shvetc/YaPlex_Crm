@@ -92,11 +92,13 @@ export async function handleDatabaseCreate<T>(
     });
 
     if (result) {
+
+      console.log("debug result", result)
       return NextResponse.json(
         {
           success: true,
           message: `${params.entityName} успешно создан`,
-          data: { id: result.lastInsertRowid },
+          data: {} ,
         },
         { status: 200 }
       );

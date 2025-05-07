@@ -44,15 +44,14 @@ export class FetchService {
     if (body) this.request.requestInit.body = JSON.stringify(body);
     this.request.url += fetchUrl;
     return this;
-}
+  }
 
   async send<T>(): Promise<IServerAnswerDto<T>> {
     try {
       const response = await fetch(this.request.url, this.request.requestInit);
+      const responseData: IServerAnswer<T> = await response.json();
 
       if (response.ok) {
-        const responseData: IServerAnswer<T> = await response.json();
-
         if (responseData.code === 200)
           enqueueSnackbar(responseData.message, {
             variant: "success",
@@ -63,12 +62,10 @@ export class FetchService {
           message: responseData.message,
           data: responseData.data,
         };
-      }
-
-      if (response.status === 401) {
+      } else {
         return {
           success: false,
-          message: "Ошибка авторизации",
+          message: `${response.status}  - ${responseData.message}`,
         };
       }
     } catch (e) {
@@ -77,10 +74,5 @@ export class FetchService {
         message: `${e}`,
       };
     }
-
-    return {
-      success: false,
-      message: "Произошел сбой на сервере, повторите попытку позже",
-    };
   }
 }

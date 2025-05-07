@@ -13,11 +13,11 @@ export async function GET() {
 
 export async function POST(request: Request) {
   return handleDatabaseCreate<Deal>(request, {
-    entityName: "clients",
+    entityName: "deals",
     requiredFields: ["name", "clientId"],
-    // uniqueFields: ['email'],
+    uniqueFields: ['name'],
     insertQuery: `
-      INSERT INTO clients (
+      INSERT INTO deals (
         name, clientId, amount, status, userCompanyKey, authorId, created_at, update_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `,

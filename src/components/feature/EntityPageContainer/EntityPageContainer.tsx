@@ -88,11 +88,10 @@ export const EntityPageContainer = <T extends EntityType>({
     formState: { errors },
   } = useForm<EntityFormMap[T]>();
 
-  const {isLoading} = useLoaderStore()
+  const { isLoading } = useLoaderStore();
 
   const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
-
-    console.log('2222', data)
+    console.log("2222", data);
 
     if (!requestLink) return;
     try {
@@ -126,7 +125,7 @@ export const EntityPageContainer = <T extends EntityType>({
   };
 
   const openModal = (type: "new" | "edit" | "view") => {
-    if (type === "new") reset({} as EntityFormMap[T]);
+    reset({} as EntityFormMap[T]);
     setModalState({
       isOpen: true,
       type,
@@ -134,6 +133,7 @@ export const EntityPageContainer = <T extends EntityType>({
   };
 
   const closeModal = () => {
+    reset({} as EntityFormMap[T]);
     setModalState((prev) => ({ ...prev, isOpen: false }));
   };
 
