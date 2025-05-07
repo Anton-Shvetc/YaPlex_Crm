@@ -24,6 +24,7 @@ import { TableContainer } from "@/components/shared/TableContainer/TableContaine
 
 import { Client, Deal, Task } from "@/utils/types";
 import { ButtonUi } from "@/components/ui/ButtonUi";
+import { useLoaderStore } from "@/store/useLoaderStore";
 
 type EntityType = "client" | "deal" | "task";
 type PageType = "clients" | "deals" | "tasks";
@@ -64,7 +65,6 @@ interface EntityPageContainerProps<T extends EntityType> {
 export const EntityPageContainer = <T extends EntityType>({
   entityType,
   formComponent: FormComponent,
-  extraContent,
   requestLink = undefined,
   tableData,
   updateTableData,
@@ -87,6 +87,8 @@ export const EntityPageContainer = <T extends EntityType>({
     reset,
     formState: { errors },
   } = useForm<EntityFormMap[T]>();
+
+  const {isLoading} = useLoaderStore()
 
   const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
     if (!requestLink) return;
@@ -155,6 +157,7 @@ export const EntityPageContainer = <T extends EntityType>({
           <ButtonUi
             onClick={() => openModal("new")}
             variant="primary"
+            disabled={isLoading}
             label={actionButtonText}
           />
 

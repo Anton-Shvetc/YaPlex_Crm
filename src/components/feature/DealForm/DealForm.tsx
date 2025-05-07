@@ -4,6 +4,7 @@ import React from "react";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Deal } from "@/utils/types";
+import { useClientStore } from "@/store/clientStore";
 
 type DealFormProps = {
   register: UseFormRegister<Deal>;
@@ -11,6 +12,11 @@ type DealFormProps = {
 };
 
 export const DealForm: React.FC<DealFormProps> = ({ register, errors }) => {
+
+  const { clients } = useClientStore();
+
+  console.log("888",clients);
+
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
