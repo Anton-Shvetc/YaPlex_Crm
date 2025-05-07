@@ -39,6 +39,12 @@ export class FetchService {
     this.request.url += fetchUrl;
     return this;
   }
+  PUT(fetchUrl: string, body?: object) {
+    this.request.requestInit.method = "PUT";
+    if (body) this.request.requestInit.body = JSON.stringify(body);
+    this.request.url += fetchUrl;
+    return this;
+}
 
   async send<T>(): Promise<IServerAnswerDto<T>> {
     try {

@@ -94,11 +94,24 @@ export const EntityPageContainer = <T extends EntityType>({
   const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
     console.log("submit data", data);
 
+    console.log("submit type", modalState);
+
     if (!requestLink) return;
     try {
-      const { success, message } = await new FetchService()
-        .POST(requestLink, data) // Указываем тип ответа
-        .send();
+      let response;
+
+      if (modalState.type === "new") {
+        response = await new FetchService().POST(requestLink, data).send();
+      } else if (modalState.type === "edit") {
+        // Для PUT запроса обычно нужно добавлять ID в URL
+        response = await new FetchService()
+          .PUT(`${requestLink}/${data.id}`, data) // предполагая, что itemId есть в modalState
+          .send();
+      } else {
+        throw new Error("Неизвестный тип операции");
+      }
+
+      const { success, message } = response;
 
       enqueueSnackbar(message, { variant: success ? "success" : "error" });
 
@@ -123,6 +136,12 @@ export const EntityPageContainer = <T extends EntityType>({
 
   const closeModal = () => {
     setModalState((prev) => ({ ...prev, isOpen: false }));
+  };
+
+  const handelChangeFormData = (data: EntityFormMap[T]) => {
+    console.log("table rowData", data);
+    openModal("edit");
+    reset(data);
   };
 
   useEffect(() => {
@@ -202,6 +221,7 @@ export const EntityPageContainer = <T extends EntityType>({
               <TableContainer<EntityTableRowMap[T]>
                 tableData={tableData}
                 columns={columns}
+                handelChangeFormData={handelChangeFormData}
               />
             )}
             Данные для таблицы &ldquo;{pageTitle}&rdquo; будут загружены здесь

@@ -4,6 +4,7 @@ import { CreateClientDataType } from "@/utils/types";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { Client } from "@/utils/types";
 
 
 export async function GET() {
@@ -117,3 +118,5 @@ export async function POST(request: Request) {
     );
   }
 }
+
+
