@@ -35,12 +35,33 @@ export interface Client {
   website?: string;
   company?: string;
   userCompanyKey: string;
-  comment?: string ;
-  created_at: string; 
-  update_at: string;  
-  is_active: boolean; 
+  comment?: string;
+  created_at: string;
+  update_at: string;
+  is_active: boolean;
   authorId: string;
 }
+
+export interface Deals {
+  id?: number;
+  name: string;
+  clientId?: number;
+  description?: string;
+  status?: string;
+  amount?: number;
+  userCompanyKey: string;
+
+  created_at: string;
+  update_at: string;
+
+  authorId: string;
+}
+
+export type ColumnDefinition<T> = {
+  key: string;
+  label: string;
+  render?: (value: string | number, row: T) => React.ReactNode;
+};
 
 // Тип для сделки
 // export interface Deal {

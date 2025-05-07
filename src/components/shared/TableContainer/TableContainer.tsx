@@ -2,7 +2,7 @@
 type ColumnDefinition<T> = {
   key: string; // Ключ из объекта данных
   label: string; // Заголовок колонки
-  render?: (value: any, row: T) => React.ReactNode; // Опциональный кастомный рендерер
+  render?: (value: string | number, row: T) => React.ReactNode; // Опциональный кастомный рендерер
 };
 
 interface TableContainerProps<T> {
