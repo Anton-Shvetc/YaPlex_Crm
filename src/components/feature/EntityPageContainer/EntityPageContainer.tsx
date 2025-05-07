@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import { ButtonUi } from "@/components/ui/ButtonUi";
-
 import { ModalContainer } from "@/components/shared/ModalContainer/ModalContainer";
 import {
   FieldErrors,
@@ -25,6 +23,7 @@ import { enqueueSnackbar } from "notistack";
 import { TableContainer } from "@/components/shared/TableContainer/TableContainer";
 
 import { Client, Deal, Task } from "@/utils/types";
+import { ButtonUi } from "@/components/ui/ButtonUi";
 
 type EntityType = "client" | "deal" | "task";
 type PageType = "clients" | "deals" | "tasks";
@@ -77,11 +76,9 @@ export const EntityPageContainer = <T extends EntityType>({
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     type: "new" | "edit" | "view";
-    data?: Partial<EntityFormMap[T]>;
   }>({
     isOpen: false,
     type: "new",
-    data: undefined,
   });
 
   const {
@@ -92,10 +89,6 @@ export const EntityPageContainer = <T extends EntityType>({
   } = useForm<EntityFormMap[T]>();
 
   const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
-    console.log("submit data", data);
-
-    console.log("submit type", modalState);
-
     if (!requestLink) return;
     try {
       let response;
@@ -128,6 +121,7 @@ export const EntityPageContainer = <T extends EntityType>({
   };
 
   const openModal = (type: "new" | "edit" | "view") => {
+    if (type === "new") reset({} as EntityFormMap[T]);
     setModalState({
       isOpen: true,
       type,
@@ -148,46 +142,6 @@ export const EntityPageContainer = <T extends EntityType>({
     if (updateTableData) updateTableData();
   }, []);
 
-  const getDemoButtonsTitle = (
-    entityType: EntityType
-  ): { edit: string; view: string } => {
-    switch (entityType) {
-      case "client":
-        return {
-          edit: 'Открыть "Карточка клиента"',
-          view: 'Открыть "Просмотр клиента"',
-        };
-      case "deal":
-        return {
-          edit: 'Открыть "Карточка сделки"',
-          view: 'Открыть "Просмотр сделки"',
-        };
-      case "task":
-        return {
-          edit: 'Открыть "Карточка задачи"',
-          view: 'Открыть "Просмотр задачи"',
-        };
-      default:
-        return {
-          edit: "Редактировать",
-          view: "Просмотреть",
-        };
-    }
-  };
-
-  const buttonTitles = getDemoButtonsTitle(entityType);
-
-  const DemoButtons = () => (
-    <div className="flex space-x-4 mb-6">
-      <ButtonUi onClick={() => openModal("edit")} variant="secondary">
-        {buttonTitles.edit}
-      </ButtonUi>
-      <ButtonUi onClick={() => openModal("view")} variant="secondary">
-        {buttonTitles.view}
-      </ButtonUi>
-    </div>
-  );
-
   return (
     <>
       <div className="flex-1 p-4">
@@ -198,12 +152,12 @@ export const EntityPageContainer = <T extends EntityType>({
         </div>
 
         <div className="flex items-center mb-6 gap-4">
-          <button
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          <ButtonUi
             onClick={() => openModal("new")}
-          >
-            {actionButtonText}
-          </button>
+            variant="primary"
+            label={actionButtonText}
+          />
+
           <div className="flex-1 relative">
             <input
               type="text"
@@ -229,12 +183,6 @@ export const EntityPageContainer = <T extends EntityType>({
         </div>
       </div>
 
-      {/* Демонстрационные кнопки для отображения модальных окон */}
-      <div className="p-4">
-        <DemoButtons />
-        {extraContent}
-      </div>
-
       {/* Модальное окно */}
 
       <ModalContainer
@@ -250,11 +198,7 @@ export const EntityPageContainer = <T extends EntityType>({
           }}
           secondaryAction={{
             text: getSecondaryActionText(modalState.type, pageType),
-            onClick: () => {
-              // TODO - прописано хардкодом, заменить
-              console.log("delete", "Запрос на удаление");
-              closeModal();
-            },
+            onClick: () => closeModal(),
             className: getSecondaryActionClass(modalState.type, pageType),
           }}
         >
