@@ -178,7 +178,6 @@ export const EntityPageContainer = <T extends EntityType>({
                 handelChangeFormData={handelChangeFormData}
               />
             )}
-            Данные для таблицы &ldquo;{pageTitle}&rdquo; будут загружены здесь
           </div>
         </div>
       </div>

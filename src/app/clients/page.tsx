@@ -4,13 +4,16 @@ import { ClientForm } from "@/components/feature/ClientForm/ClientForm";
 import { EntityPageContainer } from "@/components/feature/EntityPageContainer/EntityPageContainer";
 import { getParamsData } from "@/services/getParamsData";
 import { useClientStore } from "@/store/clientStore";
+import { useLoaderStore } from "@/store/useLoaderStore";
 import { Client, ColumnDefinition } from "@/utils/types";
 
 export default function ClientsPage() {
   const { clients, setClients } = useClientStore();
 
+  const { startLoading, stopLoading } = useLoaderStore();
+
   const updateTableData = () => {
-    getParamsData<Client>("api/clients", setClients);
+    getParamsData<Client>("api/clients", setClients, { startLoading, stopLoading } );
   };
 
   const clientTableColumns: ColumnDefinition<Client>[] = [

@@ -5,6 +5,7 @@ import { DealForm } from "@/components/feature/DealForm/DealForm";
 import { ColumnDefinition, Deal } from "@/utils/types";
 import { useDealsStore } from "@/store/dealsStore";
 import { getParamsData } from "@/services/getParamsData";
+import { useLoaderStore } from "@/store/useLoaderStore";
 
 export default function DealsPage() {
   const { deals, setDeals } = useDealsStore();
@@ -13,8 +14,10 @@ export default function DealsPage() {
     { key: "company", label: "Компания" },
   ];
 
+  const { startLoading, stopLoading } = useLoaderStore();
+
   const updateTableData = () => {
-    getParamsData<Deal>("api/deals", setDeals);
+    getParamsData<Deal>("api/deals", setDeals, { startLoading, stopLoading });
   };
 
   return (
