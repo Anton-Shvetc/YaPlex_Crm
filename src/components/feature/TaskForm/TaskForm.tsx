@@ -3,19 +3,13 @@
 import React from "react";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Task } from "@/utils/types";
 
-export type TaskFormData = {
-  name: string;
-  deal: string;
-  description: string;
-  dueDate: string;
-  assignee: string;
-  status: string;
-};
+
 
 type TaskFormProps = {
-  register: UseFormRegister<TaskFormData>;
-  errors: FieldErrors<TaskFormData>;
+  register: UseFormRegister<Task>;
+  errors: FieldErrors<Task>;
 };
 
 export const TaskForm: React.FC<TaskFormProps> = ({ register, errors }) => {
@@ -30,8 +24,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ register, errors }) => {
       <div className="grid grid-cols-2 gap-4">
         <InputFieldUi
           label="Сделка"
-          {...register("deal")}
-          error={errors.deal?.message}
+          {...register("dealId")}
+          error={errors.dealId?.message}
         />
 
         <div>
@@ -63,14 +57,14 @@ export const TaskForm: React.FC<TaskFormProps> = ({ register, errors }) => {
         <InputFieldUi
           label="Выполнить до"
           type="date"
-          {...register("dueDate", { required: "Укажите дату выполнения" })}
-          error={errors.dueDate?.message}
+          {...register("deadline", { required: "Укажите дату выполнения" })}
+          error={errors.deadline?.message}
         />
 
         <InputFieldUi
           label="Исполнитель"
-          {...register("assignee")}
-          error={errors.assignee?.message}
+          {...register("executor")}
+          error={errors.executor?.message}
         />
       </div>
 

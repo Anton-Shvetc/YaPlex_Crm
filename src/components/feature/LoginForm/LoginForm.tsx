@@ -3,7 +3,7 @@
 import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 
-import { LoginFormDataType } from "@/utils/types/types";
+import { LoginFormDataType } from "@/utils/types";
 import { useForm } from "react-hook-form";
 
 export const LoginForm = ({

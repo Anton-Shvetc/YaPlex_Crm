@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { RegisterFormDataType } from "@/utils/types/types";
+import { RegisterFormDataType } from "@/utils/types";
 
 export async function POST(request: Request) {
   try {
@@ -65,7 +65,12 @@ export async function POST(request: Request) {
 
     if (result) {
       const token = jwt.sign(
-        { userId: userId, email: data.email },
+        {
+          userId: userId,
+          email: data.email,
+          userCompanyKey: data.userCompanyKey,
+        },
+
         process.env.JWT_SECRET!,
         { expiresIn: "1d" }
       );

@@ -1,14 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ButtonUi } from "@/components/ui/ButtonUi";
-import { ClientFormData } from "@/components/feature/ClientForm/ClientForm";
-import { DealFormData } from "@/components/feature/DealForm/DealForm";
-import { TaskFormData } from "@/components/feature/TaskForm/TaskForm";
-import {
-  ModalContainer,
-} from "@/components/shared/ModalContainer/ModalContainer";
+
+import { ModalContainer } from "@/components/shared/ModalContainer/ModalContainer";
 import {
   FieldErrors,
   SubmitHandler,
@@ -23,21 +19,42 @@ import {
   getSecondaryActionText,
 } from "@/utils/actionButtonsUtils";
 import { getModalTitle } from "@/utils/modalUtils";
+import { FetchService } from "@/services/fetcher";
+
+import { enqueueSnackbar } from "notistack";
+import { TableContainer } from "@/components/shared/TableContainer/TableContainer";
+
+import { Client, Deal, Task } from "@/utils/types";
 
 type EntityType = "client" | "deal" | "task";
 type PageType = "clients" | "deals" | "tasks";
 
 type EntityFormMap = {
-  client: ClientFormData;
-  deal: DealFormData;
-  task: TaskFormData;
+  client: Client;
+  deal: Deal;
+  task: Task;
+};
+
+type EntityTableRowMap = {
+  client: Client;
+  deal: Deal;
+  task: Task;
+};
+type ColumnDefinition<T> = {
+  key: string;
+  label: string;
+  render?: (value: number | string, row: T) => React.ReactNode;
 };
 
 interface EntityPageContainerProps<T extends EntityType> {
   entityType: T;
   pageTitle: string;
+  requestLink?: string;
+  updateTableData?: () => void;
+  tableData?: EntityTableRowMap[T][];
   actionButtonText: string;
   pageType: PageType;
+  columns: ColumnDefinition<EntityTableRowMap[T]>[];
   formComponent: React.FC<{
     register: UseFormRegister<EntityFormMap[T]>;
     errors: FieldErrors<EntityFormMap[T]>;
@@ -49,6 +66,10 @@ export const EntityPageContainer = <T extends EntityType>({
   entityType,
   formComponent: FormComponent,
   extraContent,
+  requestLink = undefined,
+  tableData,
+  updateTableData,
+  columns,
   pageType,
   actionButtonText,
   pageTitle,
@@ -66,12 +87,31 @@ export const EntityPageContainer = <T extends EntityType>({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<EntityFormMap[T]>();
 
-  const onSubmit: SubmitHandler<EntityFormMap[T]> = (data) => {
+  const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
     console.log("submit data", data);
-    // Обработка данных формы
+
+    if (!requestLink) return;
+    try {
+      const { success, message } = await new FetchService()
+        .POST(requestLink, data) // Указываем тип ответа
+        .send();
+
+      enqueueSnackbar(message, { variant: success ? "success" : "error" });
+
+      if (success) {
+        reset();
+        setModalState((prev) => ({ ...prev, isOpen: false }));
+
+        if (updateTableData) updateTableData();
+      }
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar("Ошибка при создании ", { variant: "error" });
+    }
   };
 
   const openModal = (type: "new" | "edit" | "view") => {
@@ -84,6 +124,10 @@ export const EntityPageContainer = <T extends EntityType>({
   const closeModal = () => {
     setModalState((prev) => ({ ...prev, isOpen: false }));
   };
+
+  useEffect(() => {
+    if (updateTableData) updateTableData();
+  }, []);
 
   const getDemoButtonsTitle = (
     entityType: EntityType
@@ -154,6 +198,12 @@ export const EntityPageContainer = <T extends EntityType>({
         <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
           {/* Здесь будет содержимое таблицы, которое будет отличаться для каждого типа данных */}
           <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+            {tableData && columns && (
+              <TableContainer<EntityTableRowMap[T]>
+                tableData={tableData}
+                columns={columns}
+              />
+            )}
             Данные для таблицы &ldquo;{pageTitle}&rdquo; будут загружены здесь
           </div>
         </div>

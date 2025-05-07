@@ -15,7 +15,7 @@ import { UserLoginI } from "@/utils/interfaces/UserI";
 import { LoginForm } from "@/components/feature/LoginForm/LoginForm";
 import { MainPageInfo } from "@/components/feature/MainPageInfo/MainPageInfo";
 import { RegisterForm } from "@/components/feature/RegisterForm/RegisterForm";
-import { RegisterFormDataType } from "@/utils/types/types";
+import { RegisterFormDataType } from "@/utils/types";
 import { enqueueSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 
