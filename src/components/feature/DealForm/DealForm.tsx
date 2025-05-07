@@ -3,11 +3,11 @@
 import React from "react";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { Deals } from "@/utils/types";
+import { Deal } from "@/utils/types";
 
 type DealFormProps = {
-  register: UseFormRegister<Deals>;
-  errors: FieldErrors<Deals>;
+  register: UseFormRegister<Deal>;
+  errors: FieldErrors<Deal>;
 };
 
 export const DealForm: React.FC<DealFormProps> = ({ register, errors }) => {

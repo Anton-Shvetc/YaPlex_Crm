@@ -1,14 +1,14 @@
 import { create } from "zustand";
-import { Deals } from "@/utils/types";
+import { Deal } from "@/utils/types";
 
 interface DealsStore {
-  deals: Deals[];
-  currentDeal: Deals | null;
-  setDeals: (deals: Deals[]) => void;
-  addDeal: (deals: Deals) => void;
-  updateDeal: (id: number, deal: Partial<Deals>) => void;
+  deals: Deal[];
+  currentDeal: Deal | null;
+  setDeals: (deals: Deal[]) => void;
+  addDeal: (deals: Deal) => void;
+  updateDeal: (id: number, deal: Partial<Deal>) => void;
   deleteDeal: (id: number) => void;
-  setCurrentDeal: (deal: Deals | null) => void;
+  setCurrentDeal: (deal: Deal | null) => void;
 }
 
 export const useDealsStore = create<DealsStore>((set) => ({

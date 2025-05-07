@@ -2,19 +2,19 @@
 
 import { EntityPageContainer } from "@/components/feature/EntityPageContainer/EntityPageContainer";
 import { DealForm } from "@/components/feature/DealForm/DealForm";
-import { ColumnDefinition, Deals } from "@/utils/types";
+import { ColumnDefinition, Deal } from "@/utils/types";
 import { useDealsStore } from "@/store/dealsStore";
 import { getParamsData } from "@/services/getParamsData";
 
 export default function DealsPage() {
   const { deals, setDeals } = useDealsStore();
-  const dealsTableColumns: ColumnDefinition<Deals>[] = [
+  const dealsTableColumns: ColumnDefinition<Deal>[] = [
     { key: "name", label: "Название" },
     { key: "company", label: "Компания" },
   ];
 
   const updateTableData = () => {
-    getParamsData<Deals>("api/clients", setDeals);
+    getParamsData<Deal>("api/deals", setDeals);
   };
 
   return (

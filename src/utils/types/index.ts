@@ -42,7 +42,7 @@ export interface Client {
   authorId: string;
 }
 
-export interface Deals {
+export interface Deal {
   id?: number;
   name: string;
   clientId?: number;
@@ -54,6 +54,24 @@ export interface Deals {
   created_at: string;
   update_at: string;
 
+  authorId: string;
+}
+
+export interface Task {
+  id?: number;
+  name: string;
+
+  description?: string;
+  deadline?: string;
+  dealId?: number;
+  executor?: string;
+  status?: string;
+  amount?: number;
+
+  created_at: string | Date;
+  update_at: string | Date;
+  finish_at?: string | Date;
+  userCompanyKey: string;
   authorId: string;
 }
 

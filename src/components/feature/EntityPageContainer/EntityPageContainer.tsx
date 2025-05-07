@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 import { ButtonUi } from "@/components/ui/ButtonUi";
 
-import { TaskFormData } from "@/components/feature/TaskForm/TaskForm";
 import { ModalContainer } from "@/components/shared/ModalContainer/ModalContainer";
 import {
   FieldErrors,
@@ -25,27 +24,20 @@ import { FetchService } from "@/services/fetcher";
 import { enqueueSnackbar } from "notistack";
 import { TableContainer } from "@/components/shared/TableContainer/TableContainer";
 
-import { Client, Deals } from "@/utils/types";
+import { Client, Deal, Task } from "@/utils/types";
 
 type EntityType = "client" | "deal" | "task";
 type PageType = "clients" | "deals" | "tasks";
 
 type EntityFormMap = {
   client: Client;
-  deal: Deals;
-  task: TaskFormData;
-};
-
-type Task = {
-  id: number;
-  title: string;
-  description: string;
-  deal_id: number;
+  deal: Deal;
+  task: Task;
 };
 
 type EntityTableRowMap = {
   client: Client;
-  deal: Deals;
+  deal: Deal;
   task: Task;
 };
 type ColumnDefinition<T> = {
