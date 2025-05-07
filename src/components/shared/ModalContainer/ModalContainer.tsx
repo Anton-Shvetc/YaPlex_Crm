@@ -2,9 +2,7 @@
 
 import React from "react";
 import { ModalUi } from "@/components/ui/ModalUi";
-
-import { DealFormData } from "@/components/feature/DealForm/DealForm";
-import { TaskFormData } from "@/components/feature/TaskForm/TaskForm";
+import { Client, Deal, Task } from "@/utils/types";
 
 export type ModalsContainerProps = {
   modalTitle: string;
@@ -15,18 +13,9 @@ export type ModalsContainerProps = {
 };
 
 export type EntityTypeMap = {
-  client: ClientFormData;
-  deal: DealFormData;
-  task: TaskFormData;
-};
-
-export type ClientFormData = {
-  name: string;
-  phone: string;
-  company: string;
-  website: string;
-  email: string;
-  comment: string;
+  client: Client;
+  deal: Deal;
+  task: Task;
 };
 
 export const ModalContainer = ({

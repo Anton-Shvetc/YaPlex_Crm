@@ -43,7 +43,7 @@ type EntityTableRowMap = {
 type ColumnDefinition<T> = {
   key: string;
   label: string;
-  render?: (value: any, row: T) => React.ReactNode;
+  render?: (value: number | string, row: T) => React.ReactNode;
 };
 
 interface EntityPageContainerProps<T extends EntityType> {
@@ -90,23 +90,6 @@ export const EntityPageContainer = <T extends EntityType>({
     reset,
     formState: { errors },
   } = useForm<EntityFormMap[T]>();
-
-  // const getTableData = async (): Promise<void> => {
-  //   if (!requestLink) return;
-  //   try {
-  //     const { success, data } = await new FetchService()
-  //       .GET(requestLink) // Указываем тип ответа
-  //       .send();
-
-  //     if (success && Array.isArray(data)) {
-  //       console.log("table data", data);
-  //       // setTableData(data);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     enqueueSnackbar("Ошибка при получении данных", { variant: "error" });
-  //   }
-  // };
 
   const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
     console.log("submit data", data);
@@ -215,7 +198,7 @@ export const EntityPageContainer = <T extends EntityType>({
         <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
           {/* Здесь будет содержимое таблицы, которое будет отличаться для каждого типа данных */}
           <div className="p-8 text-center text-gray-500 dark:text-gray-400">
-            {tableData && (
+            {tableData && columns && (
               <TableContainer<EntityTableRowMap[T]>
                 tableData={tableData}
                 columns={columns}
