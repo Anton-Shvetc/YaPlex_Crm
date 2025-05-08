@@ -93,7 +93,7 @@ export const EntityPageContainer = <T extends EntityType>({
     formState: { errors },
   } = useForm<EntityFormMap[T]>();
 
-  const { isLoading } = useLoaderStore();
+  const { isLoading, startLoading, stopLoading } = useLoaderStore();
 
   const [searchParams, setSearchParams] = useState<string>("");
 
@@ -104,6 +104,7 @@ export const EntityPageContainer = <T extends EntityType>({
   const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
     if (!requestLink) return;
     try {
+      startLoading();
       let response;
 
       if (modalState.type === "new") {
@@ -127,6 +128,7 @@ export const EntityPageContainer = <T extends EntityType>({
 
         if (updateTableData) updateTableData();
       }
+      stopLoading();
     } catch (error) {
       console.error(error);
       enqueueSnackbar("Ошибка при создании ", { variant: "error" });
@@ -221,6 +223,7 @@ export const EntityPageContainer = <T extends EntityType>({
                 tableData={filteredTableData}
                 columns={columns}
                 handelChangeFormData={handelChangeFormData}
+                isLoading={isLoading && !modalState?.isOpen}
               />
             )}
           </div>

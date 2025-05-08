@@ -6,6 +6,7 @@ interface TableContainerProps<T> {
   tableData: T[]; // Массив данных
   columns: ColumnDefinition<T>[]; // Конфигурация колонок
   handelChangeFormData?: (data: T) => void; // Функция для обновления данных
+  isLoading?: boolean; // Флаг загрузки данных
 }
 
 // Компонент с типизацией
@@ -13,9 +14,8 @@ export const TableContainer = <T extends object>({
   tableData,
   columns,
   handelChangeFormData,
+  isLoading = false,
 }: TableContainerProps<T>) => {
-  const { isLoading } = useLoaderStore();
-
   if (isLoading) {
     return (
       <div className="grid place-items-center h-48">
