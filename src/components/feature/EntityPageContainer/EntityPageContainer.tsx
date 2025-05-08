@@ -240,7 +240,11 @@ export const EntityPageContainer = <T extends EntityType>({
             text: getPrimaryActionText(modalState.type),
             type: "submit",
           }}
-          secondaryAction={getSecondaryActionText(modalState.type, pageType)}
+          secondaryAction={getSecondaryActionText(
+            modalState.type,
+            pageType,
+            closeModal
+          )}
         >
           <div className="grid grid-cols-1 gap-4">
             <FormComponent register={register} errors={errors} />

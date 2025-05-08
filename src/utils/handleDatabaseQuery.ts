@@ -9,7 +9,10 @@ interface DecodedToken extends JwtPayload {
   userCompanyKey: string;
 }
 
-export async function handleDatabaseQuery(tableName: string) {
+export async function handleDatabaseQuery(
+  tableName: string,
+  limit?: number
+) {
   try {
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value;
@@ -30,9 +33,18 @@ export async function handleDatabaseQuery(tableName: string) {
     // 4. Извлекаем нужные данные
     const { userCompanyKey } = decoded;
 
+    let sql = `SELECT * FROM ${tableName} WHERE userCompanyKey = ?`;
+
+    const args = [userCompanyKey];
+
+    if (limit) {
+      sql += ` LIMIT ?`;
+      args.push(limit.toString());
+    }
+
     const { rows } = await turso.execute({
-      sql: `SELECT * FROM ${tableName} WHERE userCompanyKey = ?`,
-      args: [userCompanyKey],
+      sql: sql,
+      args: args
     });
 
     return NextResponse.json(

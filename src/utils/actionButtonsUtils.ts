@@ -12,7 +12,8 @@ export const getPrimaryActionText = (modalType: string): string => {
 
 export const getSecondaryActionText = (
   modalType: string,
-  entityType: string
+  entityType: string,
+  onClick?: () => void
 ): ButtonStatePropsI => {
   console.log("modalType:", modalType, "entityType:", entityType);
 
@@ -44,7 +45,7 @@ export const getSecondaryActionText = (
         };
     }
   }
-  return { text: "Отменить" };
+  return { text: "Отменить", onClick:  onClick };
 };
 
 export const getSecondaryActionClass = (
