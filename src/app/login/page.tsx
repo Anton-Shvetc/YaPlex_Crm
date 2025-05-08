@@ -36,8 +36,6 @@ export default function LoginPage() {
   const [activeForm, setActiveForm] = useState<"login" | "register">("login");
 
   const handleRegister = async (requestData: RegisterFormDataType) => {
-    console.log("Register data:", requestData);
-
     const { success, message, data } = await registerUser(requestData);
 
     enqueueSnackbar(message, { variant: success ? "success" : "error" });
@@ -48,7 +46,6 @@ export default function LoginPage() {
   };
 
   const handleLogin = async (requestData: UserLoginI) => {
-    console.log("Login data:", requestData);
     const { success, message, data } = await login(requestData);
 
     enqueueSnackbar(message, { variant: success ? "success" : "error" });

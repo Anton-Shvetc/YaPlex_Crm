@@ -3,12 +3,13 @@ import { TokenDataI } from "@/utils/types";
 
 import { Client } from "@/utils/types";
 import { handleDatabaseCreate } from "@/utils/handleDatabaseCreate";
+import { NextRequest } from "next/server";
 
 export async function GET() {
   return handleDatabaseQuery("clients");
 }
 
-export async function POST(request: Request) {
+export async function POST(  request: NextRequest) {
   return handleDatabaseCreate<Client>(request, {
     entityName: "clients",
     requiredFields: ["name", "email"],

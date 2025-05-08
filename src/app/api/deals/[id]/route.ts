@@ -1,13 +1,15 @@
 import { handleDatabaseUpdate } from "@/utils/handleDatabaseUpdate";
 import { Deal } from "@/utils/types";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
+  const { id } = await params;
   return handleDatabaseUpdate<Deal>(
     request,
-    { params },
+ id,
     {
       entityName: "deals",
       requiredFields: ["name"],

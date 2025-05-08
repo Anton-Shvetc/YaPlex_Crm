@@ -11,7 +11,6 @@ interface ButtonUiProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const ButtonUi: React.FC<ButtonUiProps> = ({
-  children,
   variant = "default",
   fullWidth = false,
   type = "button",

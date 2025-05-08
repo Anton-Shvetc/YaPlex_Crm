@@ -35,6 +35,7 @@ export default function TasksPage() {
       entityType="task"
       pageType="tasks"
       actionButtonText="Новая задача"
+      requestLink="api/tasks"
       pageTitle="Задачи"
       tableData={tasks}
       columns={tasksTableColumns}

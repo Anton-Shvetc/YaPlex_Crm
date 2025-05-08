@@ -16,7 +16,6 @@ export const getParamsData = async <T>(
       .send();
 
     if (success && Array.isArray(data)) {
-      console.log("table data", data);
       setState(data);
     }
   } catch (error) {

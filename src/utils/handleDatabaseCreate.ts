@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import turso from "@/lib/db";
@@ -11,11 +11,11 @@ type EntityOperationParams<T> = {
   prepareData: (
     data: T,
     tokenData: { userId: string; userCompanyKey: string }
-  ) => any[];
+  ) => Array<string | number | undefined>;
 };
 
 export async function handleDatabaseCreate<T>(
-  request: Request,
+  request: NextRequest,
   params: EntityOperationParams<T>
 ) {
   try {
@@ -92,13 +92,11 @@ export async function handleDatabaseCreate<T>(
     });
 
     if (result) {
-
-      console.log("debug result", result)
       return NextResponse.json(
         {
           success: true,
           message: `${params.entityName} успешно создан`,
-          data: {} ,
+          data: {},
         },
         { status: 200 }
       );

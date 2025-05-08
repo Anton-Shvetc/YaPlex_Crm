@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import turso from "@/lib/db";
@@ -12,19 +12,19 @@ type EntityUpdateParams<T> = {
     data: T,
     tokenData: { userId: string; userCompanyKey: string },
     id: string
-  ) => any[];
+  ) => Array<string | number | undefined | null>;
   idField?: string;
 };
 
 export async function handleDatabaseUpdate<T>(
-  request: Request,
-  { params }: { params: { id: string } },
+  request: NextRequest,
+ id : string,
   updateParams: EntityUpdateParams<T>
 ) {
   try {
     // 1. Получаем данные из запроса и ID из параметров URL
     const data = await request.json();
-    const { id } = params;
+    // const { id } = params;
 
     // 2. Проверка авторизации
     const cookieStore = cookies();
@@ -45,7 +45,9 @@ export async function handleDatabaseUpdate<T>(
       return NextResponse.json(
         {
           success: false,
-          message: `Обязательные поля не заполнены: ${missingFields.join(", ")}`,
+          message: `Обязательные поля не заполнены: ${missingFields.join(
+            ", "
+          )}`,
         },
         { status: 400 }
       );
@@ -88,7 +90,9 @@ export async function handleDatabaseUpdate<T>(
       for (const field of updateParams.uniqueFields) {
         if (data[field] !== existingEntity.rows[0][field as string]) {
           const checkResult = await turso.execute({
-            sql: `SELECT ${idField} FROM ${updateParams.entityName} WHERE ${String(
+            sql: `SELECT ${idField} FROM ${
+              updateParams.entityName
+            } WHERE ${String(
               field
             )} = ? AND userCompanyKey = ? AND ${idField} != ?`,
             args: [data[field], userCompanyKey, id],
@@ -110,23 +114,36 @@ export async function handleDatabaseUpdate<T>(
     }
 
     // 7. Подготовка данных и выполнение запроса на обновление
-    const args = updateParams.prepareData(data, {
-      userId: decoded.userId,
-      userCompanyKey,
-    }, id);
+    const args = updateParams.prepareData(
+      data,
+      {
+        userId: decoded.userId,
+        userCompanyKey,
+      },
+      id
+    );
 
     const result = await turso.execute({
       sql: updateParams.updateQuery,
       args: args.map((value) => value ?? null),
     });
 
+    if (result) {
+      return NextResponse.json(
+        {
+          success: true,
+          message: `${updateParams.entityName} успешно обновлен`,
+          data: { id },
+        },
+        { status: 200 }
+      );
+    }
     return NextResponse.json(
       {
-        success: true,
-        message: `${updateParams.entityName} успешно обновлен`,
-        data: { id },
+        success: false,
+        message: `Неизвестная ошибка`,
       },
-      { status: 200 }
+      { status: 400 }
     );
   } catch (error) {
     console.error(`Error updating ${updateParams.entityName}:`, error);

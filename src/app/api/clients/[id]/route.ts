@@ -1,11 +1,14 @@
 import { Client } from "@/utils/types";
 import { handleDatabaseUpdate } from "@/utils/handleDatabaseUpdate";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
-  return handleDatabaseUpdate<Client>(request, { params }, {
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
+  const { id } = await params;
+
+  return handleDatabaseUpdate<Client>(request, id, {
     entityName: "clients",
     requiredFields: ["name"],
     uniqueFields: ["email"],
