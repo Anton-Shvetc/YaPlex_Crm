@@ -18,25 +18,13 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Пути, не требующие авторизации
   const publicPaths = ["/login", "/register"];
 
-  // Для отладки - можно посмотреть в терминале сервера
-  console.log("Middleware triggered:", {
-    path: pathname,
-    hasToken: !!token,
-  });
-
-
-  // Если нет токена и путь не публичный
   if (!token && !publicPaths.includes(pathname)) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-
-  // Если есть токен и пользователь на странице входа - редирект на главную
   if (token && pathname === "/login") {
-    console.log("Redirecting to dashboard - already logged in");
     return NextResponse.redirect(new URL("/", request.url));
   }
 

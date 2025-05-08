@@ -22,7 +22,12 @@ export const ClientForm: React.FC<ClientFormProps> = ({ register, errors }) => {
       <div className="grid grid-cols-2 gap-4">
         <InputFieldUi
           label="Телефон"
-          {...register("phone", { required: "Обязательное поле" })}
+          {...register("phone", {
+            pattern: {
+              value: /^[0-9]*$/, // только цифры
+              message: "Введите только цифры",
+            },
+          })}
           error={errors?.phone?.message}
         />
 

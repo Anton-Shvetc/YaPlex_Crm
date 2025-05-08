@@ -2,9 +2,11 @@
 
 import { EntityPageContainer } from "@/components/feature/EntityPageContainer/EntityPageContainer";
 import { DealForm } from "@/components/feature/DealForm/DealForm";
-import { ColumnDefinition, Deal } from "@/utils/types";
+import { Client, ColumnDefinition, Deal } from "@/utils/types";
 import { useDealsStore } from "@/store/dealsStore";
 import { getParamsData } from "@/services/getParamsData";
+import { useLoaderStore } from "@/store/useLoaderStore";
+import { useClientStore } from "@/store/clientStore";
 
 export default function DealsPage() {
   const { deals, setDeals } = useDealsStore();
@@ -13,8 +15,18 @@ export default function DealsPage() {
     { key: "company", label: "Компания" },
   ];
 
+  const { setClients } = useClientStore();
+
+  const { startLoading, stopLoading } = useLoaderStore();
+
   const updateTableData = () => {
-    getParamsData<Deal>("api/deals", setDeals);
+
+    // TODO - для данного случая вынести обработку лодера вне функции, добавить Promise.all
+    getParamsData<Client>("api/clients", setClients, {
+      startLoading,
+      stopLoading,
+    });
+    getParamsData<Deal>("api/deals", setDeals, { startLoading, stopLoading });
   };
 
   return (
@@ -22,6 +34,7 @@ export default function DealsPage() {
       entityType="deal"
       pageType="deals"
       actionButtonText="Новая сделка"
+      requestLink="api/deals"
       pageTitle="Сделки"
       tableData={deals}
       columns={dealsTableColumns}

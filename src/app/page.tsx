@@ -8,6 +8,7 @@ import { useClientStore } from "@/store/clientStore";
 
 import { useEffect } from "react";
 import { getParamsData } from "@/services/getParamsData";
+import { useLoaderStore } from "@/store/useLoaderStore";
 
 // import { useEffect } from "react";
 
@@ -21,8 +22,13 @@ export default function Home() {
     router.push("/login");
   };
 
+  const { startLoading, stopLoading } = useLoaderStore();
+
   useEffect(() => {
-    getParamsData<Client>("api/clients", setClients);
+    getParamsData<Client>("api/clients", setClients, {
+      startLoading,
+      stopLoading,
+    });
   }, []);
 
   return (

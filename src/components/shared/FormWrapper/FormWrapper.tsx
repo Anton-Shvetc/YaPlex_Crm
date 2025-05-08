@@ -1,3 +1,5 @@
+import { ButtonUi } from "@/components/ui/ButtonUi";
+
 interface FormWrapperI {
   children: React.ReactNode;
   title?: string;
@@ -26,13 +28,16 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
   primaryAction,
   secondaryAction,
 }) => {
+
+
   return (
     <form onSubmit={onSubmit} className={`space-y-4 ${additionalStyle}`}>
       <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
         {title}
       </h2>
       {children}
-
+      {/* 
+ TODO - пока нужно для авторизации, регистрации, потом тоже перевести на primaryAction и тд */}
       {btnTitle && (
         <button
           type="submit"
@@ -45,26 +50,29 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
       {(primaryAction || secondaryAction) && (
         <div className="mt-6 flex gap-3">
           {primaryAction && (
-            <button
-              type={primaryAction.type}
-              className={`w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors ${
-                primaryAction.className || ""
-              }`}
+            <ButtonUi
+              type="submit"
+              variant="primary"
+              label={primaryAction.text}
               onClick={primaryAction.onClick}
-            >
-              {primaryAction.text}
-            </button>
+            />
+
+            // <button
+            //   type={primaryAction.type}
+            //   className={`w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors ${
+            //     primaryAction.className || ""
+            //   }`}
+            //   onClick={primaryAction.onClick}
+            // >
+
+            // </button>
           )}
           {secondaryAction && (
-            <button
+            <ButtonUi
               type="button"
-              className={`w-full px-4 py-2 bg-gray-200 dark:bg-transparent text-gray-800 dark:text-white border border-gray-400 dark:border-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors ${
-                secondaryAction.className || ""
-              }`}
+              label={secondaryAction.text}
               onClick={secondaryAction.onClick}
-            >
-              {secondaryAction.text}
-            </button>
+            />
           )}
         </div>
       )}

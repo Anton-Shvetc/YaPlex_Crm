@@ -4,8 +4,7 @@ import React from "react";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Task } from "@/utils/types";
-
-
+import { useDealsStore } from "@/store/dealsStore";
 
 type TaskFormProps = {
   register: UseFormRegister<Task>;
@@ -13,6 +12,8 @@ type TaskFormProps = {
 };
 
 export const TaskForm: React.FC<TaskFormProps> = ({ register, errors }) => {
+  const { deals } = useDealsStore();
+
   return (
     <>
       <InputFieldUi
@@ -22,11 +23,37 @@ export const TaskForm: React.FC<TaskFormProps> = ({ register, errors }) => {
       />
 
       <div className="grid grid-cols-2 gap-4">
-        <InputFieldUi
+        {/* <InputFieldUi
           label="Сделка"
           {...register("dealId")}
           error={errors.dealId?.message}
-        />
+        /> */}
+
+        <div className="mb-4">
+          <label
+            htmlFor="dealId"
+            className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+          >
+            Сделка
+          </label>
+          <select
+            id="dealId"
+            {...register("dealId", { required: "Выберите сделку" })}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-[4px] shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
+          >
+            <option value="">Выберите клиента</option>
+            {deals.map((deal) => (
+              <option key={deal.id} value={deal.id}>
+                {deal.name}
+              </option>
+            ))}
+          </select>
+          {errors.dealId && (
+            <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              {errors.dealId.message}
+            </p>
+          )}
+        </div>
 
         <div>
           <label

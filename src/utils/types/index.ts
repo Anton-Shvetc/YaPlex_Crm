@@ -36,9 +36,9 @@ export interface Client {
   company?: string;
   userCompanyKey: string;
   comment?: string;
-  created_at: string;
-  update_at: string;
-  is_active: boolean;
+  created_at?: string;
+  update_at?: string;
+  is_active?: boolean;
   authorId: string;
 }
 
@@ -51,8 +51,8 @@ export interface Deal {
   amount?: number;
   userCompanyKey: string;
 
-  created_at: string;
-  update_at: string;
+  created_at?: string;
+  update_at?: string;
 
   authorId: string;
 }
@@ -68,9 +68,9 @@ export interface Task {
   status?: string;
   amount?: number;
 
-  created_at: string | Date;
-  update_at: string | Date;
-  finish_at?: string | Date;
+  created_at?: string;
+  update_at?: string;
+  finish_at?: string;
   userCompanyKey: string;
   authorId: string;
 }
@@ -80,6 +80,11 @@ export type ColumnDefinition<T> = {
   label: string;
   render?: (value: string | number, row: T) => React.ReactNode;
 };
+
+export interface TokenDataI {
+  userId: string;
+  userCompanyKey: string;
+}
 
 // Тип для сделки
 // export interface Deal {
