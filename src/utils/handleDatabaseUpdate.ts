@@ -18,7 +18,7 @@ type EntityUpdateParams<T> = {
 
 export async function handleDatabaseUpdate<T>(
   request: NextRequest,
- id : string,
+  id: string,
   updateParams: EntityUpdateParams<T>
 ) {
   try {
@@ -85,28 +85,49 @@ export async function handleDatabaseUpdate<T>(
       );
     }
 
-    // 6. Проверка уникальности полей (если они изменились)
-    if (updateParams.uniqueFields) {
+    // 6. Проверка уникальности полей
+    if (updateParams.uniqueFields && updateParams.uniqueFields.length > 0) {
       for (const field of updateParams.uniqueFields) {
-        if (data[field] !== existingEntity.rows[0][field as string]) {
-          const checkResult = await turso.execute({
-            sql: `SELECT ${idField} FROM ${
-              updateParams.entityName
-            } WHERE ${String(
-              field
-            )} = ? AND userCompanyKey = ? AND ${idField} != ?`,
-            args: [data[field], userCompanyKey, id],
-          });
+        const fieldName = String(field);
+        const newValue = data[fieldName];
+  
 
-          if (checkResult.rows.length > 0) {
+        // Проверяем только если значение изменилось и новое значение не пустое
+        if (newValue !== undefined && newValue !== null && newValue !== "") {
+          try {
+            const checkQuery = `
+              SELECT ${idField} 
+              FROM ${updateParams.entityName} 
+              WHERE ${fieldName} = ? 
+                AND userCompanyKey = ? 
+                AND ${idField} != ?
+                AND ${fieldName} IS NOT NULL
+            `;
+
+            const checkResult = await turso.execute({
+              sql: checkQuery,
+              args: [newValue, userCompanyKey, id],
+            });
+
+            if (checkResult.rows.length > 0) {
+              return NextResponse.json(
+                {
+                  success: false,
+                  message: `Запись с ${fieldName} "${newValue}" уже существует`,
+                  field: fieldName,
+                  value: newValue,
+                },
+                { status: 409 }
+              );
+            }
+          } catch (error) {
+            console.error(`Error checking unique field ${fieldName}:`, error);
             return NextResponse.json(
               {
                 success: false,
-                message: `Запись с таким ${String(
-                  field
-                )} уже существует в вашей компании`,
+                message: `Ошибка при проверке уникальности поля ${fieldName}`,
               },
-              { status: 409 }
+              { status: 500 }
             );
           }
         }

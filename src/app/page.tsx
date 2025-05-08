@@ -1,8 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-// import { enqueueSnackbar } from "notistack";
-
 import {
   Client,
   ColumnDefinition,
@@ -15,16 +12,13 @@ import { useClientStore } from "@/store/clientStore";
 import { useEffect, useMemo, useState } from "react";
 import { getParamsData } from "@/services/getParamsData";
 import { useLoaderStore } from "@/store/useLoaderStore";
-import { ModalContainer } from "@/components/shared/ModalContainer/ModalContainer";
-import { ButtonUi } from "@/components/ui/ButtonUi";
+
 import { useTasksStore } from "@/store/tasksStore";
 import { useDealsStore } from "@/store/dealsStore";
 
 import { MainPageInfoContainer } from "@/components/shared/MainPageInfoContainer/MainPageInfocontainer";
 import { TableContainer } from "@/components/shared/TableContainer/TableContainer";
 import { MainPageClientCard } from "@/components/ui/MainPageCards/MainPageClientCard";
-
-// import { useEffect } from "react";
 
 export default function Home() {
   const { clients, setClients } = useClientStore();
@@ -35,34 +29,6 @@ export default function Home() {
     useState<StatisticsI[]>();
 
   const { isLoading, startLoading, stopLoading } = useLoaderStore();
-
-  // Заменить на расчитываемые данные
-  const mockData = [
-    {
-      name: "Клиенты",
-      on_today: 123,
-      today: 123,
-      week: 123,
-      month: 123,
-      quarter: 123,
-    },
-    {
-      name: "Активные сделки",
-      on_today: 123,
-      today: 123,
-      week: 123,
-      month: 123,
-      quarter: 123,
-    },
-    {
-      name: "Завершенные сделки",
-      on_today: 123,
-      today: 2,
-      week: 3,
-      month: 5,
-      quarter: 123,
-    },
-  ];
 
   const statisticsColumns: ColumnDefinition<StatisticsI>[] = useMemo(
     () => [

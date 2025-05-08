@@ -10,8 +10,8 @@ export async function PUT(
 
   return handleDatabaseUpdate<Client>(request, id, {
     entityName: "clients",
-    requiredFields: ["name"],
-    uniqueFields: ["email"],
+    requiredFields: ["name", 'email', 'company'],
+    uniqueFields: ["email", "company"],
     updateQuery: `
       UPDATE clients SET
         name = ?,

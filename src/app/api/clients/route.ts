@@ -14,8 +14,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   return handleDatabaseCreate<Client>(request, {
     entityName: "clients",
-    requiredFields: ["name", "email"],
-    uniqueFields: ["email"],
+    requiredFields: ["name", 'email', 'company'],
+    uniqueFields: ["email", "company"],
     insertQuery: `
         INSERT INTO clients (
           name,  email, phone, website, comment,  company, userCompanyKey,  authorId, created_at, update_at
