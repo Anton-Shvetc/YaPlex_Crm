@@ -81,6 +81,11 @@ export type ColumnDefinition<T> = {
   render?: (value: string | number, row: T) => React.ReactNode;
 };
 
+export interface TokenDataI {
+  userId: string;
+  userCompanyKey: string;
+}
+
 // Тип для сделки
 // export interface Deal {
 //   id?: number;
