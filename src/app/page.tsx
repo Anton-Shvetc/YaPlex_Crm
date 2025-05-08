@@ -159,8 +159,10 @@ export default function Home() {
             <MainPageInfoContainer title="Топ 10 активных клиентов">
               {clients?.map((client) => (
                 <MainPageClientCard
+                  key={client?.id}
                   name={client.name}
                   company={client.company}
+                  dealsCount={client?.dealsCount}
                 />
               ))}
             </MainPageInfoContainer>

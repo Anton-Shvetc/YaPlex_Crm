@@ -9,10 +9,7 @@ interface DecodedToken extends JwtPayload {
   userCompanyKey: string;
 }
 
-export async function handleDatabaseQuery(
-  tableName: string,
-  limit?: number
-) {
+export async function handleDatabaseQuery(tableName: string, limit?: number) {
   try {
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value;
@@ -27,15 +24,22 @@ export async function handleDatabaseQuery(
         { status: 401 }
       );
 
-    // 3. Верифицируем токен
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
-
-    // 4. Извлекаем нужные данные
     const { userCompanyKey } = decoded;
 
     let sql = `SELECT * FROM ${tableName} WHERE userCompanyKey = ?`;
+    let args = [userCompanyKey];
 
-    const args = [userCompanyKey];
+    if (tableName === "clients") {
+      sql = `
+        SELECT 
+          c.*,
+          (SELECT COUNT(*) FROM deals d WHERE d.clientId = c.id AND d.userCompanyKey = ?) as dealsCount
+        FROM clients c
+        WHERE c.userCompanyKey = ?
+      `;
+      args = [userCompanyKey, userCompanyKey]; // Два параметра для подзапроса
+    }
 
     if (limit) {
       sql += ` LIMIT ?`;
@@ -44,18 +48,28 @@ export async function handleDatabaseQuery(
 
     const { rows } = await turso.execute({
       sql: sql,
-      args: args
+      args: args,
     });
 
     return NextResponse.json(
-      { success: false, message: `Успешно`, data: rows },
+      {
+        success: true, // Исправлено с false на true
+        message: "Успешно",
+        data:
+          tableName === "clients"
+            ? rows.map((row) => ({
+                ...row,
+                dealsCount: row.dealsCount || 0,
+              }))
+            : rows,
+      },
       { status: 200 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Method not allowed" },
-      { status: 405 }
+      { success: false, message: "Internal server error" }, // Улучшенное сообщение об ошибке
+      { status: 500 }
     );
   }
 }

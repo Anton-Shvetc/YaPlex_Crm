@@ -40,6 +40,7 @@ export interface Client {
   update_at?: string;
   is_active?: boolean;
   authorId: string;
+  dealsCount?: number
 }
 
 export interface Deal {
