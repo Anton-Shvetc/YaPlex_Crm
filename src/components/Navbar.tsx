@@ -66,7 +66,7 @@ export default function Navbar() {
 
         {/* Навигационные ссылки */}
         <NavLink
-          href="/dashboard"
+          href="/"
           icon={<HomeIcon />}
           collapsed={isCollapsed}
           mounted={mounted}
