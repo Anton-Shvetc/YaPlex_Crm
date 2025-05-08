@@ -92,6 +92,16 @@ export interface ButtonStatePropsI {
   variant?: string;
 }
 
+
+export interface StatisticsI {
+  name: string;
+  on_today: number;
+  today: number;
+  week: number;
+  month: number;
+  quarter: number;
+}
+
 // Тип для сделки
 // export interface Deal {
 //   id?: number;
