@@ -13,19 +13,27 @@ export default function ClientsPage() {
   const { startLoading, stopLoading } = useLoaderStore();
 
   const updateTableData = () => {
-    getParamsData<Client>("api/clients", setClients, { startLoading, stopLoading } );
+    getParamsData<Client>("api/clients", setClients, {
+      startLoading,
+      stopLoading,
+    });
   };
 
   const clientTableColumns: ColumnDefinition<Client>[] = [
     { key: "name", label: "Имя" },
-    { key: "company", label: "Компания" },
+
+    { key: "phone", label: "Телефон" },
+    { key: "email", label: "Email" },
+    { key: "company", label: "Название компании" },
     { key: "website", label: "Сайт" },
-    {
-      key: "is_active",
-      label: "Статус",
-      render: (value: number | string) =>
-        value === 1 ? "Активен" : "Неактивен",
-    },
+    { key: "comment", label: "Комментарий" },
+    { key: "created_at", label: "Добавлен" },
+    // {
+    //   key: "is_active",
+    //   label: "Статус",
+    //   render: (value: number | string) =>
+    //     value === 1 ? "Активен" : "Неактивен",
+    // },
   ];
 
   return (

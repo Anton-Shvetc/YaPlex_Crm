@@ -210,9 +210,9 @@ export const EntityPageContainer = <T extends EntityType>({
           </div>
         </div>
 
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+        <div className=" rounded-lg overflow-hidden">
           {/* Здесь будет содержимое таблицы, которое будет отличаться для каждого типа данных */}
-          <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+          <div className="text-center text-gray-500 dark:text-gray-400">
             {filteredTableData && columns && (
               <TableContainer<EntityTableRowMap[T]>
                 tableData={filteredTableData}
