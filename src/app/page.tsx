@@ -120,9 +120,9 @@ export default function Home() {
       try {
         await Promise.all([
           getParamsData<any>("api/statistics", setStatisticsTableData),
-          getParamsData<Client>("api/clients", setClients),
-          getParamsData<Deal>("api/deals", setDeals),
-          getParamsData<Task>("api/tasks", setTasks),
+          getParamsData<Client>("api/clients?limits=10", setClients),
+          getParamsData<Deal>("api/deals?limits=10", setDeals),
+          getParamsData<Task>("api/tasks?limits=10", setTasks),
         ]);
       } catch (error) {
         console.error("Error fetching data:", error);
