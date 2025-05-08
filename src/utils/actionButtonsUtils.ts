@@ -1,3 +1,5 @@
+import { ButtonStatePropsI } from "./types";
+
 export const getPrimaryActionText = (modalType: string): string => {
   if (modalType === "new") {
     return "Создать";
@@ -11,18 +13,38 @@ export const getPrimaryActionText = (modalType: string): string => {
 export const getSecondaryActionText = (
   modalType: string,
   entityType: string
-): string => {
+): ButtonStatePropsI => {
+  console.log("modalType:", modalType, "entityType:", entityType);
+
   if (modalType === "edit") {
     switch (entityType) {
-      case "client":
-        return "Удалить клиента";
-      case "deal":
-        return "Завершить сделку";
-      case "task":
-        return "Завершить задачу";
+      case "clients":
+        return {
+          text: "Удалить клиента",
+          variant: "delete",
+          onClick: () => {
+            /*TODO - Добавить функцию перевода в is_active - false*/
+          },
+        };
+      case "deals":
+        return {
+          text: "Завершить сделку",
+          variant: "finished", // Было опечатка "fineshed"
+          onClick: () => {
+            /*TODO - Добавить функцию перевода в status - завершено*/
+          },
+        };
+      case "tasks":
+        return {
+          text: "Завершить задачу", // Не хватало запятой после этого свойства
+          variant: "finished", // Было опечатка "fineshed"
+          onClick: () => {
+            /*TODO - Добавить функцию перевода в status - завершено*/
+          },
+        };
     }
   }
-  return "Отменить";
+  return { text: "Отменить" };
 };
 
 export const getSecondaryActionClass = (

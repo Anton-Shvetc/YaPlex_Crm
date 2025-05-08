@@ -86,6 +86,12 @@ export interface TokenDataI {
   userCompanyKey: string;
 }
 
+export interface ButtonStatePropsI {
+  text: string;
+  onClick?: () => void;
+  variant?: string;
+}
+
 // Тип для сделки
 // export interface Deal {
 //   id?: number;

@@ -62,6 +62,7 @@ interface EntityPageContainerProps<T extends EntityType> {
     errors: FieldErrors<EntityFormMap[T]>;
   }>;
   extraContent?: React.ReactNode;
+  secondaryButton?: any;
 }
 
 export const EntityPageContainer = <T extends EntityType>({
@@ -78,9 +79,11 @@ export const EntityPageContainer = <T extends EntityType>({
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     type: "new" | "edit" | "view";
+    variant?: string;
   }>({
     isOpen: false,
     type: "new",
+    variant: "default",
   });
 
   const {
@@ -237,11 +240,7 @@ export const EntityPageContainer = <T extends EntityType>({
             text: getPrimaryActionText(modalState.type),
             type: "submit",
           }}
-          secondaryAction={{
-            text: getSecondaryActionText(modalState.type, pageType),
-            onClick: () => closeModal(),
-            className: getSecondaryActionClass(modalState.type, pageType),
-          }}
+          secondaryAction={getSecondaryActionText(modalState.type, pageType)}
         >
           <div className="grid grid-cols-1 gap-4">
             <FormComponent register={register} errors={errors} />

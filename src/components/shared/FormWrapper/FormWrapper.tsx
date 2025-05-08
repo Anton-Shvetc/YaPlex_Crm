@@ -14,8 +14,8 @@ interface FormWrapperI {
   };
   secondaryAction?: {
     text: string;
-    onClick: () => void;
-    className?: string;
+    variant?: string;
+    onClick?: () => void;
   };
 }
 
@@ -28,8 +28,7 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
   primaryAction,
   secondaryAction,
 }) => {
-
-
+  console.log("secondaryAction.text", secondaryAction);
   return (
     <form onSubmit={onSubmit} className={`space-y-4 ${additionalStyle}`}>
       <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
@@ -56,16 +55,6 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
               label={primaryAction.text}
               onClick={primaryAction.onClick}
             />
-
-            // <button
-            //   type={primaryAction.type}
-            //   className={`w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors ${
-            //     primaryAction.className || ""
-            //   }`}
-            //   onClick={primaryAction.onClick}
-            // >
-
-            // </button>
           )}
           {secondaryAction && (
             <ButtonUi
