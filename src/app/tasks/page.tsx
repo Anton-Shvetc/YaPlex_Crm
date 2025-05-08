@@ -9,18 +9,34 @@ import { useTasksStore } from "@/store/tasksStore";
 import { useLoaderStore } from "@/store/useLoaderStore";
 
 import { ColumnDefinition, Deal, Task } from "@/utils/types";
+import { useMemo } from "react";
 
 export default function TasksPage() {
   const { tasks, setTasks } = useTasksStore();
 
-  const { setDeals } = useDealsStore();
+  const { deals, setDeals } = useDealsStore();
 
   const { startLoading, stopLoading } = useLoaderStore();
 
-  const tasksTableColumns: ColumnDefinition<Task>[] = [
-    { key: "name", label: "Название" },
-    { key: "description", label: "Описание" },
-  ];
+  const tasksTableColumns: ColumnDefinition<Task>[] = useMemo(
+    () => [
+      { key: "name", label: "Название" },
+      {
+        key: "dealId",
+        label: "Сделка",
+        render: (value: number | string) =>
+          deals.find((el) => el?.id === Number(value))?.name,
+      },
+      { key: "description", label: "Описание" },
+
+      { key: "deadline", label: "Выполнить до" },
+      { key: "executor", label: "Исполнитель" },
+      { key: "status", label: "Статус" },
+
+      { key: "created_at", label: "Дата создания" },
+    ],
+    [deals]
+  );
 
   const updateTableData = () => {
     getParamsData<Deal>("api/deals", setDeals, {
@@ -33,7 +49,6 @@ export default function TasksPage() {
   return (
     <EntityPageContainer
       entityType="task"
-      pageType="tasks"
       actionButtonText="Новая задача"
       requestLink="api/tasks"
       pageTitle="Задачи"

@@ -51,20 +51,25 @@ export async function POST(request: Request) {
 
     // 4. Генерируем JWT токен
     const token = jwt.sign(
-      { userId: user.userId, email: user.email, userCompanyKey: user.userCompanyKey },
+      {
+        userId: user.userId,
+        email: user.email,
+        userCompanyKey: user.userCompanyKey,
+      },
       process.env.JWT_SECRET!,
       { expiresIn: "1d" }
     );
 
     // 5. Возвращаем успешный ответ с токеном
 
-    (await
-      // localStorage.setItem("token", data.token);
-      cookies()).set('token',token, {
+    (
+      await // localStorage.setItem("token", data.token);
+      cookies()
+    ).set("token", token, {
       httpOnly: true, // Защита от XSS
-      secure: process.env.NODE_ENV === 'production', // HTTPS-only в продакшене
+      secure: process.env.NODE_ENV === "production", // HTTPS-only в продакшене
       maxAge: 60 * 60 * 24 * 7, // 7 дней
-      path: '/', // Доступно на всех путях
+      path: "/", // Доступно на всех путях
     });
 
     return NextResponse.json({
@@ -73,7 +78,7 @@ export async function POST(request: Request) {
       data: {
         token,
         user: {
-          userId: user.userId ,
+          userId: user.userId,
           email: user.email,
           // другие безопасные данные пользователя
         },
@@ -93,17 +98,17 @@ export async function POST(request: Request) {
 }
 
 // Для GET запросов (если нужно)
-export async function GET() {
-  try {
-    const { rows } = await turso.execute("SELECT * FROM users");
+// export async function GET() {
+//   try {
+//     const { rows } = await turso.execute("SELECT * FROM users");
 
-    return NextResponse.json(
-      { success: false, message: `Успешно`, data: rows },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error(error);
-  }
+//     return NextResponse.json(
+//       { success: false, message: `Успешно`, data: rows },
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     console.error(error);
+//   }
 
-  return NextResponse.json({ message: "Method not allowed" }, { status: 405 });
-}
+//   return NextResponse.json({ message: "Method not allowed" }, { status: 405 });
+// }

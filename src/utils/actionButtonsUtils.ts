@@ -1,29 +1,53 @@
-export const getPrimaryActionText = (modalType: string): string => {
-  if (modalType === "new") {
-    return "Создать";
-  } else if (modalType === "edit") {
-    return "Редактировать";
-  } else {
-    return "ОК";
-  }
-};
+// import { ButtonStatePropsI } from "./types";
 
-export const getSecondaryActionText = (
-  modalType: string,
-  entityType: string
-): string => {
-  if (modalType === "edit") {
-    switch (entityType) {
-      case "client":
-        return "Удалить клиента";
-      case "deal":
-        return "Завершить сделку";
-      case "task":
-        return "Завершить задачу";
-    }
-  }
-  return "Отменить";
-};
+// export const getPrimaryActionText = (modalType: string): string => {
+//   if (modalType === "new") {
+//     return "Создать";
+//   } else if (modalType === "edit") {
+//     return "Редактировать";
+//   } else {
+//     return "ОК";
+//   }
+// };
+
+// export const getSecondaryActionText = (
+//   modalType: string,
+//   entityType: string,
+//   onClick?: () => void
+// ): ButtonStatePropsI => {
+//   console.log("modalType:", modalType, "entityType:", entityType);
+
+//   if (modalType === "edit") {
+//     switch (entityType) {
+//       case "clients":
+//         return {
+//           text: "Удалить клиента",
+//           variant: "delete",
+//           onClick: () => {
+
+//             /*TODO - Добавить функцию перевода в is_active - false*/
+//           },
+//         };
+//       case "deals":
+//         return {
+//           text: "Завершить сделку",
+//           variant: "finished", // Было опечатка "fineshed"
+//           onClick: () => {
+//             /*TODO - Добавить функцию перевода в status - завершено*/
+//           },
+//         };
+//       case "tasks":
+//         return {
+//           text: "Завершить задачу", // Не хватало запятой после этого свойства
+//           variant: "finished", // Было опечатка "fineshed"
+//           onClick: () => {
+//             /*TODO - Добавить функцию перевода в status - завершено*/
+//           },
+//         };
+//     }
+//   }
+//   return { text: "Отменить", onClick:  onClick };
+// };
 
 export const getSecondaryActionClass = (
   modalType: string,

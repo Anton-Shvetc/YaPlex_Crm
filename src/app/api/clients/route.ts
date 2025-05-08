@@ -5,19 +5,21 @@ import { Client } from "@/utils/types";
 import { handleDatabaseCreate } from "@/utils/handleDatabaseCreate";
 import { NextRequest } from "next/server";
 
-export async function GET() {
-  return handleDatabaseQuery("clients");
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const limit = searchParams.get("limits");
+  return handleDatabaseQuery("clients", limit ? parseInt(limit) : undefined);
 }
 
-export async function POST(  request: NextRequest) {
+export async function POST(request: NextRequest) {
   return handleDatabaseCreate<Client>(request, {
     entityName: "clients",
-    requiredFields: ["name", "email"],
-    uniqueFields: ["email"],
+    requiredFields: ["name", 'email', 'company'],
+    uniqueFields: ["email", "company"],
     insertQuery: `
         INSERT INTO clients (
           name,  email, phone, website, comment,  company, userCompanyKey,  authorId, created_at, update_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
     prepareData: (data: Client, { userId, userCompanyKey }: TokenDataI) => [
       data.name,

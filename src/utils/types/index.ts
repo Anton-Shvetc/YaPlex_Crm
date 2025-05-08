@@ -40,6 +40,7 @@ export interface Client {
   update_at?: string;
   is_active?: boolean;
   authorId: string;
+  dealsCount?: number
 }
 
 export interface Deal {
@@ -84,6 +85,27 @@ export type ColumnDefinition<T> = {
 export interface TokenDataI {
   userId: string;
   userCompanyKey: string;
+}
+
+export interface ButtonStatePropsI {
+  text: string;
+  onClick?: () => void;
+  variant?: string;
+}
+
+
+export interface StatisticsI {
+  name: string;
+  on_today: number;
+  today: number;
+  week: number;
+  month: number;
+  quarter: number;
+}
+
+export interface UserLoginI {
+  email: string;
+  password: string;
 }
 
 // Тип для сделки

@@ -16,9 +16,14 @@ type EntityUpdateParams<T> = {
   idField?: string;
 };
 
+interface DecodedToken {
+  userId: string;
+  userCompanyKey: string;
+}
+
 export async function handleDatabaseUpdate<T>(
   request: NextRequest,
- id : string,
+  id: string,
   updateParams: EntityUpdateParams<T>
 ) {
   try {
@@ -85,28 +90,49 @@ export async function handleDatabaseUpdate<T>(
       );
     }
 
-    // 6. Проверка уникальности полей (если они изменились)
-    if (updateParams.uniqueFields) {
+    // 6. Проверка уникальности полей
+    if (updateParams.uniqueFields && updateParams.uniqueFields.length > 0) {
       for (const field of updateParams.uniqueFields) {
-        if (data[field] !== existingEntity.rows[0][field as string]) {
-          const checkResult = await turso.execute({
-            sql: `SELECT ${idField} FROM ${
-              updateParams.entityName
-            } WHERE ${String(
-              field
-            )} = ? AND userCompanyKey = ? AND ${idField} != ?`,
-            args: [data[field], userCompanyKey, id],
-          });
+        const fieldName = String(field);
+        const newValue = data[fieldName];
 
-          if (checkResult.rows.length > 0) {
+        // Проверяем только если значение изменилось и новое значение не пустое
+        if (newValue !== undefined && newValue !== null && newValue !== "") {
+          try {
+            const checkQuery = `
+              SELECT ${idField} 
+              FROM ${updateParams.entityName} 
+              WHERE ${fieldName} = ? 
+                AND userCompanyKey = ? 
+                AND ${idField} != ?
+                AND ${fieldName} IS NOT NULL
+                AND is_active != ?
+            `;
+
+            const checkResult = await turso.execute({
+              sql: checkQuery,
+              args: [newValue, userCompanyKey, id, 0],
+            });
+
+            if (checkResult.rows.length > 0) {
+              return NextResponse.json(
+                {
+                  success: false,
+                  message: `Запись с ${fieldName} "${newValue}" уже существует`,
+                  field: fieldName,
+                  value: newValue,
+                },
+                { status: 409 }
+              );
+            }
+          } catch (error) {
+            console.error(`Error checking unique field ${fieldName}:`, error);
             return NextResponse.json(
               {
                 success: false,
-                message: `Запись с таким ${String(
-                  field
-                )} уже существует в вашей компании`,
+                message: `Ошибка при проверке уникальности поля ${fieldName}`,
               },
-              { status: 409 }
+              { status: 500 }
             );
           }
         }
@@ -147,6 +173,79 @@ export async function handleDatabaseUpdate<T>(
     );
   } catch (error) {
     console.error(`Error updating ${updateParams.entityName}:`, error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Internal server error",
+        error: error instanceof Error ? error.message : String(error),
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE({ params }: { params: { id: string } }) {
+  try {
+    const { id } = params;
+
+    // 1. Проверка авторизации
+    const cookieStore = cookies();
+    const token = (await cookieStore).get("token")?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        { success: false, message: "Токен недействительный или устарел" },
+        { status: 401 }
+      );
+    }
+
+    // 2. Верификация токена
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
+    const { userCompanyKey } = decoded;
+
+    // 3. Проверка существования клиента
+    const existingClient = await turso.execute({
+      sql: "SELECT id FROM clients WHERE id = ? AND userCompanyKey = ?",
+      args: [id, userCompanyKey],
+    });
+
+    if (existingClient.rows.length === 0) {
+      return NextResponse.json(
+        { success: false, message: "Клиент не найден или нет прав доступа" },
+        { status: 404 }
+      );
+    }
+
+    // 4. "Мягкое" удаление (установка is_active = false)
+    const result = await turso.execute({
+      sql: `
+        UPDATE clients 
+        SET 
+          is_active = FALSE,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE id = ? AND userCompanyKey = ?
+      `,
+      args: [id, userCompanyKey],
+    });
+
+    // 5. Проверка результата
+    if (result.rowsAffected > 0) {
+      return NextResponse.json(
+        {
+          success: true,
+          message: "Клиент успешно деактивирован",
+          data: { id },
+        },
+        { status: 200 }
+      );
+    }
+
+    return NextResponse.json(
+      { success: false, message: "Не удалось деактивировать клиента" },
+      { status: 400 }
+    );
+  } catch (error) {
+    console.error("Error deactivating client:", error);
     return NextResponse.json(
       {
         success: false,

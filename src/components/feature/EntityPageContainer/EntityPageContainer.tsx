@@ -11,11 +11,11 @@ import {
 } from "react-hook-form";
 
 import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
-import {
-  getPrimaryActionText,
-  getSecondaryActionClass,
-  getSecondaryActionText,
-} from "@/utils/actionButtonsUtils";
+// import {
+//   getPrimaryActionText,
+//   // getSecondaryActionClass,
+//   // getSecondaryActionText,
+// } from "@/utils/actionButtonsUtils";
 import { getModalTitle } from "@/utils/modalUtils";
 import { FetchService } from "@/services/fetcher";
 
@@ -25,9 +25,11 @@ import { TableContainer } from "@/components/shared/TableContainer/TableContaine
 import { Client, Deal, Task } from "@/utils/types";
 import { ButtonUi } from "@/components/ui/ButtonUi";
 import { useLoaderStore } from "@/store/useLoaderStore";
+import { InputFieldUi } from "@/components/ui/InputFieldUi";
+import { SearchIcon } from "@/styles/icons";
 
 type EntityType = "client" | "deal" | "task";
-type PageType = "clients" | "deals" | "tasks";
+// type PageType = "clients" | "deals" | "tasks";
 
 type EntityFormMap = {
   client: Client;
@@ -53,7 +55,26 @@ interface EntityPageContainerProps<T extends EntityType> {
   updateTableData?: () => void;
   tableData?: EntityTableRowMap[T][];
   actionButtonText: string;
-  pageType: PageType;
+  primaryActionButton?: (modalType: string) =>
+    | {
+        text: string;
+        type: "button" | "submit";
+        onClick?: () => void;
+        className?: string;
+      }
+    | undefined;
+  secondaryActionButton?: (
+    modalType: string,
+    id: number | undefined
+  ) =>
+    | {
+        text: string;
+        type: "button" | "submit";
+        onClick?: () => void;
+        className?: string;
+      }
+    | undefined;
+
   columns: ColumnDefinition<EntityTableRowMap[T]>[];
   formComponent: React.FC<{
     register: UseFormRegister<EntityFormMap[T]>;
@@ -68,17 +89,21 @@ export const EntityPageContainer = <T extends EntityType>({
   requestLink = undefined,
   tableData,
   updateTableData,
+  primaryActionButton,
+  secondaryActionButton,
   columns,
-  pageType,
   actionButtonText,
   pageTitle,
 }: EntityPageContainerProps<T>) => {
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
-    type: "new" | "edit" | "view";
+    type: "new" | "edit";
+
+    modalId: number | undefined;
   }>({
     isOpen: false,
     type: "new",
+    modalId: undefined,
   });
 
   const {
@@ -88,11 +113,18 @@ export const EntityPageContainer = <T extends EntityType>({
     formState: { errors },
   } = useForm<EntityFormMap[T]>();
 
-  const { isLoading } = useLoaderStore();
+  const { isLoading, startLoading, stopLoading } = useLoaderStore();
+
+  const [searchParams, setSearchParams] = useState<string>("");
+
+  const [filteredTableData, setFilteredTableData] = useState<
+    EntityTableRowMap[T][]
+  >(tableData || []);
 
   const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
     if (!requestLink) return;
     try {
+      startLoading();
       let response;
 
       if (modalState.type === "new") {
@@ -116,17 +148,19 @@ export const EntityPageContainer = <T extends EntityType>({
 
         if (updateTableData) updateTableData();
       }
+      stopLoading();
     } catch (error) {
       console.error(error);
       enqueueSnackbar("Ошибка при создании ", { variant: "error" });
     }
   };
 
-  const openModal = (type: "new" | "edit" | "view") => {
+  const openModal = (type: "new" | "edit", id?: number) => {
     reset({} as EntityFormMap[T]);
     setModalState({
       isOpen: true,
       type,
+      modalId: id,
     });
   };
 
@@ -136,13 +170,38 @@ export const EntityPageContainer = <T extends EntityType>({
   };
 
   const handelChangeFormData = (data: EntityFormMap[T]) => {
-    openModal("edit");
+    openModal("edit", data.id);
     reset(data);
   };
 
   useEffect(() => {
     if (updateTableData) updateTableData();
   }, []);
+
+  useEffect(() => {
+    setFilteredTableData(tableData || []);
+  }, [tableData]);
+
+  const searchData = (data: EntityTableRowMap[T][], searchText: string) => {
+    if (!searchText.trim()) return data || [];
+    if (!data) return [];
+
+    const searchLower = searchText.toLowerCase();
+
+    return data.filter((item) =>
+      columns.some((column) => {
+        const fieldValue = item[column.key as keyof EntityTableRowMap[T]];
+        return fieldValue?.toString().toLowerCase().includes(searchLower);
+      })
+    );
+  };
+
+  useEffect(() => {
+    console.log("searchParams", searchParams);
+
+    const result = searchData(tableData || [], searchParams);
+    setFilteredTableData(result);
+  }, [searchParams]);
 
   return (
     <>
@@ -162,23 +221,30 @@ export const EntityPageContainer = <T extends EntityType>({
           />
 
           <div className="flex-1 relative">
-            <input
+            <InputFieldUi
+              type="text"
+              placeholder="Поиск"
+              onSearchParams={(value: string) => setSearchParams(value)}
+              icon={<SearchIcon />}
+            />
+            {/* <input
               type="text"
               placeholder="Искать"
               className="w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded px-4 py-2 pl-10"
-            />
-            <span className="absolute left-3 top-2.5 text-gray-400">🔍</span>
+            /> */}
+            {/* <span className="absolute left-3 top-2.5 text-gray-400">🔍</span> */}
           </div>
         </div>
 
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+        <div className=" rounded-lg overflow-hidden">
           {/* Здесь будет содержимое таблицы, которое будет отличаться для каждого типа данных */}
-          <div className="p-8 text-center text-gray-500 dark:text-gray-400">
-            {tableData && columns && (
+          <div className="text-center text-gray-500 dark:text-gray-400">
+            {filteredTableData && columns && (
               <TableContainer<EntityTableRowMap[T]>
-                tableData={tableData}
+                tableData={filteredTableData}
                 columns={columns}
                 handelChangeFormData={handelChangeFormData}
+                isLoading={isLoading && !modalState?.isOpen}
               />
             )}
           </div>
@@ -194,15 +260,22 @@ export const EntityPageContainer = <T extends EntityType>({
       >
         <FormWrapper
           onSubmit={handleSubmit(onSubmit)}
-          primaryAction={{
-            text: getPrimaryActionText(modalState.type),
-            type: "submit",
-          }}
-          secondaryAction={{
-            text: getSecondaryActionText(modalState.type, pageType),
-            onClick: () => closeModal(),
-            className: getSecondaryActionClass(modalState.type, pageType),
-          }}
+          primaryAction={
+            primaryActionButton
+              ? primaryActionButton(modalState.type)
+              : {
+                  text: "Создать",
+                  type: "submit",
+                }
+          }
+          secondaryAction={
+            secondaryActionButton && modalState.type !== "new"
+              ? secondaryActionButton(modalState.type, modalState.modalId)
+              : {
+                  text: "Отмена",
+                  onClick: closeModal,
+                }
+          }
         >
           <div className="grid grid-cols-1 gap-4">
             <FormComponent register={register} errors={errors} />

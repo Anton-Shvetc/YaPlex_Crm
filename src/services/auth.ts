@@ -1,4 +1,5 @@
-import { UserLoginI } from "@/utils/interfaces/UserI";
+
+import { UserLoginI } from "@/utils/types";
 import { FetchService } from "./fetcher";
 
 interface AuthResponse {

@@ -42,7 +42,7 @@ export const ClientForm: React.FC<ClientFormProps> = ({ register, errors }) => {
         <InputFieldUi
           label="Сайт"
           // type="url"
-          {...register("website", { required: "Обязательное поле" })}
+          {...register("website")}
           error={errors?.website?.message}
         />
 

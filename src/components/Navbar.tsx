@@ -8,7 +8,7 @@ import {
   ClientsIcon,
   DealsIcon,
   TasksIcon,
-} from "@/styles/icons/icons";
+} from "@/styles/icons";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -66,7 +66,7 @@ export default function Navbar() {
 
         {/* Навигационные ссылки */}
         <NavLink
-          href="/dashboard"
+          href="/"
           icon={<HomeIcon />}
           collapsed={isCollapsed}
           mounted={mounted}

@@ -51,8 +51,10 @@ export async function handleDatabaseCreate<T>(
     if (params.uniqueFields) {
       for (const field of params.uniqueFields) {
         const checkResult = await turso.execute({
-          sql: `SELECT * FROM ${params.entityName} WHERE ${String(field)} = ?`,
-          args: [data[field]],
+          sql: `SELECT * FROM ${params.entityName} WHERE ${String(
+            field
+          )} = ?           AND is_active != ?`,
+          args: [data[field], 0],
         });
 
         if (checkResult.rows.length > 0) {

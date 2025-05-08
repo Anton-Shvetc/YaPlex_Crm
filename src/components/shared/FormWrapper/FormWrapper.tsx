@@ -1,4 +1,5 @@
 import { ButtonUi } from "@/components/ui/ButtonUi";
+import { useLoaderStore } from "@/store/useLoaderStore";
 
 interface FormWrapperI {
   children: React.ReactNode;
@@ -11,11 +12,11 @@ interface FormWrapperI {
     onClick?: () => void;
     className?: string;
     type: "button" | "submit";
-  };
+  } ;
   secondaryAction?: {
     text: string;
-    onClick: () => void;
-    className?: string;
+    variant?: string;
+    onClick?: () => void;
   };
 }
 
@@ -28,7 +29,7 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
   primaryAction,
   secondaryAction,
 }) => {
-
+  const { isLoading } = useLoaderStore();
 
   return (
     <form onSubmit={onSubmit} className={`space-y-4 ${additionalStyle}`}>
@@ -53,23 +54,15 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
             <ButtonUi
               type="submit"
               variant="primary"
+              disabled={isLoading}
               label={primaryAction.text}
               onClick={primaryAction.onClick}
             />
-
-            // <button
-            //   type={primaryAction.type}
-            //   className={`w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors ${
-            //     primaryAction.className || ""
-            //   }`}
-            //   onClick={primaryAction.onClick}
-            // >
-
-            // </button>
           )}
           {secondaryAction && (
             <ButtonUi
               type="button"
+              disabled={isLoading}
               label={secondaryAction.text}
               onClick={secondaryAction.onClick}
             />
