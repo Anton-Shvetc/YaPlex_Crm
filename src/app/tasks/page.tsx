@@ -3,13 +3,17 @@
 import { EntityPageContainer } from "@/components/feature/EntityPageContainer/EntityPageContainer";
 import { TaskForm } from "@/components/feature/TaskForm/TaskForm";
 import { getParamsData } from "@/services/getParamsData";
+
+import { useDealsStore } from "@/store/dealsStore";
 import { useTasksStore } from "@/store/tasksStore";
 import { useLoaderStore } from "@/store/useLoaderStore";
 
-import { ColumnDefinition, Task } from "@/utils/types";
+import { ColumnDefinition, Deal, Task } from "@/utils/types";
 
 export default function TasksPage() {
   const { tasks, setTasks } = useTasksStore();
+
+  const { setDeals } = useDealsStore();
 
   const { startLoading, stopLoading } = useLoaderStore();
 
@@ -19,6 +23,10 @@ export default function TasksPage() {
   ];
 
   const updateTableData = () => {
+    getParamsData<Deal>("api/deals", setDeals, {
+      startLoading,
+      stopLoading,
+    });
     getParamsData<Task>("api/tasks", setTasks, { startLoading, stopLoading });
   };
 

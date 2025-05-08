@@ -14,8 +14,6 @@ type DealFormProps = {
 export const DealForm: React.FC<DealFormProps> = ({ register, errors }) => {
   const { clients } = useClientStore();
 
-  console.log("888", clients);
-
   return (
     <>
       <div className="grid grid-cols-2 gap-4">

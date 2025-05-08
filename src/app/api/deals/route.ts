@@ -1,11 +1,6 @@
 import { handleDatabaseCreate } from "@/utils/handleDatabaseCreate";
 import { handleDatabaseQuery } from "@/utils/handleDatabaseQuery";
-import { Deal } from "@/utils/types";
-
-interface TokenDataI {
-  userId: string;
-  userCompanyKey: string;
-}
+import { Deal, TokenDataI } from "@/utils/types";
 
 export async function GET() {
   return handleDatabaseQuery("deals");
