@@ -15,10 +15,10 @@ export async function POST(request: Request) {
   return handleDatabaseCreate<Deal>(request, {
     entityName: "deals",
     requiredFields: ["name", "clientId"],
-    uniqueFields: ['name'],
+    uniqueFields: ["name"],
     insertQuery: `
       INSERT INTO deals (
-        name, clientId, amount, status, userCompanyKey, authorId, created_at, update_at
+        name, clientId, amount, status, description, userCompanyKey, authorId, created_at, update_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `,
     prepareData: (data: Deal, { userId, userCompanyKey }: TokenDataI) => [
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
       data.clientId,
       data.amount,
       data.status,
-
+      data.description,
       userCompanyKey,
       userId,
       new Date().toISOString(),
