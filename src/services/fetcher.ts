@@ -45,6 +45,12 @@ export class FetchService {
     this.request.url += fetchUrl;
     return this;
   }
+  DELETE(fetchUrl: string, body?: object) {
+    this.request.requestInit.method = "DELETE";
+    if (body) this.request.requestInit.body = JSON.stringify(body);
+    this.request.url += fetchUrl;
+    return this;
+  }
 
   async send<T>(): Promise<IServerAnswerDto<T>> {
     try {

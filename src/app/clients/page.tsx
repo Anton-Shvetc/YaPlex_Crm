@@ -2,6 +2,7 @@
 
 import { ClientForm } from "@/components/feature/ClientForm/ClientForm";
 import { EntityPageContainer } from "@/components/feature/EntityPageContainer/EntityPageContainer";
+import { deleteItem } from "@/services/deleteItem";
 import { getParamsData } from "@/services/getParamsData";
 import { useClientStore } from "@/store/clientStore";
 import { useLoaderStore } from "@/store/useLoaderStore";
@@ -36,6 +37,22 @@ export default function ClientsPage() {
     // },
   ];
 
+  const handleDelete = (id: number) => {
+    if (id) {
+      deleteItem({
+        id: id,
+        endpoint: "api/clients",
+        onSuccess: () => updateTableData(),
+        loaderMethods: {
+          startLoading: startLoading,
+          stopLoading: stopLoading,
+        },
+        successMessage: "Клиент успешно деактивирован",
+        errorMessage: "Не удалось деактивировать клиента",
+      });
+    }
+  };
+
   return (
     <EntityPageContainer
       entityType="client"
@@ -46,6 +63,18 @@ export default function ClientsPage() {
       tableData={clients}
       columns={clientTableColumns}
       updateTableData={updateTableData}
+      primaryActionButton={(modalType: string) => ({
+        text: modalType === "new" ? "Создать" : "Редактировать",
+        type: "submit",
+        varinat: "submit",
+        onClick: () => {},
+      })}
+      secondaryActionButton={(modalType: string, id: number) => ({
+        text: modalType === "new" ? "Отмена" : "Удалить клиента",
+        variant: "delete",
+        type: "button",
+        onClick: () => handleDelete(id),
+      })}
       formComponent={ClientForm}
     />
   );

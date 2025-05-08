@@ -11,11 +11,11 @@ import {
 } from "react-hook-form";
 
 import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
-import {
-  getPrimaryActionText,
-  getSecondaryActionClass,
-  getSecondaryActionText,
-} from "@/utils/actionButtonsUtils";
+// import {
+//   getPrimaryActionText,
+//   // getSecondaryActionClass,
+//   // getSecondaryActionText,
+// } from "@/utils/actionButtonsUtils";
 import { getModalTitle } from "@/utils/modalUtils";
 import { FetchService } from "@/services/fetcher";
 
@@ -55,6 +55,8 @@ interface EntityPageContainerProps<T extends EntityType> {
   updateTableData?: () => void;
   tableData?: EntityTableRowMap[T][];
   actionButtonText: string;
+  primaryActionButton?: any;
+  secondaryActionButton?: any;
   pageType: PageType;
   columns: ColumnDefinition<EntityTableRowMap[T]>[];
   formComponent: React.FC<{
@@ -62,7 +64,6 @@ interface EntityPageContainerProps<T extends EntityType> {
     errors: FieldErrors<EntityFormMap[T]>;
   }>;
   extraContent?: React.ReactNode;
-  secondaryButton?: any;
 }
 
 export const EntityPageContainer = <T extends EntityType>({
@@ -71,6 +72,8 @@ export const EntityPageContainer = <T extends EntityType>({
   requestLink = undefined,
   tableData,
   updateTableData,
+  primaryActionButton,
+  secondaryActionButton,
   columns,
   pageType,
   actionButtonText,
@@ -78,18 +81,20 @@ export const EntityPageContainer = <T extends EntityType>({
 }: EntityPageContainerProps<T>) => {
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
-    type: "new" | "edit" | "view";
-    variant?: string;
+    type: "new" | "edit";
+
+    modalId: number | undefined;
   }>({
     isOpen: false,
     type: "new",
-    variant: "default",
+    modalId: undefined,
   });
 
   const {
     register,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors },
   } = useForm<EntityFormMap[T]>();
 
@@ -135,11 +140,12 @@ export const EntityPageContainer = <T extends EntityType>({
     }
   };
 
-  const openModal = (type: "new" | "edit" | "view") => {
+  const openModal = (type: "new" | "edit", id?: number) => {
     reset({} as EntityFormMap[T]);
     setModalState({
       isOpen: true,
       type,
+      modalId: id,
     });
   };
 
@@ -149,7 +155,7 @@ export const EntityPageContainer = <T extends EntityType>({
   };
 
   const handelChangeFormData = (data: EntityFormMap[T]) => {
-    openModal("edit");
+    openModal("edit", data.id);
     reset(data);
   };
 
@@ -239,15 +245,22 @@ export const EntityPageContainer = <T extends EntityType>({
       >
         <FormWrapper
           onSubmit={handleSubmit(onSubmit)}
-          primaryAction={{
-            text: getPrimaryActionText(modalState.type),
-            type: "submit",
-          }}
-          secondaryAction={getSecondaryActionText(
-            modalState.type,
-            pageType,
-            closeModal
-          )}
+          primaryAction={
+            primaryActionButton
+              ? primaryActionButton(modalState.type)
+              : {
+                  text: "Создать",
+                  type: "submit",
+                }
+          }
+          secondaryAction={
+            secondaryActionButton && modalState.type !== "new"
+              ? secondaryActionButton(modalState.type, modalState.modalId)
+              : {
+                  text: "Отмена",
+                  onClick: closeModal,
+                }
+          }
         >
           <div className="grid grid-cols-1 gap-4">
             <FormComponent register={register} errors={errors} />

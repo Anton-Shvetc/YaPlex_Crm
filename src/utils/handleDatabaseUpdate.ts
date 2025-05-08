@@ -16,6 +16,11 @@ type EntityUpdateParams<T> = {
   idField?: string;
 };
 
+interface DecodedToken {
+  userId: string;
+  userCompanyKey: string;
+}
+
 export async function handleDatabaseUpdate<T>(
   request: NextRequest,
   id: string,
@@ -173,6 +178,86 @@ export async function handleDatabaseUpdate<T>(
         success: false,
         message: "Internal server error",
         error: error instanceof Error ? error.message : String(error),
+      },
+      { status: 500 }
+    );
+  }
+}
+
+
+
+
+
+export async function DELETE(
+  { params }: { params: { id: string } }
+) {
+  try {
+    const { id } = params;
+
+    // 1. Проверка авторизации
+    const cookieStore = cookies();
+    const token = (await cookieStore).get('token')?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        { success: false, message: 'Токен недействительный или устарел' },
+        { status: 401 }
+      );
+    }
+
+    // 2. Верификация токена
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
+    const { userCompanyKey } = decoded;
+
+    // 3. Проверка существования клиента
+    const existingClient = await turso.execute({
+      sql: 'SELECT id FROM clients WHERE id = ? AND userCompanyKey = ?',
+      args: [id, userCompanyKey],
+    });
+
+    if (existingClient.rows.length === 0) {
+      return NextResponse.json(
+        { success: false, message: 'Клиент не найден или нет прав доступа' },
+        { status: 404 }
+      );
+    }
+
+    // 4. "Мягкое" удаление (установка is_active = false)
+    const result = await turso.execute({
+      sql: `
+        UPDATE clients 
+        SET 
+          is_active = FALSE,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE id = ? AND userCompanyKey = ?
+      `,
+      args: [id, userCompanyKey],
+    });
+
+    // 5. Проверка результата
+    if (result.rowsAffected > 0) {
+      return NextResponse.json(
+        { 
+          success: true, 
+          message: 'Клиент успешно деактивирован',
+          data: { id }
+        },
+        { status: 200 }
+      );
+    }
+
+    return NextResponse.json(
+      { success: false, message: 'Не удалось деактивировать клиента' },
+      { status: 400 }
+    );
+
+  } catch (error) {
+    console.error('Error deactivating client:', error);
+    return NextResponse.json(
+      { 
+        success: false, 
+        message: 'Internal server error',
+        error: error instanceof Error ? error.message : String(error)
       },
       { status: 500 }
     );
