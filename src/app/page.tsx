@@ -30,6 +30,9 @@ export default function Home() {
   const { setDeals } = useDealsStore();
   const { setTasks } = useTasksStore();
 
+  const [statisticsTableData, setStatisticsTableData] =
+    useState<StatisticsI[]>();
+
   const { isLoading, startLoading, stopLoading } = useLoaderStore();
 
   // Заменить на расчитываемые данные
@@ -116,6 +119,7 @@ export default function Home() {
 
       try {
         await Promise.all([
+          getParamsData<any>("api/statistics", setStatisticsTableData),
           getParamsData<Client>("api/clients", setClients),
           getParamsData<Deal>("api/deals", setDeals),
           getParamsData<Task>("api/tasks", setTasks),
@@ -130,7 +134,9 @@ export default function Home() {
     fetchData();
   }, []);
 
-  useEffect(() => {});
+  useEffect(() => {
+    console.log("statisticsTableData", statisticsTableData);
+  }, [statisticsTableData]);
 
   return (
     <>
@@ -141,11 +147,13 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-10">
-            <TableContainer<any>
-              tableData={mockData}
-              columns={statisticsColumns}
-              isLoading={isLoading}
-            />
+            {statisticsTableData && (
+              <TableContainer<StatisticsI>
+                tableData={statisticsTableData}
+                columns={statisticsColumns}
+                isLoading={isLoading}
+              />
+            )}
 
             <MainPageInfoContainer title="Топ 10 активных клиентов" />
             <MainPageInfoContainer title="Топ 10 активных сделок" />
