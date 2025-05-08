@@ -17,6 +17,7 @@ type InputFieldProps = {
   labelClassName?: string;
   errorClassName?: string;
   icon?: React.ReactNode;
+  onSearchParams?: (value: string) => void;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
@@ -33,6 +34,7 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
       helpText,
       onFocus,
       onBlur,
+      onSearchParams,
       icon = undefined,
       ...props
     },
@@ -49,6 +51,11 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
       setIsFocused(false);
       onBlur?.(e);
     };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+       if(onSearchParams) onSearchParams(e.target.value)
+    }
 
     const getBorderClasses = () => {
       if (error) return "border-red-500";
@@ -93,6 +100,7 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
             `}
               placeholder={placeholder || label}
               onFocus={handleFocus}
+              onChange={handleChange}
               onBlur={handleBlur}
               {...props}
             />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { ModalContainer } from "@/components/shared/ModalContainer/ModalContainer";
 import {
@@ -92,6 +92,12 @@ export const EntityPageContainer = <T extends EntityType>({
 
   const { isLoading } = useLoaderStore();
 
+  const [searchParams, setSearchParams] = useState<string>("");
+
+  const [filteredTableData, setFilteredTableData] = useState<
+    EntityTableRowMap[T][]
+  >(tableData || []);
+
   const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
     if (!requestLink) return;
     try {
@@ -146,6 +152,31 @@ export const EntityPageContainer = <T extends EntityType>({
     if (updateTableData) updateTableData();
   }, []);
 
+  useEffect(() => {
+    setFilteredTableData(tableData || []);
+  }, [tableData]);
+
+  const searchData = (data: EntityTableRowMap[T][], searchText: string) => {
+    if (!searchText.trim()) return data || [];
+    if (!data) return [];
+
+    const searchLower = searchText.toLowerCase();
+
+    return data.filter((item) =>
+      columns.some((column) => {
+        const fieldValue = item[column.key as keyof EntityTableRowMap[T]];
+        return fieldValue?.toString().toLowerCase().includes(searchLower);
+      })
+    );
+  };
+
+  useEffect(() => {
+    console.log("searchParams", searchParams);
+
+    const result = searchData(tableData || [], searchParams);
+    setFilteredTableData(result);
+  }, [searchParams]);
+
   return (
     <>
       <div className="flex-1 p-4">
@@ -167,6 +198,7 @@ export const EntityPageContainer = <T extends EntityType>({
             <InputFieldUi
               type="text"
               placeholder="Поиск"
+              onSearchParams={(value: string) => setSearchParams(value)}
               icon={<SearchIcon />}
             />
             {/* <input
@@ -181,9 +213,9 @@ export const EntityPageContainer = <T extends EntityType>({
         <div className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
           {/* Здесь будет содержимое таблицы, которое будет отличаться для каждого типа данных */}
           <div className="p-8 text-center text-gray-500 dark:text-gray-400">
-            {tableData && columns && (
+            {filteredTableData && columns && (
               <TableContainer<EntityTableRowMap[T]>
-                tableData={tableData}
+                tableData={filteredTableData}
                 columns={columns}
                 handelChangeFormData={handelChangeFormData}
               />
