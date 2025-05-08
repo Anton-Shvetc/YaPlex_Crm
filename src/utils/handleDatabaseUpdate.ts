@@ -95,7 +95,6 @@ export async function handleDatabaseUpdate<T>(
       for (const field of updateParams.uniqueFields) {
         const fieldName = String(field);
         const newValue = data[fieldName];
-  
 
         // Проверяем только если значение изменилось и новое значение не пустое
         if (newValue !== undefined && newValue !== null && newValue !== "") {
@@ -107,11 +106,12 @@ export async function handleDatabaseUpdate<T>(
                 AND userCompanyKey = ? 
                 AND ${idField} != ?
                 AND ${fieldName} IS NOT NULL
+                AND is_active != ?
             `;
 
             const checkResult = await turso.execute({
               sql: checkQuery,
-              args: [newValue, userCompanyKey, id],
+              args: [newValue, userCompanyKey, id, 0],
             });
 
             if (checkResult.rows.length > 0) {
@@ -184,23 +184,17 @@ export async function handleDatabaseUpdate<T>(
   }
 }
 
-
-
-
-
-export async function DELETE(
-  { params }: { params: { id: string } }
-) {
+export async function DELETE({ params }: { params: { id: string } }) {
   try {
     const { id } = params;
 
     // 1. Проверка авторизации
     const cookieStore = cookies();
-    const token = (await cookieStore).get('token')?.value;
+    const token = (await cookieStore).get("token")?.value;
 
     if (!token) {
       return NextResponse.json(
-        { success: false, message: 'Токен недействительный или устарел' },
+        { success: false, message: "Токен недействительный или устарел" },
         { status: 401 }
       );
     }
@@ -211,13 +205,13 @@ export async function DELETE(
 
     // 3. Проверка существования клиента
     const existingClient = await turso.execute({
-      sql: 'SELECT id FROM clients WHERE id = ? AND userCompanyKey = ?',
+      sql: "SELECT id FROM clients WHERE id = ? AND userCompanyKey = ?",
       args: [id, userCompanyKey],
     });
 
     if (existingClient.rows.length === 0) {
       return NextResponse.json(
-        { success: false, message: 'Клиент не найден или нет прав доступа' },
+        { success: false, message: "Клиент не найден или нет прав доступа" },
         { status: 404 }
       );
     }
@@ -237,27 +231,26 @@ export async function DELETE(
     // 5. Проверка результата
     if (result.rowsAffected > 0) {
       return NextResponse.json(
-        { 
-          success: true, 
-          message: 'Клиент успешно деактивирован',
-          data: { id }
+        {
+          success: true,
+          message: "Клиент успешно деактивирован",
+          data: { id },
         },
         { status: 200 }
       );
     }
 
     return NextResponse.json(
-      { success: false, message: 'Не удалось деактивировать клиента' },
+      { success: false, message: "Не удалось деактивировать клиента" },
       { status: 400 }
     );
-
   } catch (error) {
-    console.error('Error deactivating client:', error);
+    console.error("Error deactivating client:", error);
     return NextResponse.json(
-      { 
-        success: false, 
-        message: 'Internal server error',
-        error: error instanceof Error ? error.message : String(error)
+      {
+        success: false,
+        message: "Internal server error",
+        error: error instanceof Error ? error.message : String(error),
       },
       { status: 500 }
     );
