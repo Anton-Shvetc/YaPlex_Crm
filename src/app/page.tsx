@@ -22,11 +22,12 @@ import { useDealsStore } from "@/store/dealsStore";
 
 import { MainPageInfoContainer } from "@/components/shared/MainPageInfoContainer/MainPageInfocontainer";
 import { TableContainer } from "@/components/shared/TableContainer/TableContainer";
+import { MainPageClientCard } from "@/components/ui/MainPageCards/MainPageClientCard";
 
 // import { useEffect } from "react";
 
 export default function Home() {
-  const { setClients } = useClientStore();
+  const { clients, setClients } = useClientStore();
   const { setDeals } = useDealsStore();
   const { setTasks } = useTasksStore();
 
@@ -155,7 +156,15 @@ export default function Home() {
               />
             )}
 
-            <MainPageInfoContainer title="Топ 10 активных клиентов" />
+            <MainPageInfoContainer title="Топ 10 активных клиентов">
+              {clients?.map((client) => (
+                <MainPageClientCard
+                  name={client.name}
+                  company={client.company || ""}
+                />
+              ))}
+            </MainPageInfoContainer>
+
             <MainPageInfoContainer title="Топ 10 активных сделок" />
             <MainPageInfoContainer title="Последние 10 задач" />
           </div>
