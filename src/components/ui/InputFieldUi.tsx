@@ -16,6 +16,7 @@ type InputFieldProps = {
   inputClassName?: string;
   labelClassName?: string;
   errorClassName?: string;
+  icon?: React.ReactNode;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
@@ -32,6 +33,7 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
       helpText,
       onFocus,
       onBlur,
+      icon = undefined,
       ...props
     },
     ref
@@ -55,7 +57,7 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
     };
 
     return (
-      <HeadlessField className={`mb-4 ${className}`}>
+      <HeadlessField className={`${className}`}>
         {label && (
           <Label
             htmlFor={props.id}
@@ -65,30 +67,37 @@ export const InputFieldUi = forwardRef<HTMLInputElement, InputFieldProps>(
           </Label>
         )}
 
-        {type === "textarea" ? (
-          <Textarea className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-[4px] shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600" />
-        ) : (
-          <Input
-            ref={ref}
-            type={type}
-            className={`
-   w-full px-3 py-2 
-   border border-solid ${getBorderClasses()}
-   rounded-[4px] shadow-sm 
-   bg-white dark:bg-gray-700
-   text-gray-900 dark:text-white
-   placeholder-gray-400 dark:placeholder-gray-500
-   focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600
-   transition-colors duration-200
-   ${inputClassName}
- `}
-            placeholder={placeholder || label}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            {...props}
-          />
-        )}
-
+        <div className="relative">
+          {icon && (
+            <div className="absolute inset-y-0 left-0 p-2 flex items-center pointer-events-none">
+              {icon}
+            </div>
+          )}
+          {type === "textarea" ? (
+            <Textarea className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-[4px] shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600" />
+          ) : (
+            <Input
+              ref={ref}
+              type={type}
+              className={`
+              w-full px-3 py-2 
+              ${icon ? "pl-10" : ""} // Добавляем отступ если есть иконка
+              border border-solid ${getBorderClasses()}
+              rounded-[4px] shadow-sm 
+              bg-white dark:bg-gray-700
+              text-gray-900 dark:text-white
+              placeholder-gray-400 dark:placeholder-gray-500
+              focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600
+              transition-colors duration-200
+              ${inputClassName}
+            `}
+              placeholder={placeholder || label}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              {...props}
+            />
+          )}
+        </div>
         {helpText && !error && (
           <Description className="mt-1 text-xs text-gray-500 dark:text-gray-400">
             {helpText}

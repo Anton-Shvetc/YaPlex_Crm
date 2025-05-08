@@ -25,6 +25,8 @@ import { TableContainer } from "@/components/shared/TableContainer/TableContaine
 import { Client, Deal, Task } from "@/utils/types";
 import { ButtonUi } from "@/components/ui/ButtonUi";
 import { useLoaderStore } from "@/store/useLoaderStore";
+import { InputFieldUi } from "@/components/ui/InputFieldUi";
+import { SearchIcon } from "@/styles/icons";
 
 type EntityType = "client" | "deal" | "task";
 type PageType = "clients" | "deals" | "tasks";
@@ -162,12 +164,17 @@ export const EntityPageContainer = <T extends EntityType>({
           />
 
           <div className="flex-1 relative">
-            <input
+            <InputFieldUi
+              type="text"
+              placeholder="Поиск"
+              icon={<SearchIcon />}
+            />
+            {/* <input
               type="text"
               placeholder="Искать"
               className="w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded px-4 py-2 pl-10"
-            />
-            <span className="absolute left-3 top-2.5 text-gray-400">🔍</span>
+            /> */}
+            {/* <span className="absolute left-3 top-2.5 text-gray-400">🔍</span> */}
           </div>
         </div>
 
