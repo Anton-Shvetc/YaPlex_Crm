@@ -160,7 +160,7 @@ export default function Home() {
               {clients?.map((client) => (
                 <MainPageClientCard
                   name={client.name}
-                  company={client.company || ""}
+                  company={client.company}
                 />
               ))}
             </MainPageInfoContainer>

@@ -1,7 +1,7 @@
 interface MainPageClientCardI {
   name: string;
   company?: string;
-  dealsCount: number;
+  dealsCount?: number;
 }
 
 export const MainPageClientCard: React.FC<MainPageClientCardI> = ({
@@ -15,12 +15,13 @@ export const MainPageClientCard: React.FC<MainPageClientCardI> = ({
         <div className="font-bold text-gray-900 text-base">{name}</div>
         <div className="text-gray-500 text-sm font-normal mt-1">{company}</div>
       </div>
-      {dealsCount ||  dealsCount === 0 && (
-        <div className="flex items-center gap-1">
-          <p className="text-emerald-500 font-bold text-lg">{dealsCount}</p>
-          <p>сделок</p>
-        </div>
-      )}
+      {dealsCount ||
+        (dealsCount === 0 && (
+          <div className="flex items-center gap-1">
+            <p className="text-emerald-500 font-bold text-lg">{dealsCount}</p>
+            <p>сделок</p>
+          </div>
+        ))}
     </div>
   );
 };
