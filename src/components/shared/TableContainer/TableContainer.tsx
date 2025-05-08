@@ -1,4 +1,3 @@
-import { useLoaderStore } from "@/store/useLoaderStore";
 import { ColumnDefinition } from "@/utils/types";
 import { Loader } from "../Loader";
 

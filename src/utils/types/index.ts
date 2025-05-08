@@ -103,6 +103,11 @@ export interface StatisticsI {
   quarter: number;
 }
 
+export interface UserLoginI {
+  email: string;
+  password: string;
+}
+
 // Тип для сделки
 // export interface Deal {
 //   id?: number;

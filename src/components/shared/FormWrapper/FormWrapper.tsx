@@ -12,7 +12,7 @@ interface FormWrapperI {
     onClick?: () => void;
     className?: string;
     type: "button" | "submit";
-  };
+  } ;
   secondaryAction?: {
     text: string;
     variant?: string;

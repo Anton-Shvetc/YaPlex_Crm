@@ -48,11 +48,11 @@ interface DecodedToken {
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
   try {
-    console.log("params debug", params);
-    const { id } = params;
+    console.log("params debug", params, request);
+    const { id } = await params;
 
     // 1. Проверка авторизации
     const cookieStore = cookies();

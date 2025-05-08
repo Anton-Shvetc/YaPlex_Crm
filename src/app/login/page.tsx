@@ -9,7 +9,7 @@ import { useState } from "react";
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
-import { UserLoginI } from "@/utils/interfaces/UserI";
+import { UserLoginI } from "@/utils/types";
 // import { AuthForm } from "@/components/feature/AuthForm/AuthForm";
 
 import { LoginForm } from "@/components/feature/LoginForm/LoginForm";
@@ -82,8 +82,9 @@ export default function LoginPage() {
             }`}
           >
             {activeForm === "register" && (
-              <RegisterForm onSubmit={handleRegister} 
-              showMobileForm={showMobileForm}
+              <RegisterForm
+                onSubmit={handleRegister}
+                showMobileForm={showMobileForm}
               />
             )}
           </div>

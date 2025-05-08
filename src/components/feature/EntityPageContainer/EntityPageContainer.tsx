@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ModalContainer } from "@/components/shared/ModalContainer/ModalContainer";
 import {
@@ -29,7 +29,7 @@ import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { SearchIcon } from "@/styles/icons";
 
 type EntityType = "client" | "deal" | "task";
-type PageType = "clients" | "deals" | "tasks";
+// type PageType = "clients" | "deals" | "tasks";
 
 type EntityFormMap = {
   client: Client;
@@ -55,9 +55,26 @@ interface EntityPageContainerProps<T extends EntityType> {
   updateTableData?: () => void;
   tableData?: EntityTableRowMap[T][];
   actionButtonText: string;
-  primaryActionButton?: any;
-  secondaryActionButton?: any;
-  pageType: PageType;
+  primaryActionButton?: (modalType: string) =>
+    | {
+        text: string;
+        type: "button" | "submit";
+        onClick?: () => void;
+        className?: string;
+      }
+    | undefined;
+  secondaryActionButton?: (
+    modalType: string,
+    id: number | undefined
+  ) =>
+    | {
+        text: string;
+        type: "button" | "submit";
+        onClick?: () => void;
+        className?: string;
+      }
+    | undefined;
+
   columns: ColumnDefinition<EntityTableRowMap[T]>[];
   formComponent: React.FC<{
     register: UseFormRegister<EntityFormMap[T]>;
@@ -75,7 +92,6 @@ export const EntityPageContainer = <T extends EntityType>({
   primaryActionButton,
   secondaryActionButton,
   columns,
-  pageType,
   actionButtonText,
   pageTitle,
 }: EntityPageContainerProps<T>) => {
@@ -94,7 +110,6 @@ export const EntityPageContainer = <T extends EntityType>({
     register,
     handleSubmit,
     reset,
-    getValues,
     formState: { errors },
   } = useForm<EntityFormMap[T]>();
 

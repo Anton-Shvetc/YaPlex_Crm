@@ -37,7 +37,7 @@ export default function ClientsPage() {
     // },
   ];
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: number | undefined) => {
     if (id) {
       deleteItem({
         id: id,
@@ -56,7 +56,6 @@ export default function ClientsPage() {
   return (
     <EntityPageContainer
       entityType="client"
-      pageType="clients"
       actionButtonText="Новый клиент"
       requestLink="api/clients"
       pageTitle="Клиенты"
@@ -69,7 +68,7 @@ export default function ClientsPage() {
         varinat: "submit",
         onClick: () => {},
       })}
-      secondaryActionButton={(modalType: string, id: number) => ({
+      secondaryActionButton={(modalType: string, id: number | undefined) => ({
         text: modalType === "new" ? "Отмена" : "Удалить клиента",
         variant: "delete",
         type: "button",

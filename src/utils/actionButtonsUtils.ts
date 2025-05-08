@@ -1,4 +1,4 @@
-import { ButtonStatePropsI } from "./types";
+// import { ButtonStatePropsI } from "./types";
 
 // export const getPrimaryActionText = (modalType: string): string => {
 //   if (modalType === "new") {

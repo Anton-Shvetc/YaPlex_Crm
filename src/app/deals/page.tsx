@@ -46,7 +46,7 @@ export default function DealsPage() {
   return (
     <EntityPageContainer
       entityType="deal"
-      pageType="deals"
+
       actionButtonText="Новая сделка"
       requestLink="api/deals"
       pageTitle="Сделки"

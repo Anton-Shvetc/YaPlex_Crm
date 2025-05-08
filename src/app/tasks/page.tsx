@@ -49,7 +49,6 @@ export default function TasksPage() {
   return (
     <EntityPageContainer
       entityType="task"
-      pageType="tasks"
       actionButtonText="Новая задача"
       requestLink="api/tasks"
       pageTitle="Задачи"
