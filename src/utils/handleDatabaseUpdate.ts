@@ -99,19 +99,25 @@ export async function handleDatabaseUpdate<T>(
         // Проверяем только если значение изменилось и новое значение не пустое
         if (newValue !== undefined && newValue !== null && newValue !== "") {
           try {
-            const checkQuery = `
-              SELECT ${idField} 
-              FROM ${updateParams.entityName} 
-              WHERE ${fieldName} = ? 
-                AND userCompanyKey = ? 
-                AND ${idField} != ?
-                AND ${fieldName} IS NOT NULL
-                AND is_active != ?
-            `;
+            let checkQuery = `
+        SELECT ${idField} 
+        FROM ${updateParams.entityName} 
+        WHERE ${fieldName} = ? 
+          AND userCompanyKey = ? 
+          AND ${idField} != ?
+          AND ${fieldName} IS NOT NULL
+      `;
+
+            const args = [newValue, userCompanyKey, id];
+
+            if (updateParams.entityName === "clients") {
+              checkQuery += ` AND is_active != ?`;
+              args.push(0);
+            }
 
             const checkResult = await turso.execute({
               sql: checkQuery,
-              args: [newValue, userCompanyKey, id, 0],
+              args: args,
             });
 
             if (checkResult.rows.length > 0) {
