@@ -43,13 +43,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
         horizontal: "right",
       }}
     >
-<<<<<<< HEAD
       <div className="flex min-h-screen bg-white dark:bg-gray-900">
         {pathname !== "/login" && <AdaptiveNavbar />}
-=======
-      <div className="flex overflow-y-hidden bg-white dark:bg-gray-900">
-        {pathname !== "/login" && <Navbar />}
->>>>>>> 2a0e640 (Обновлена инофрмация для главной страницы)
         <div className="flex-1 overflow-auto">{children}</div>
       </div>
     </SnackbarProvider>
