@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 
-import { AdaptiveModalContainer } from "@/components/shared/ModalContainer/AdaptiveModalContainer";
+import { ModalContainer } from "@/components/shared/ModalContainer/ModalContainer";
 import {
   FieldErrors,
   SubmitHandler,
@@ -10,7 +10,7 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 
-// import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
+import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
 // import {
 //   getPrimaryActionText,
 //   // getSecondaryActionClass,
@@ -27,7 +27,7 @@ import { ButtonUi } from "@/components/ui/ButtonUi";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { SearchIcon } from "@/styles/icons";
-import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
+import { AdaptiveModalContainer } from "@/components/shared/ModalContainer/AdaptiveModalContainer";
 
 type EntityType = "client" | "deal" | "task";
 // type PageType = "clients" | "deals" | "tasks";
@@ -99,6 +99,7 @@ export const EntityPageContainer = <T extends EntityType>({
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     type: "new" | "edit";
+
     modalId: number | undefined;
   }>({
     isOpen: false,
@@ -251,7 +252,8 @@ export const EntityPageContainer = <T extends EntityType>({
         </div>
       </div>
 
-      {/* Модальное окно - используем адаптивное */}
+      {/* Модальное окно */}
+
       <AdaptiveModalContainer
         modalTitle={getModalTitle(modalState.type, entityType)}
         isOpen={modalState.isOpen}

@@ -5,22 +5,6 @@ import AdaptiveNavbar from "./AdaptiveNavbar";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-// import { ModalContainer } from "@/components/shared/ModalContainer/ModalContainer";
-// import {
-//   FieldErrors,
-//   SubmitHandler,
-//   useForm,
-//   UseFormRegister,
-// } from "react-hook-form";
-
-// import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
-// import {
-//   getPrimaryActionText,
-//   getSecondaryActionClass,
-//   getSecondaryActionText,
-// } from "@/utils/actionButtonsUtils";
-// import { getModalTitle } from "@/utils/modalUtils";
-
 export function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   
