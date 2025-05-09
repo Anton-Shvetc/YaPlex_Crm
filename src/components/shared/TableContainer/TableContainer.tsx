@@ -48,16 +48,15 @@ export const TableContainer = <T extends object>({
       </thead>
       <tbody>
         {tableData.map((row: T, rowIndex: number) => {
-          // Базовые классы строки
           let rowClasses = getTableRowClasses();
 
-          // Обработка isActive
-          if ("is_active" in row && !row.is_active) {
-            rowClasses = getTableRowClasses("isNotActive");
-          }
+          let status: string | undefined =
+            "is_active" in row && !row.is_active ? "isNotActive" : undefined;
 
-          if ("status" in row && row.status)
-            rowClasses = getTableRowClasses(row.status);
+          if ("status" in row && typeof row.status === "string")
+            status = row.status;
+
+          rowClasses = getTableRowClasses(status);
 
           return (
             <tr
