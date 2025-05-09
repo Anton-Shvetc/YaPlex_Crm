@@ -1,6 +1,6 @@
 import { ColumnDefinition } from "@/utils/types";
 import { Loader } from "../Loader";
-import { handleTableRowClass } from "@/utils/handleTableRowClass";
+import { getTableRowClasses } from "@/utils/ui/getTableRowClass";
 
 interface TableContainerProps<T> {
   tableData: T[]; // Массив данных
@@ -49,15 +49,15 @@ export const TableContainer = <T extends object>({
       <tbody>
         {tableData.map((row: T, rowIndex: number) => {
           // Базовые классы строки
-          let rowClasses = handleTableRowClass();
+          let rowClasses = getTableRowClasses();
 
           // Обработка isActive
           if ("is_active" in row && !row.is_active) {
-            rowClasses = handleTableRowClass("isNotActive");
+            rowClasses = getTableRowClasses("isNotActive");
           }
 
           if ("status" in row && row.status)
-            rowClasses = handleTableRowClass(row.status);
+            rowClasses = getTableRowClasses(row.status);
 
           return (
             <tr
