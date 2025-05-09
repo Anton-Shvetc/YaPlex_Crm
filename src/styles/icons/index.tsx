@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 // Создаем HOC (Higher Order Component) для оборачивания иконок с учетом темной темы
-const withThemeSupport = (IconComponent: React.FC) => {
+export const withThemeSupport = (IconComponent: React.FC) => {
   return function ThemedIcon() {
     return (
       <div className="w-6 h-6 flex items-center justify-center text-gray-800 dark:text-white">

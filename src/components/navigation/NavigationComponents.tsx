@@ -3,7 +3,6 @@
 import Link from "next/link";
 import {
   HomeIcon,
-  UserIcon,
   ClientsIcon,
   DealsIcon,
   TasksIcon,

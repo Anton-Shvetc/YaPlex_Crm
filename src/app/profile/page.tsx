@@ -6,7 +6,6 @@ import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { ButtonUi } from "@/components/ui/ButtonUi";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { enqueueSnackbar } from "notistack";
-import Image from "next/image";
 import { AvatarUpload } from "@/components/ui/AvatarUpload";
 import { ConnectedAccounts } from "@/components/feature/ConnectedAccounts/ConnectedAccounts";
 
@@ -29,7 +28,7 @@ interface ConnectedAccount {
 
 export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [connectedAccounts, setConnectedAccounts] = useState<ConnectedAccount[]>([
+  const [connectedAccounts] = useState<ConnectedAccount[]>([
     {
       id: '1',
       type: 'vk',

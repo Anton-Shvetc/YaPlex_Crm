@@ -4,13 +4,8 @@ import { login } from "@/services/auth";
 import { registerUser } from "@/services/registerUser";
 
 import { useState } from "react";
-// import { cookies } from 'next/headers';
 
-// import { useForm } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { z } from "zod";
 import { UserLoginI } from "@/utils/types";
-// import { AuthForm } from "@/components/feature/AuthForm/AuthForm";
 
 import { LoginForm } from "@/components/feature/LoginForm/LoginForm";
 import { MainPageInfo } from "@/components/feature/MainPageInfo/MainPageInfo";
@@ -21,23 +16,16 @@ import { RegisterFormDataType } from "@/utils/types";
 import { enqueueSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 
-// const loginSchema = z.object({
-//   email: z.string().min(1, "Поле Email обязательно"),
-//   password: z.string().min(4, "Пароль должен содержать минимум 6 символов"),
-// });
-
 export default function LoginPage() {
-  // const { reset } = useForm<UserLoginI>({
-  //   resolver: zodResolver(loginSchema),
-  // });
-
   const router = useRouter();
 
   const [showMobileForm, setShowMobileForm] = useState(false);
 
-  const [activeForm, setActiveForm] = useState<"login" | "register" | "resetPassword" | "emailConfirm">("login");
+  const [activeForm, setActiveForm] = useState<
+    "login" | "register" | "resetPassword" | "emailConfirm"
+  >("login");
 
-  const [resetEmail, setResetEmail] = useState("");
+  // const [resetEmail, setResetEmail] = useState("");
 
   const handleRegister = async (requestData: RegisterFormDataType) => {
     const { success, message, data } = await registerUser(requestData);
@@ -59,23 +47,25 @@ export default function LoginPage() {
     }
   };
 
-  const handleResetPassword = async (email: string) => {
-    setResetEmail(email);
-    
-    enqueueSnackbar("Письмо с инструкциями отправлено на вашу почту", { 
-      variant: "success" 
+  const handleResetPassword = async () => {
+    // setResetEmail(email);
+
+    enqueueSnackbar("Письмо с инструкциями отправлено на вашу почту", {
+      variant: "success",
     });
-    
+
     setActiveForm("emailConfirm");
   };
 
-  const handleConfirmEmail = (confirmCode: string) => {
+  const handleConfirmEmail = () => {
     enqueueSnackbar("Пароль успешно изменен", { variant: "success" });
     setActiveForm("login");
   };
 
   const handleResendEmail = () => {
-    enqueueSnackbar("Письмо с инструкциями отправлено повторно", { variant: "success" });
+    enqueueSnackbar("Письмо с инструкциями отправлено повторно", {
+      variant: "success",
+    });
   };
 
   return (
@@ -108,14 +98,14 @@ export default function LoginPage() {
                 onForgotPassword={() => setActiveForm("resetPassword")}
               />
             )}
-            
+
             {activeForm === "resetPassword" && (
-              <PasswordResetForm 
+              <PasswordResetForm
                 onSubmit={handleResetPassword}
                 showMobileForm={showMobileForm}
               />
             )}
-            
+
             {activeForm === "register" && (
               <RegisterForm
                 onSubmit={handleRegister}
