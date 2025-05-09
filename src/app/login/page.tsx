@@ -4,36 +4,28 @@ import { login } from "@/services/auth";
 import { registerUser } from "@/services/registerUser";
 
 import { useState } from "react";
-// import { cookies } from 'next/headers';
 
-// import { useForm } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { z } from "zod";
 import { UserLoginI } from "@/utils/types";
-// import { AuthForm } from "@/components/feature/AuthForm/AuthForm";
 
 import { LoginForm } from "@/components/feature/LoginForm/LoginForm";
 import { MainPageInfo } from "@/components/feature/MainPageInfo/MainPageInfo";
 import { RegisterForm } from "@/components/feature/RegisterForm/RegisterForm";
+import { PasswordResetForm } from "@/components/feature/PasswordResetForm/PasswordResetForm";
+import { EmailConfirmForm } from "@/components/feature/EmailConfirmForm/EmailConfirmForm";
 import { RegisterFormDataType } from "@/utils/types";
 import { enqueueSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 
-// const loginSchema = z.object({
-//   email: z.string().min(1, "Поле Email обязательно"),
-//   password: z.string().min(4, "Пароль должен содержать минимум 6 символов"),
-// });
-
 export default function LoginPage() {
-  // const { reset } = useForm<UserLoginI>({
-  //   resolver: zodResolver(loginSchema),
-  // });
-
   const router = useRouter();
 
   const [showMobileForm, setShowMobileForm] = useState(false);
 
-  const [activeForm, setActiveForm] = useState<"login" | "register">("login");
+  const [activeForm, setActiveForm] = useState<
+    "login" | "register" | "resetPassword" | "emailConfirm"
+  >("login");
+
+  // const [resetEmail, setResetEmail] = useState("");
 
   const handleRegister = async (requestData: RegisterFormDataType) => {
     const { success, message, data } = await registerUser(requestData);
@@ -55,6 +47,27 @@ export default function LoginPage() {
     }
   };
 
+  const handleResetPassword = async () => {
+    // setResetEmail(email);
+
+    enqueueSnackbar("Письмо с инструкциями отправлено на вашу почту", {
+      variant: "success",
+    });
+
+    setActiveForm("emailConfirm");
+  };
+
+  const handleConfirmEmail = () => {
+    enqueueSnackbar("Пароль успешно изменен", { variant: "success" });
+    setActiveForm("login");
+  };
+
+  const handleResendEmail = () => {
+    enqueueSnackbar("Письмо с инструкциями отправлено повторно", {
+      variant: "success",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-950 relative overflow-hidden">
       {/* Градиентные пятна на фоне */}
@@ -68,7 +81,7 @@ export default function LoginPage() {
       {/* Основной контент */}
       <div className="relative min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-12 md:p-12">
-          {/* Колонка с описанием (всегда видна на десктопе) */}
+          {/* Левая колонка с описанием (всегда видна на десктопе) */}
           <MainPageInfo
             showMobileForm={showMobileForm}
             setActiveForm={setActiveForm}
@@ -76,23 +89,34 @@ export default function LoginPage() {
             setShowMobileForm={setShowMobileForm}
           />
 
-          <div
-            className={`${showMobileForm ? "block" : "hidden"} md:${
-              activeForm === "register" ? "block" : "hidden"
-            }`}
-          >
+          {/* Правая колонка для всех форм */}
+          <div className={`${showMobileForm ? "block" : "hidden"} md:block`}>
+            {activeForm === "login" && (
+              <LoginForm
+                onSubmit={handleLogin}
+                showMobileForm={showMobileForm}
+                onForgotPassword={() => setActiveForm("resetPassword")}
+              />
+            )}
+
+            {activeForm === "resetPassword" && (
+              <PasswordResetForm
+                onSubmit={handleResetPassword}
+                showMobileForm={showMobileForm}
+              />
+            )}
+
             {activeForm === "register" && (
               <RegisterForm
                 onSubmit={handleRegister}
                 showMobileForm={showMobileForm}
               />
             )}
-          </div>
 
-          <div className={`${showMobileForm ? "block" : "hidden"} md:block`}>
-            {activeForm === "login" && (
-              <LoginForm
-                onSubmit={handleLogin}
+            {activeForm === "emailConfirm" && (
+              <EmailConfirmForm
+                onConfirm={handleConfirmEmail}
+                onResendEmail={handleResendEmail}
                 showMobileForm={showMobileForm}
               />
             )}

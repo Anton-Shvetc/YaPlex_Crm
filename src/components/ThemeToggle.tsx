@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { enqueueSnackbar } from "notistack";
 
 export function ThemeToggle() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -19,13 +20,17 @@ export function ThemeToggle() {
   }, []);
 
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    if (isDarkMode) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    } else {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    
+    if (newMode) {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
+      enqueueSnackbar("Тема изменена на темную", { variant: "success" });
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+      enqueueSnackbar("Тема изменена на светлую", { variant: "success" });
     }
   };
 
