@@ -22,7 +22,7 @@ import { FetchService } from "@/services/fetcher";
 import { enqueueSnackbar } from "notistack";
 import { TableContainer } from "@/components/shared/TableContainer/TableContainer";
 
-import { Client, Deal, Task } from "@/utils/types";
+import { Client, ColumnDefinition, Deal, Task } from "@/utils/types";
 import { ButtonUi } from "@/components/ui/ButtonUi";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
@@ -43,11 +43,11 @@ type EntityTableRowMap = {
   deal: Deal;
   task: Task;
 };
-type ColumnDefinition<T> = {
-  key: string;
-  label: string;
-  render?: (value: number | string, row: T) => React.ReactNode;
-};
+// type ColumnDefinition<T> = {
+//   key: string;
+//   label: string;
+//   render?: (value: number | string, row: T) => React.ReactNode;
+// };
 
 interface EntityPageContainerProps<T extends EntityType> {
   entityType: T;

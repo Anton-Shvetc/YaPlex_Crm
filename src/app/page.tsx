@@ -40,8 +40,6 @@ export default function Home() {
         render: (value: number | string) => (
           <span style={{ fontWeight: 700 }}>{value}</span>
         ),
-        // render: (value: number | string) =>
-        //   clients.find((el) => el?.id === Number(value))?.name,
       },
       {
         key: "on_today",
