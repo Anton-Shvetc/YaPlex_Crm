@@ -1,5 +1,6 @@
 import { ColumnDefinition } from "@/utils/types";
 import { Loader } from "../Loader";
+import { handleTableRowClass } from "@/utils/handleTableRowClass";
 
 interface TableContainerProps<T> {
   tableData: T[]; // Массив данных
@@ -48,30 +49,15 @@ export const TableContainer = <T extends object>({
       <tbody>
         {tableData.map((row: T, rowIndex: number) => {
           // Базовые классы строки
-          let rowClasses =
-            "rounded-lg border cursor-pointer shadow-md shadow-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors cursor-pointer dark:shadow-none";
+          let rowClasses = handleTableRowClass();
 
           // Обработка isActive
           if ("is_active" in row && !row.is_active) {
-            rowClasses =
-              "rounded-lg bg-rose-50 text-gray-300 hover:bg-rose-100 transition-colors cursor-pointer";
+            rowClasses = handleTableRowClass("isNotActive");
           }
 
-          // Обработка статусов
-          switch ("status" in row && row.status) {
-            case "success":
-              rowClasses =
-                "rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition-colors cursor-pointer";
-              break;
-            case "warning":
-              rowClasses =
-                "rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors cursor-pointer";
-              break;
-            case "error":
-              rowClasses =
-                "rounded-lg bg-red-50 text-red-800 hover:bg-red-100 transition-colors cursor-pointer";
-              break;
-          }
+          if ("status" in row && row.status)
+            rowClasses = handleTableRowClass(row.status);
 
           return (
             <tr
