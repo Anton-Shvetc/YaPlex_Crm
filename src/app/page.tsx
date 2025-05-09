@@ -19,11 +19,13 @@ import { useDealsStore } from "@/store/dealsStore";
 import { MainPageInfoContainer } from "@/components/shared/MainPageInfoContainer/MainPageInfocontainer";
 import { TableContainer } from "@/components/shared/TableContainer/TableContainer";
 import { MainPageClientCard } from "@/components/ui/MainPageCards/MainPageClientCard";
+import { MainPageTaskCard } from "@/components/ui/MainPageCards/MainPageTaskCard";
+import { MainPageDealCard } from "@/components/ui/MainPageCards/MainPageDealCard";
 
 export default function Home() {
   const { clients, setClients } = useClientStore();
-  const { setDeals } = useDealsStore();
-  const { setTasks } = useTasksStore();
+  const { deals, setDeals } = useDealsStore();
+  const { tasks, setTasks } = useTasksStore();
 
   const [statisticsTableData, setStatisticsTableData] =
     useState<StatisticsI[]>();
@@ -38,8 +40,6 @@ export default function Home() {
         render: (value: number | string) => (
           <span style={{ fontWeight: 700 }}>{value}</span>
         ),
-        // render: (value: number | string) =>
-        //   clients.find((el) => el?.id === Number(value))?.name,
       },
       {
         key: "on_today",
@@ -106,38 +106,62 @@ export default function Home() {
   }, [statisticsTableData]);
 
   return (
-    <>
-      <div className=" items-center justify-items-center min-h-screen p-6 gap-16  font-[family-name:var(--font-geist-sans)]">
-        <div className=" justify-between w-full">
-          <div className="flex flex-col justify-center text-gray-800 dark:text-white text-xl font-semibold">
-            Главная страница
-          </div>
+    <div className=" items-center justify-items-center p-6 gap-16  font-[family-name:var(--font-geist-sans)] ">
+      <div className=" justify-between w-full">
+        <div className="flex flex-col justify-center text-gray-800 dark:text-white text-xl font-semibold">
+          Главная страница
+        </div>
 
-          <div className="flex flex-col gap-10">
-            {statisticsTableData && (
-              <TableContainer<StatisticsI>
-                tableData={statisticsTableData}
-                columns={statisticsColumns}
-                isLoading={isLoading}
+        <div className="flex flex-col gap-10">
+          {statisticsTableData && (
+            <TableContainer<StatisticsI>
+              tableData={statisticsTableData}
+              columns={statisticsColumns}
+              isLoading={isLoading}
+            />
+          )}
+
+          <MainPageInfoContainer title="Топ 10 активных клиентов">
+            {clients?.map((client) => (
+              <MainPageClientCard
+                key={client?.id}
+                name={client.name}
+                company={client.company}
+                dealsCount={client?.dealsCount}
               />
-            )}
+            ))}
+          </MainPageInfoContainer>
 
-            <MainPageInfoContainer title="Топ 10 активных клиентов">
-              {clients?.map((client) => (
-                <MainPageClientCard
-                  key={client?.id}
-                  name={client.name}
-                  company={client.company}
-                  dealsCount={client?.dealsCount}
-                />
-              ))}
-            </MainPageInfoContainer>
+          <MainPageInfoContainer title="Топ 10 активных сделок" isGrid={false}>
+            {deals.map((deal) => {
 
-            <MainPageInfoContainer title="Топ 10 активных сделок" />
-            <MainPageInfoContainer title="Последние 10 задач" />
-          </div>
+              const clientName = clients.find(client => client?.id === deal?.clientId)?.name || undefined
+
+          return    <MainPageDealCard
+                key={deal?.id}
+                name={deal.name}
+                status={deal.status}
+                clientName={clientName}
+                amount = {deal?.amount}
+                created_at={deal?.created_at}
+              />
+})}
+          </MainPageInfoContainer>
+          <MainPageInfoContainer title="Последние 10 задач">
+            {tasks?.map((task) => (
+              <MainPageTaskCard
+                key={task?.id}
+                name={task.name}
+                deal={
+                  deals?.find((el) => el?.id === task.dealId)?.name || undefined
+                }
+                deadline={task?.deadline}
+                status={task?.status}
+              />
+            ))}
+          </MainPageInfoContainer>
         </div>
       </div>
-    </>
+    </div>
   );
 }

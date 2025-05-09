@@ -8,6 +8,8 @@ import { getParamsData } from "@/services/getParamsData";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import { useClientStore } from "@/store/clientStore";
 import { useMemo } from "react";
+import { getStatusColor } from "@/utils/ui/getStatusColor";
+import { formatDate } from "@/utils/formatters";
 
 export default function DealsPage() {
   const { deals, setDeals } = useDealsStore();
@@ -25,9 +27,21 @@ export default function DealsPage() {
       },
 
       { key: "description", label: "Описание" },
-      { key: "status", label: "Этап(стутс)" },
+      {
+        key: "status",
+        label: "Этап(стутс)",
+        render: (value: number | string) => (
+          <span className={getStatusColor(value.toString())}>{value}</span>
+        ),
+      },
       { key: "amount", label: "Сумма" },
-      { key: "created_at", label: "Дата создания" },
+      {
+        key: "created_at",
+        label: "Дата создания",
+        render: (value: number | string) => (
+          <span>{formatDate(value.toString())}</span>
+        ),
+      },
     ],
     [clients]
   );
@@ -46,7 +60,6 @@ export default function DealsPage() {
   return (
     <EntityPageContainer
       entityType="deal"
-
       actionButtonText="Новая сделка"
       requestLink="api/deals"
       pageTitle="Сделки"

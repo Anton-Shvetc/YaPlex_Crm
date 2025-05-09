@@ -40,7 +40,7 @@ export interface Client {
   update_at?: string;
   is_active?: boolean;
   authorId: string;
-  dealsCount?: number
+  dealsCount?: number;
 }
 
 export interface Deal {
@@ -92,7 +92,6 @@ export interface ButtonStatePropsI {
   onClick?: () => void;
   variant?: string;
 }
-
 
 export interface StatisticsI {
   name: string;
