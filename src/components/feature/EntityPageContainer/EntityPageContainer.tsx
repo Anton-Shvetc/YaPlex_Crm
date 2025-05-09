@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { ModalContainer } from "@/components/shared/ModalContainer/ModalContainer";
+import { AdaptiveModalContainer } from "@/components/shared/ModalContainer/AdaptiveModalContainer";
 import {
   FieldErrors,
   SubmitHandler,
@@ -98,7 +98,6 @@ export const EntityPageContainer = <T extends EntityType>({
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     type: "new" | "edit";
-
     modalId: number | undefined;
   }>({
     isOpen: false,
@@ -251,37 +250,42 @@ export const EntityPageContainer = <T extends EntityType>({
         </div>
       </div>
 
-      {/* Модальное окно */}
-
-      <ModalContainer
+      {/* Модальное окно - используем адаптивное */}
+      <AdaptiveModalContainer
         modalTitle={getModalTitle(modalState.type, entityType)}
         isOpen={modalState.isOpen}
         onClose={closeModal}
+        primaryAction={
+          primaryActionButton
+            ? {
+                ...primaryActionButton(modalState.type)!,
+                onClick: () => handleSubmit(onSubmit)(),
+              }
+            : {
+                text: modalState.type === "new" ? "Создать" : "Сохранить",
+                type: "submit",
+                onClick: () => handleSubmit(onSubmit)(),
+              }
+        }
+        secondaryAction={
+          secondaryActionButton && modalState.type !== "new"
+            ? {
+                ...secondaryActionButton(modalState.type, modalState.modalId)!,
+                onClick: secondaryActionButton(modalState.type, modalState.modalId)!.onClick || closeModal,
+              }
+            : {
+                text: "Отмена",
+                type: "button",
+                onClick: closeModal,
+              }
+        }
       >
-        <FormWrapper
-          onSubmit={handleSubmit(onSubmit)}
-          primaryAction={
-            primaryActionButton
-              ? primaryActionButton(modalState.type)
-              : {
-                  text: "Создать",
-                  type: "submit",
-                }
-          }
-          secondaryAction={
-            secondaryActionButton && modalState.type !== "new"
-              ? secondaryActionButton(modalState.type, modalState.modalId)
-              : {
-                  text: "Отмена",
-                  onClick: closeModal,
-                }
-          }
-        >
+        <form id="entity-form">
           <div className="grid grid-cols-1 gap-4">
             <FormComponent register={register} errors={errors} />
           </div>
-        </FormWrapper>
-      </ModalContainer>
+        </form>
+      </AdaptiveModalContainer>
     </>
   );
 };
