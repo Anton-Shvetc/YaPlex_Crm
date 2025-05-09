@@ -135,13 +135,19 @@ export default function Home() {
           </MainPageInfoContainer>
 
           <MainPageInfoContainer title="Топ 10 активных сделок" isGrid={false}>
-            {deals.map((deal) => (
-              <MainPageDealCard
+            {deals.map((deal) => {
+
+              const clientName = clients.find(client => client?.id === deal?.clientId)?.name || undefined
+
+          return    <MainPageDealCard
                 key={deal?.id}
                 name={deal.name}
                 status={deal.status}
+                clientName={clientName}
+                amount = {deal?.amount}
+                created_at={deal?.created_at}
               />
-            ))}
+})}
           </MainPageInfoContainer>
           <MainPageInfoContainer title="Последние 10 задач">
             {tasks?.map((task) => (
