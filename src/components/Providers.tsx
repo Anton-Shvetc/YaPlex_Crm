@@ -1,7 +1,7 @@
 "use client";
 
 import { SnackbarProvider } from "notistack";
-import Navbar from "./Navbar";
+import AdaptiveNavbar from "./AdaptiveNavbar";
 
 import { usePathname } from "next/navigation";
 
@@ -33,7 +33,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       }}
     >
       <div className="flex min-h-screen bg-white dark:bg-gray-900">
-        {pathname !== "/login" && <Navbar />}
+        {pathname !== "/login" && <AdaptiveNavbar />}
         <div className="flex-1 overflow-auto">{children}</div>
       </div>
     </SnackbarProvider>
