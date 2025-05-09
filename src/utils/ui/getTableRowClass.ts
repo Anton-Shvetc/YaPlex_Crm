@@ -1,4 +1,4 @@
-export const getTableRowClasses = (status?: string | undefined | {}) => {
+export const getTableRowClasses = (status?: string ) => {
   let rowClasses =
     "rounded-lg border cursor-pointer shadow-md shadow-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors cursor-pointer dark:shadow-none";
 

@@ -1,6 +1,4 @@
 import { formatDate } from "@/utils/formatters";
-import { format } from "path";
-
 interface MainPageDealCardI {
   name: string;
   clientName?: string;
