@@ -6,6 +6,7 @@ import { deleteItem } from "@/services/deleteItem";
 import { getParamsData } from "@/services/getParamsData";
 import { useClientStore } from "@/store/clientStore";
 import { useLoaderStore } from "@/store/useLoaderStore";
+import { formatDate } from "@/utils/formatters";
 import { Client, ColumnDefinition } from "@/utils/types";
 
 export default function ClientsPage() {
@@ -28,13 +29,13 @@ export default function ClientsPage() {
     { key: "company", label: "Название компании" },
     { key: "website", label: "Сайт" },
     { key: "comment", label: "Комментарий" },
-    { key: "created_at", label: "Добавлен" },
-    // {
-    //   key: "is_active",
-    //   label: "Статус",
-    //   render: (value: number | string) =>
-    //     value === 1 ? "Активен" : "Неактивен",
-    // },
+    {
+      key: "created_at",
+      label: "Добавлен",
+      render: (value: number | string) => (
+        <span>{formatDate(value.toString())}</span>
+      ),
+    },
   ];
 
   const handleDelete = (id: number | undefined) => {
