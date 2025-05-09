@@ -9,6 +9,7 @@ import { useLoaderStore } from "@/store/useLoaderStore";
 import { useClientStore } from "@/store/clientStore";
 import { useMemo } from "react";
 import { getStatusColor } from "@/utils/ui/getStatusColor";
+import { formatDate } from "@/utils/formatters";
 
 export default function DealsPage() {
   const { deals, setDeals } = useDealsStore();
@@ -34,7 +35,13 @@ export default function DealsPage() {
         ),
       },
       { key: "amount", label: "Сумма" },
-      { key: "created_at", label: "Дата создания" },
+      {
+        key: "created_at",
+        label: "Дата создания",
+        render: (value: number | string) => (
+          <span>{formatDate(value.toString())}</span>
+        ),
+      },
     ],
     [clients]
   );

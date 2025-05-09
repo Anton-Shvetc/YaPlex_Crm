@@ -7,6 +7,7 @@ import { getParamsData } from "@/services/getParamsData";
 import { useDealsStore } from "@/store/dealsStore";
 import { useTasksStore } from "@/store/tasksStore";
 import { useLoaderStore } from "@/store/useLoaderStore";
+import { formatDate } from "@/utils/formatters";
 
 import { ColumnDefinition, Deal, Task } from "@/utils/types";
 import { useMemo } from "react";
@@ -29,11 +30,23 @@ export default function TasksPage() {
       },
       { key: "description", label: "Описание" },
 
-      { key: "deadline", label: "Выполнить до" },
+      {
+        key: "deadline",
+        label: "Выполнить до",
+        render: (value: number | string) => (
+          <span>{formatDate(value.toString())}</span>
+        ),
+      },
       { key: "executor", label: "Исполнитель" },
       { key: "status", label: "Статус" },
 
-      { key: "created_at", label: "Дата создания" },
+      {
+        key: "created_at",
+        label: "Дата создания",
+        render: (value: number | string) => (
+          <span>{formatDate(value.toString())}</span>
+        ),
+      },
     ],
     [deals]
   );

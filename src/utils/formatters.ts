@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 
 export const formatDate = (
   dateString?: string,
-  format: string = "DD.MM.YY"
+  format: string = "dd MMM yyyy"
 ): string => {
   if (!dateString) return "";
 
