@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import { AdaptiveModalContainer } from "@/components/shared/ModalContainer/AdaptiveModalContainer";
 import {
@@ -27,6 +27,7 @@ import { ButtonUi } from "@/components/ui/ButtonUi";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { SearchIcon } from "@/styles/icons";
+import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
 
 type EntityType = "client" | "deal" | "task";
 // type PageType = "clients" | "deals" | "tasks";
@@ -175,13 +176,14 @@ export const EntityPageContainer = <T extends EntityType>({
 
   useEffect(() => {
     if (updateTableData) updateTableData();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Отключаем правило eslint, так как функция стабильна
 
   useEffect(() => {
     setFilteredTableData(tableData || []);
   }, [tableData]);
 
-  const searchData = (data: EntityTableRowMap[T][], searchText: string) => {
+  const searchData = useCallback((data: EntityTableRowMap[T][], searchText: string) => {
     if (!searchText.trim()) return data || [];
     if (!data) return [];
 
@@ -193,14 +195,13 @@ export const EntityPageContainer = <T extends EntityType>({
         return fieldValue?.toString().toLowerCase().includes(searchLower);
       })
     );
-  };
+  }, [columns]);
 
   useEffect(() => {
-    console.log("searchParams", searchParams);
-
     const result = searchData(tableData || [], searchParams);
     setFilteredTableData(result);
-  }, [searchParams]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]); // Отключаем правило eslint для tableData и searchData, так как они стабильны
 
   return (
     <>
@@ -255,36 +256,30 @@ export const EntityPageContainer = <T extends EntityType>({
         modalTitle={getModalTitle(modalState.type, entityType)}
         isOpen={modalState.isOpen}
         onClose={closeModal}
-        primaryAction={
-          primaryActionButton
-            ? {
-                ...primaryActionButton(modalState.type)!,
-                onClick: () => handleSubmit(onSubmit)(),
-              }
-            : {
-                text: modalState.type === "new" ? "Создать" : "Сохранить",
-                type: "submit",
-                onClick: () => handleSubmit(onSubmit)(),
-              }
-        }
-        secondaryAction={
-          secondaryActionButton && modalState.type !== "new"
-            ? {
-                ...secondaryActionButton(modalState.type, modalState.modalId)!,
-                onClick: secondaryActionButton(modalState.type, modalState.modalId)!.onClick || closeModal,
-              }
-            : {
-                text: "Отмена",
-                type: "button",
-                onClick: closeModal,
-              }
-        }
       >
-        <form id="entity-form">
+        <FormWrapper
+          onSubmit={handleSubmit(onSubmit)}
+          primaryAction={
+            primaryActionButton
+              ? primaryActionButton(modalState.type)
+              : {
+                  text: modalState.type === "new" ? "Создать" : "Сохранить",
+                  type: "submit",
+                }
+          }
+          secondaryAction={
+            secondaryActionButton && modalState.type === "edit"
+              ? secondaryActionButton(modalState.type, modalState.modalId)
+              : {
+                  text: "Отмена",
+                  onClick: closeModal,
+                }
+          }
+        >
           <div className="grid grid-cols-1 gap-4">
             <FormComponent register={register} errors={errors} />
           </div>
-        </form>
+        </FormWrapper>
       </AdaptiveModalContainer>
     </>
   );

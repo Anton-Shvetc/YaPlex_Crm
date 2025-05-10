@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 
 interface AvatarUploadProps {
   profileImage: string | null;
@@ -9,20 +10,30 @@ interface AvatarUploadProps {
 }
 
 export function AvatarUpload({ profileImage, onImageChange, size = 24 }: AvatarUploadProps) {
+  const sizeClass = `w-${size} h-${size}`;
+  const imageSize = size * 4;
+  
   return (
     <div className="relative">
-      <div className={`w-${size} h-${size} rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700`}>
+      <div className={`${sizeClass} rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700`}>
         {profileImage ? (
-          <img
+          <Image
             src={profileImage}
             alt="Profile"
-            className="w-full h-full object-cover"
+            className="object-cover"
+            width={imageSize}
+            height={imageSize}
+            priority
+            unoptimized={profileImage.startsWith('data:')}
           />
         ) : (
-          <img
+          <Image
             src="/avatar.png"
             alt="Default Profile"
-            className="w-full h-full object-cover"
+            className="object-cover"
+            width={imageSize}
+            height={imageSize}
+            priority
           />
         )}
       </div>

@@ -2,10 +2,11 @@
 
 import React, { Fragment, ReactNode } from "react";
 import {
-  Dialog,
   Transition,
   DialogPanel,
 } from "@headlessui/react";
+import { Dialog } from "@headlessui/react";
+import { DialogBackdrop } from "@/components/shared/ModalContainer/ModalFix";
 import Link from "next/link";
 
 type AdaptiveModalUiProps = {
@@ -13,18 +14,6 @@ type AdaptiveModalUiProps = {
   onClose: () => void;
   title: string;
   children: ReactNode;
-  primaryAction?: {
-    text: string;
-    onClick?: () => void;
-    className?: string;
-    type: "button" | "submit";
-  };
-  secondaryAction?: {
-    text: string;
-    onClick: () => void;
-    className?: string;
-    type: "button" | "submit";
-  };
   onBack?: () => void;
   backLink?: string;
 };
@@ -34,8 +23,6 @@ export const AdaptiveModalUi: React.FC<AdaptiveModalUiProps> = ({
   onClose,
   title,
   children,
-  primaryAction,
-  secondaryAction,
   onBack,
   backLink,
 }) => {
@@ -73,7 +60,6 @@ export const AdaptiveModalUi: React.FC<AdaptiveModalUiProps> = ({
   return (
     <Transition show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
-        {/* Фоновое затемнение */}
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -83,77 +69,23 @@ export const AdaptiveModalUi: React.FC<AdaptiveModalUiProps> = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/50" />
+          <DialogBackdrop />
         </Transition.Child>
 
-        {/* Десктопное модальное окно (md:flex) / Мобильное модальное окно (flex md:hidden) */}
         <div className="fixed inset-0 overflow-y-auto">
-          {/* Десктопная версия - центрированное модальное окно */}
-          <div className="hidden md:flex min-h-full items-center justify-center p-4">
+          <div className="min-h-full flex">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
+              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              enterTo="opacity-100 translate-y-0 sm:scale-100"
               leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
+              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <DialogPanel className="w-full max-w-md transform rounded-lg bg-white dark:bg-gray-900 p-6 shadow-xl transition-all">
-                <div className="mb-4">
-                  <h2 className="text-lg font-medium text-gray-900 dark:text-white">
-                    {title}
-                  </h2>
-                </div>
-
-                <div className="mt-2 text-gray-800 dark:text-gray-200">
-                  {children}
-                </div>
-
-                {(primaryAction || secondaryAction) && (
-                  <div className="mt-6 flex gap-3">
-                    {primaryAction && (
-                      <button
-                        type={primaryAction.type}
-                        className={`w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors ${
-                          primaryAction.className || ""
-                        }`}
-                        onClick={primaryAction.onClick}
-                      >
-                        {primaryAction.text}
-                      </button>
-                    )}
-                    {secondaryAction && (
-                      <button
-                        type={secondaryAction.type}
-                        className={`w-full px-4 py-2 bg-gray-200 dark:bg-transparent text-gray-800 dark:text-white border border-gray-400 dark:border-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors ${
-                          secondaryAction.className || ""
-                        }`}
-                        onClick={secondaryAction.onClick}
-                      >
-                        {secondaryAction.text}
-                      </button>
-                    )}
-                  </div>
-                )}
-              </DialogPanel>
-            </Transition.Child>
-          </div>
-
-          {/* Мобильная версия */}
-          <div className="flex md:hidden min-h-full">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-full"
-              enterTo="opacity-100 translate-y-0"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-full"
-            >
-              <DialogPanel className="fixed inset-0 bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
+              <DialogPanel className="w-full transform bg-white dark:bg-gray-900 flex flex-col overflow-hidden md:rounded-lg md:max-w-2xl md:m-auto md:max-h-[90vh]">
                 {/* Шапка с кнопкой назад */}
-                <div className="px-4 py-4 border-b mb-[102px] border-gray-200 dark:border-gray-700 flex items-center">
+                <div className="px-4 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                   {backLink ? (
                     <Link
                       href={backLink}
@@ -175,32 +107,24 @@ export const AdaptiveModalUi: React.FC<AdaptiveModalUiProps> = ({
                       <span className="ml-2">{title}</span>
                     </Link>
                   ) : (
-                    <BackButton />
+                    <div className="flex items-center justify-between w-full">
+                      <BackButton />
+                      <button
+                        className="rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                        onClick={onClose}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
                   )}
                 </div>
 
                 {/* Основное содержимое */}
-                <div className="flex-1 overflow-y-auto p-4 [&_.grid]:grid-cols-1 [&_.col-span-2]:col-span-1">
-                  <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-                    {title}
-                  </h2>
+                <div className="flex-1 overflow-y-auto p-4 md:p-6">
                   {children}
                 </div>
-
-                {/* Кнопка сохранения */}
-                {primaryAction && (
-                  <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                    <button
-                      type={primaryAction.type}
-                      className={`w-full px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors ${
-                        primaryAction.className || ""
-                      }`}
-                      onClick={primaryAction.onClick}
-                    >
-                      {primaryAction.text}
-                    </button>
-                  </div>
-                )}
               </DialogPanel>
             </Transition.Child>
           </div>

@@ -17,8 +17,8 @@ export const navigationLinks = [
   { href: "/", label: "Главная", icon: <HomeIcon /> },
   { href: "/clients", label: "Клиенты", icon: <ClientsIcon /> },
   { href: "/deals", label: "Сделки", icon: <DealsIcon /> },
-  { href: "/reports", label: "Отчёты", icon: <ReportsIcon /> },
   { href: "/tasks", label: "Задачи", icon: <TasksIcon /> },
+  { href: "/reports", label: "Отчёты", icon: <ReportsIcon /> },
 ];
 
 export const COMMON_CLASSES = {
@@ -90,14 +90,25 @@ export const MobileNavLink = ({
 
 export const LogoCloseNavBarMob = () => (
   <div className="w-10 h-10 flex items-center justify-center">
-    <Image src="/LogoCloseNavBarMob.svg" alt="Логотип" width={40} height={40} />
+    <Image
+      src="/LogoCloseNavBarMob.svg"
+      alt="Logo"
+      width={40}
+      height={40}
+      priority
+    />
   </div>
 );
 
-
 export const LogoOpenNavBarMob = () => (
   <div className="w-[102px] h-7 flex items-center justify-center">
-    <Image src="/LogoOpenNavBarMob.svg" alt="Логотип" width={102} height={28} />
+    <Image
+      src="/LogoOpenNavBarMob.svg"
+      alt="Logo"
+      width={102}
+      height={28}
+      priority
+    />
   </div>
 );
 
@@ -174,3 +185,7 @@ export function MobileLogoutButton({
     </button>
   );
 } 
+
+export const Navigation = () => {
+  // ... existing code ...
+}; 

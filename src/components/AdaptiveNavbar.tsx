@@ -201,18 +201,6 @@ export default function AdaptiveNavbar() {
               </Link>
             ))}
 
-            <Link 
-              href="/profile" 
-              className={`flex items-center rounded-lg py-3 px-4 mb-1 ${
-                pathname === "/profile" 
-                  ? 'bg-blue-50 dark:bg-gray-700 text-blue-500' 
-                  : 'text-gray-800 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-700'
-              }`}
-            >
-              <UserIcon />
-              <span className="ml-4">Профиль</span>
-            </Link>
-
             {/* Кнопка выхода для мобильного меню */}
             <button 
               onClick={handleLogout}

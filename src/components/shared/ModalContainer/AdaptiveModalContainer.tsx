@@ -10,18 +10,6 @@ export type AdaptiveModalContainerProps = {
   onClose: () => void;
   onSubmit?: () => void;
   children: React.ReactNode;
-  primaryAction?: {
-    text: string;
-    onClick?: () => void;
-    className?: string;
-    type: "button" | "submit";
-  };
-  secondaryAction?: {
-    text: string;
-    onClick: () => void;
-    className?: string;
-    type: "button" | "submit";
-  };
   onBack?: () => void;
   backLink?: string;
 };
@@ -37,8 +25,6 @@ export const AdaptiveModalContainer = ({
   isOpen,
   onClose,
   children,
-  primaryAction,
-  secondaryAction,
   onBack,
   backLink,
 }: AdaptiveModalContainerProps) => {
@@ -47,8 +33,6 @@ export const AdaptiveModalContainer = ({
       isOpen={isOpen} 
       title={modalTitle} 
       onClose={onClose}
-      primaryAction={primaryAction}
-      secondaryAction={secondaryAction}
       onBack={onBack}
       backLink={backLink}
     >

@@ -99,7 +99,8 @@ export default function Home() {
     };
 
     fetchData();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Отключаем правило eslint, так как эти функции стабильны (из zustand store)
 
   useEffect(() => {
     console.log("statisticsTableData", statisticsTableData);
