@@ -22,6 +22,7 @@ import { RegisterForm } from "@/components/feature/RegisterForm/RegisterForm";
 import { RegisterFormDataType } from "@/utils/types";
 import { enqueueSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/store/userStore";
 
 // const loginSchema = z.object({
 //   email: z.string().min(1, "Поле Email обязательно"),
@@ -32,6 +33,7 @@ export default function LoginPage() {
   // const { reset } = useForm<UserLoginI>({
   //   resolver: zodResolver(loginSchema),
   // });
+  const { setUser } = useUserStore();
   const { setClients } = useClientStore();
   const { setDeals } = useDealsStore();
   const { setTasks } = useTasksStore();
@@ -68,7 +70,13 @@ export default function LoginPage() {
     enqueueSnackbar(message, { variant: success ? "success" : "error" });
 
     if (success && data?.token) {
-      router.push("/");
+      if (data?.userData) {
+        setUser(data?.userData);
+      }
+
+      if (data?.token) {
+        router.push("/");
+      }
     }
   };
 

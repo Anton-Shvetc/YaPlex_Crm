@@ -62,7 +62,7 @@ export default function ProfilePage() {
     formState: { errors, isDirty },
   } = useForm<ProfileFormData>();
 
-  const [userId, setUserId] = useState<string>("undefined");
+  const [userId, setUserId] = useState<string | undefined>(undefined);
 
   const onSubmit = (data: ProfileFormData) => {
     // Логика сохранения данных профиля

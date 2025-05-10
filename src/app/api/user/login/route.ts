@@ -77,11 +77,7 @@ export async function POST(request: Request) {
       message: "Аутентификация успешна",
       data: {
         token,
-        user: {
-          userId: user.userId,
-          email: user.email,
-          // другие безопасные данные пользователя
-        },
+        userData: user,
       },
     });
   } catch (error) {

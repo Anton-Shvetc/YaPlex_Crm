@@ -1,4 +1,4 @@
-import { LoginFormDataType } from "@/utils/types";
+import { LoginFormDataType, UserI } from "@/utils/types";
 import { FetchService } from "./fetcher";
 
 interface AuthResponse {
@@ -6,6 +6,7 @@ interface AuthResponse {
   message: string;
   data?: {
     token?: string;
+    userData?: UserI
     // другие данные, если они есть
   };
 }
