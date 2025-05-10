@@ -5,26 +5,15 @@ import { useForm } from "react-hook-form";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { ButtonUi } from "@/components/ui/ButtonUi";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { enqueueSnackbar } from "notistack";
 import { AvatarUpload } from "@/components/ui/AvatarUpload";
 import { ConnectedAccounts } from "@/components/feature/ConnectedAccounts/ConnectedAccounts";
-
-interface ProfileFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  username: string;
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}
-
-interface ConnectedAccount {
-  id: string;
-  type: "vk" | "google";
-  connected: boolean;
-  username?: string;
-}
+import { useLoaderStore } from "@/store/useLoaderStore";
+import { useRouter } from "next/navigation";
+import { deleteItem } from "@/services/deleteItem";
+import { useUserStore } from "@/store/userStore";
+import { getSingleData } from "@/services/getSingleData";
+import { ConnectedAccount, ProfileFormData, UserI } from "@/utils/types";
+import { updateProfile } from "@/services/updateProfile";
 
 export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -43,32 +32,31 @@ export default function ProfilePage() {
   ]);
   const [formChanged, setFormChanged] = useState(false);
 
+  const { user, setUser } = useUserStore();
+  const { startLoading, stopLoading } = useLoaderStore();
+
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
     watch,
     reset,
     formState: { errors, isDirty },
-  } = useForm<ProfileFormData>({
-    defaultValues: {
-      firstName: "Ярополк",
-      lastName: "Иванов",
-      email: "ivanov@yandex.ru",
-      username: "Yaropolk",
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    },
-  });
+  } = useForm<ProfileFormData>();
 
-  const onSubmit = (data: ProfileFormData) => {
+  const onSubmit = async (data: ProfileFormData) => {
     // Логика сохранения данных профиля
-    console.log(data);
-    enqueueSnackbar("Профиль успешно обновлен", { variant: "success" });
+
+    const response = await updateProfile(data);
+
+    if (response?.success && response?.data) {
+      setUser(response.data as UserI);
+    }
+
+    setFormChanged(false);
 
     // Сброс состояния формы и флага изменений
-    reset(data);
-    setFormChanged(false);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +83,19 @@ export default function ProfilePage() {
       )
     ) {
       // Логика удаления аккаунта
-      console.log("Deleting account");
+
+      deleteItem({
+        endpoint: "api/гыук",
+        onSuccess: () => {
+          router.push("/login");
+        },
+        loaderMethods: {
+          startLoading: startLoading,
+          stopLoading: stopLoading,
+        },
+        successMessage: "Аккаунт успешно деактивирован",
+        errorMessage: "Не удалось деактивировать аккаунт",
+      });
     }
   };
 
@@ -106,6 +106,16 @@ export default function ProfilePage() {
       setFormChanged(true);
     }
   }, [watchFields, isDirty]);
+
+  useEffect(() => {
+    getSingleData<UserI>(`api/user/profile`, setUser, {
+      startLoading,
+      stopLoading,
+    });
+  }, []);
+  useEffect(() => {
+    if (user) reset(user);
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 dark:from-gray-900 dark:to-gray-800 md:bg-none md:bg-white md:dark:bg-gray-900">

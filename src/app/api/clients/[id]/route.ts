@@ -1,4 +1,4 @@
-import { Client } from "@/utils/types";
+import { Client, DecodedToken } from "@/utils/types";
 import { handleDatabaseUpdate } from "@/utils/handleDatabaseUpdate";
 import { NextRequest, NextResponse } from "next/server";
 import turso from "@/lib/db";
@@ -39,11 +39,6 @@ export async function PUT(
       userCompanyKey,
     ],
   });
-}
-
-interface DecodedToken {
-  userId: string;
-  userCompanyKey: string;
 }
 
 export async function DELETE(

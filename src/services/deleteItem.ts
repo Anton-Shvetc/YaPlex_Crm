@@ -2,7 +2,7 @@ import { enqueueSnackbar } from "notistack";
 import { FetchService } from "./fetcher";
 
 interface DeleteIteItem {
-  id: number;
+  id?: number | string ;
   endpoint: string;
   onSuccess?: () => void;
   loaderMethods?: {
@@ -23,9 +23,9 @@ export const deleteItem = async ({
 }: DeleteIteItem): Promise<boolean> => {
   try {
     loaderMethods?.startLoading?.();
-    
-    const { success } = await new FetchService()
-      .DELETE(`${endpoint}/${id}`)
+
+    const { success, status } = await new FetchService()
+      .DELETE(id ? `${endpoint}/${id}` : endpoint)
       .send();
 
     if (success) {
@@ -34,6 +34,11 @@ export const deleteItem = async ({
       return true;
     } else {
       enqueueSnackbar(errorMessage, { variant: "error" });
+
+      if (status === 401 || status === 403) {
+        return true;
+      }
+
       return false;
     }
   } catch (error) {

@@ -14,6 +14,22 @@ export type LoginFormDataType = {
   password: string;
 };
 
+export interface UserI {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  phone?: string;
+  email: string;
+  avatar: string;
+  userCompanyKey: string;
+}
+
+export interface DecodedToken {
+  userId: string;
+  userCompanyKey: string;
+}
+
 export type CreateClientDataType = {
   name: string;
   tel: string;
@@ -102,30 +118,19 @@ export interface StatisticsI {
   quarter: number;
 }
 
-export interface UserLoginI {
+export interface ProfileFormData {
+  firstName: string;
+  lastName: string;
   email: string;
-  password: string;
+  username: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }
 
-// Тип для сделки
-// export interface Deal {
-//   id?: number;
-//   dealName: string;
-//   clientId: number;
-//   amount?: number | null;
-//   status?: string | null;
-//   userCompanyKey: string;
-
-// }
-
-// Тип для задачи
-// export interface Task {
-//   id?: number;
-//   taskName: string;
-//   clientId?: number | null;
-//   dealId?: number | null;
-//   dueDate?: string | null;
-//   status?: string | null;
-//   userCompanyKey: string;
-
-// }
+export interface ConnectedAccount {
+  id: string;
+  type: "vk" | "google";
+  connected: boolean;
+  username?: string;
+}

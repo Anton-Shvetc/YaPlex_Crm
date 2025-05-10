@@ -136,7 +136,6 @@ export async function GET() {
           message:
             "Токен не действительный или устарел, выполните авторизацию снова",
           error: "Token expired",
-          status: 401,
         },
         { status: 401 }
       );

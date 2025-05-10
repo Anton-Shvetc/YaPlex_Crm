@@ -68,11 +68,13 @@ export class FetchService {
           success: true,
           message: responseData.message,
           data: responseData.data,
+          status: responseData.code,
         };
       } else {
         return {
           success: false,
           message: `${response.status}  - ${responseData.message}`,
+          status: responseData.code,
         };
       }
     } catch (e) {

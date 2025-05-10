@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface LoaderState {
   isLoading: boolean;
@@ -8,10 +8,10 @@ interface LoaderState {
 }
 
 export const useLoaderStore = create<LoaderState>((set) => ({
-  isLoading: false,
+  isLoading: true,
   activeLoaders: 0,
 
-  startLoading: () => 
+  startLoading: () =>
     set((state) => {
       const newActiveLoaders = state.activeLoaders + 1;
       return {
@@ -20,7 +20,7 @@ export const useLoaderStore = create<LoaderState>((set) => ({
       };
     }),
 
-  stopLoading: () => 
+  stopLoading: () =>
     set((state) => {
       const newActiveLoaders = Math.max(0, state.activeLoaders - 1);
       return {

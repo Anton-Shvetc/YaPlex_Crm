@@ -1,10 +1,10 @@
 import { enqueueSnackbar } from "notistack";
 import { FetchService } from "./fetcher";
 
-export const getParamsData = async <T>(
+export const getSingleData = async <T>(
   endpoint: string,
-  setState: (data: T[]) => void,
-  loaderMethods?: { startLoading: () => void; stopLoading: () => void }
+  setState: (data: T) => void,
+  loaderMethods?: { startLoading: () => void; stopLoading: () => void },
 ): Promise<void> => {
   try {
     loaderMethods?.startLoading?.();
@@ -12,10 +12,11 @@ export const getParamsData = async <T>(
       .GET(endpoint) // Указываем тип ответа как массив T
       .send();
 
-    if (success && Array.isArray(data)) {
-      setState(data);
+    if (success) {
+      setState(data as T);
       return;
     }
+
     enqueueSnackbar(message, { variant: success ? "success" : "error" });
   } catch (error) {
     console.error(error);

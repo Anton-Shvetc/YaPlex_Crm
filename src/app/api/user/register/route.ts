@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     // 3. Проверка существующего пользователя
 
     const existUser = await turso.execute({
-      sql: "SELECT * FROM users WHERE email = ?",
+      sql: "SELECT * FROM users WHERE email = ? AND is_active != 0",
       args: [data.email],
     });
     if (existUser.rows.length > 0) {
@@ -47,8 +47,8 @@ export async function POST(request: Request) {
     const result = await turso.execute({
       sql: `
         INSERT INTO users (
-          userId, firstName, lastName, email, username, userCompanyKey,  password, createdAt, updatedAt
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          userId, firstName, lastName, email, username, userCompanyKey,  password, createdAt, updatedAt, isActive
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       args: [
         userId,
@@ -60,6 +60,7 @@ export async function POST(request: Request) {
         hashedPassword,
         createdAt,
         updatedAt,
+        1,
       ],
     });
 

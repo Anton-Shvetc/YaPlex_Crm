@@ -78,7 +78,7 @@ export async function handleDatabaseQuery(tableName: string, limit?: number) {
           message:
             "Токен не действительный или устарел, выполните авторизацию снова",
           error: "Token expired",
-          status: 401,
+ 
         },
         { status: 401 }
       );
