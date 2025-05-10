@@ -179,6 +179,18 @@ export async function handleDatabaseUpdate<T>(
     );
   } catch (error) {
     console.error(`Error updating ${updateParams.entityName}:`, error);
+    if (error instanceof jwt.TokenExpiredError || error instanceof jwt.JsonWebTokenError) {
+      (await cookies()).delete('token');
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: "Токен не действительный или устарел, выполните авторизацию снова",
+          error: "Token expired",
+        },
+        { status: 401 }
+      );
+    }
+
     return NextResponse.json(
       {
         success: false,
