@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     // 3. Проверка существующего пользователя
 
     const existUser = await turso.execute({
-      sql: "SELECT * FROM users WHERE email = ?",
+      sql: "SELECT * FROM users WHERE email = ? AND is_active != 0",
       args: [data.email],
     });
     if (existUser.rows.length > 0) {
