@@ -15,6 +15,10 @@ import { useState, useEffect } from "react";
 import { MobileNavBar } from "./MobileNavBar";
 import { ThemeToggle } from "./ThemeToggle";
 import { logout } from "@/services/auth";
+import { useClientStore } from "@/store/clientStore";
+import { useStatisticsStore } from "@/store/statisticsStore";
+import { useTasksStore } from "@/store/tasksStore";
+import { useDealsStore } from "@/store/dealsStore";
 
 export default function Navbar() {
   const router = useRouter();
@@ -135,10 +139,20 @@ function LogoutButton({
   mounted: boolean;
   router: ReturnType<typeof useRouter>;
 }) {
+  const { setClients } = useClientStore();
+  const { setDeals } = useDealsStore();
+  const { setTasks } = useTasksStore();
+  const { setStatisticsTableData } = useStatisticsStore();
   const handleLogout = async () => {
     const { success } = await logout();
 
     if (success) {
+      // Вынести в отдельный обработчик
+      setClients([]);
+      setDeals([]);
+      setTasks([]);
+      setStatisticsTableData([]);
+
       router.push("/");
     }
   };
