@@ -8,7 +8,7 @@ export const getParamsData = async <T>(
 ): Promise<void> => {
   try {
     loaderMethods?.startLoading?.();
-    const { success, data, message, status } = await new FetchService()
+    const { success, data, message } = await new FetchService()
       .GET(endpoint) // Указываем тип ответа как массив T
       .send();
 
