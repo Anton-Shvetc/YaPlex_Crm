@@ -1,13 +1,8 @@
 "use client";
 
-interface MainPageInfoI {
-  showMobileForm: boolean;
-  setActiveForm: React.Dispatch<React.SetStateAction<"login" | "register">>;
-  activeForm: string;
-  setShowMobileForm: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { LoginPageInfoI } from "@/utils/types";
 
-export const MainPageInfo: React.FC<MainPageInfoI> = ({
+export const LoginPageInfo: React.FC<LoginPageInfoI> = ({
   activeForm,
   setActiveForm,
   showMobileForm,

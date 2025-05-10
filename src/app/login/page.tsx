@@ -17,7 +17,7 @@ import { useDealsStore } from "@/store/dealsStore";
 // import { AuthForm } from "@/components/feature/AuthForm/AuthForm";
 
 import { LoginForm } from "@/components/feature/LoginForm/LoginForm";
-import { MainPageInfo } from "@/components/feature/MainPageInfo/MainPageInfo";
+import { LoginPageInfo } from "@/components/feature/LoginPageInfo/LoginPageInfo";
 import { RegisterForm } from "@/components/feature/RegisterForm/RegisterForm";
 import { RegisterFormDataType } from "@/utils/types";
 import { enqueueSnackbar } from "notistack";
@@ -94,7 +94,7 @@ export default function LoginPage() {
       <div className="relative min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-12 md:p-12">
           {/* Колонка с описанием (всегда видна на десктопе) */}
-          <MainPageInfo
+          <LoginPageInfo
             showMobileForm={showMobileForm}
             setActiveForm={setActiveForm}
             activeForm={activeForm}

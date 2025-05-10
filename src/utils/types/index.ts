@@ -134,3 +134,18 @@ export interface ConnectedAccount {
   connected: boolean;
   username?: string;
 }
+
+export interface MainPageInfoDesktopI {
+  statisticsTableData: StatisticsI[];
+  clients: Client[];
+  deals: Deal[];
+  tasks: Task[];
+}
+
+
+export interface LoginPageInfoI {
+  showMobileForm: boolean;
+  setActiveForm: React.Dispatch<React.SetStateAction<"login" | "register">>;
+  activeForm: string;
+  setShowMobileForm: React.Dispatch<React.SetStateAction<boolean>>;
+}
