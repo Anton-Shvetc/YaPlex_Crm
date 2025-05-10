@@ -2,7 +2,7 @@ import { enqueueSnackbar } from "notistack";
 import { FetchService } from "./fetcher";
 
 interface DeleteIteItem {
-  id: number | string | undefined;
+  id?: number | string ;
   endpoint: string;
   onSuccess?: () => void;
   loaderMethods?: {
@@ -25,7 +25,7 @@ export const deleteItem = async ({
     loaderMethods?.startLoading?.();
 
     const { success, status } = await new FetchService()
-      .DELETE(`${endpoint}/${id}`)
+      .DELETE(id ? `${endpoint}/${id}` : endpoint)
       .send();
 
     if (success) {

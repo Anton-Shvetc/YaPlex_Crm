@@ -62,8 +62,6 @@ export default function ProfilePage() {
     formState: { errors, isDirty },
   } = useForm<ProfileFormData>();
 
-  const [userId, setUserId] = useState<string | undefined>(undefined);
-
   const onSubmit = (data: ProfileFormData) => {
     // Логика сохранения данных профиля
     console.log(data);
@@ -92,9 +90,6 @@ export default function ProfilePage() {
   };
 
   const handleDeleteAccount = () => {
-    if (!userId)
-      enqueueSnackbar("Пользователь не определен", { variant: "error" });
-
     if (
       window.confirm(
         "Вы уверены, что хотите удалить свой аккаунт? Это действие необратимо."
@@ -103,8 +98,7 @@ export default function ProfilePage() {
       // Логика удаления аккаунта
 
       deleteItem({
-        id: userId,
-        endpoint: "api/clients",
+        endpoint: "api/гыук",
         onSuccess: () => {
           router.push("/login");
         },
@@ -127,11 +121,14 @@ export default function ProfilePage() {
   }, [watchFields, isDirty]);
 
   useEffect(() => {
-    getSingleData<UserI>(`api/user/${userId}`, setUser, {
+    getSingleData<UserI>(`api/user/profile`, setUser, {
       startLoading,
       stopLoading,
     });
   }, []);
+  useEffect(() => {
+    if (user) reset(user);
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 dark:from-gray-900 dark:to-gray-800 md:bg-none md:bg-white md:dark:bg-gray-900">

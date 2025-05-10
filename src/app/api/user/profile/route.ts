@@ -5,24 +5,11 @@ import turso from "@/lib/db";
 
 import jwt from "jsonwebtoken";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET() {
   try {
     // 1. Проверка авторизации
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value;
-
-    if (params.id === "undefined") {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Пользователь не найден",
-        },
-        { status: 400 }
-      );
-    }
 
     if (!token) {
       return NextResponse.json(
@@ -37,7 +24,7 @@ export async function GET(
 
     // 2. Верификация токена
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
-    const { userCompanyKey } = decoded;
+    const { userId, userCompanyKey } = decoded;
 
     // 3. Получение данных пользователя
     const result = await turso.execute({
@@ -47,17 +34,15 @@ export async function GET(
             lastname,
             firstname,
             username,
-            email, 
-            name, 
-            is_active,
-
+            email,
+            is_active
           FROM users 
           WHERE 
             userId = ? 
             AND userCompanyKey = ?
-            AND is_active = TRUE
+            AND is_active = 1
         `,
-      args: [params.id, userCompanyKey],
+      args: [userId, userCompanyKey],
     });
 
     // 4. Проверка результата
@@ -67,7 +52,7 @@ export async function GET(
           success: false,
           message: "Пользователь не найден или нет прав доступа",
         },
-        { status: 404 }
+        { status: 403 }
       );
     }
 
@@ -108,13 +93,8 @@ export async function GET(
 
 // }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-): Promise<NextResponse> {
+export async function DELETE() {
   try {
-    const { id } = await params;
-
     // 1. Проверка авторизации
     const cookieStore = cookies();
     const token = (await cookieStore).get("token")?.value;
@@ -132,12 +112,12 @@ export async function DELETE(
 
     // 2. Верификация токена
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
-    const { userCompanyKey } = decoded;
+    const { userId, userCompanyKey } = decoded;
 
     // 3. Проверка существования клиента
     const existingClient = await turso.execute({
       sql: "SELECT id FROM clients WHERE userId = ? AND userCompanyKey = ? AND is_active != 1",
-      args: [id, userCompanyKey],
+      args: [userId, userCompanyKey],
     });
 
     if (existingClient.rows.length === 0) {
@@ -160,7 +140,7 @@ export async function DELETE(
           update_at = CURRENT_TIMESTAMP
         WHERE userId = ? AND userCompanyKey = ?
       `,
-      args: [id, userCompanyKey],
+      args: [userId, userCompanyKey],
     });
 
     // 5. Проверка результата
@@ -171,7 +151,7 @@ export async function DELETE(
         {
           success: true,
           message: "Аккаунт успешно деактивирован",
-          data: { id },
+          data: { userId },
         },
         { status: 200 }
       );

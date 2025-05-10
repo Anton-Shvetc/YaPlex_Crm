@@ -32,7 +32,15 @@ export async function POST(request: Request) {
 
     const user = userResult.rows[0] as unknown as {
       userId: string;
+      firstName: string;
+      lastName: string;
+      userName: string;
+      phone: string;
       email: string;
+      createdAt: string;
+      updatedAt: string;
+
+      avatar: string;
       password: string;
       userCompanyKey: string;
     };
