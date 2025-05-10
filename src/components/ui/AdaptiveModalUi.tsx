@@ -83,9 +83,9 @@ export const AdaptiveModalUi: React.FC<AdaptiveModalUiProps> = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <DialogPanel className="w-full transform bg-white dark:bg-gray-900 flex flex-col overflow-hidden md:rounded-lg md:max-w-2xl md:m-auto md:max-h-[90vh]">
+              <DialogPanel className="w-full transform bg-white dark:bg-gray-900 flex flex-col overflow-hidden md:rounded-lg md:max-w-lg md:m-auto md:max-h-[80vh]">
                 {/* Шапка с кнопкой назад */}
-                <div className="px-4 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                   {backLink ? (
                     <Link
                       href={backLink}
