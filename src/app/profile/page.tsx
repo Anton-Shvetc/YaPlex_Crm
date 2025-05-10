@@ -8,6 +8,9 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { enqueueSnackbar } from "notistack";
 import { AvatarUpload } from "@/components/ui/AvatarUpload";
 import { ConnectedAccounts } from "@/components/feature/ConnectedAccounts/ConnectedAccounts";
+import { useLoaderStore } from "@/store/useLoaderStore";
+import { useRouter } from "next/navigation";
+import { deleteItem } from "@/services/deleteItem";
 
 interface ProfileFormData {
   firstName: string;
@@ -43,23 +46,19 @@ export default function ProfilePage() {
   ]);
   const [formChanged, setFormChanged] = useState(false);
 
+  const { startLoading, stopLoading } = useLoaderStore();
+
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
     watch,
     reset,
     formState: { errors, isDirty },
-  } = useForm<ProfileFormData>({
-    defaultValues: {
-      firstName: "Ярополк",
-      lastName: "Иванов",
-      email: "ivanov@yandex.ru",
-      username: "Yaropolk",
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    },
-  });
+  } = useForm<ProfileFormData>();
+
+  const [userId, setUserId] = useState<string>("");
 
   const onSubmit = (data: ProfileFormData) => {
     // Логика сохранения данных профиля
@@ -89,13 +88,29 @@ export default function ProfilePage() {
   };
 
   const handleDeleteAccount = () => {
+    if (!userId)
+      enqueueSnackbar("Пользователь не определен", { variant: "error" });
+
     if (
       window.confirm(
         "Вы уверены, что хотите удалить свой аккаунт? Это действие необратимо."
       )
     ) {
       // Логика удаления аккаунта
-      console.log("Deleting account");
+
+      deleteItem({
+        id: userId,
+        endpoint: "api/clients",
+        onSuccess: () => {
+          router.push("/login");
+        },
+        loaderMethods: {
+          startLoading: startLoading,
+          stopLoading: stopLoading,
+        },
+        successMessage: "Аккаунт успешно деактивирован",
+        errorMessage: "Не удалось деактивировать аккаунт",
+      });
     }
   };
 

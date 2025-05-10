@@ -14,6 +14,11 @@ export type LoginFormDataType = {
   password: string;
 };
 
+export interface DecodedToken {
+  userId: string;
+  userCompanyKey: string;
+}
+
 export type CreateClientDataType = {
   name: string;
   tel: string;

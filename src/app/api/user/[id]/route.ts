@@ -1,52 +1,15 @@
-import { Client, DecodedToken } from "@/utils/types";
-import { handleDatabaseUpdate } from "@/utils/handleDatabaseUpdate";
+import { DecodedToken } from "@/utils/types";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import turso from "@/lib/db";
 
 import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
-
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-): Promise<NextResponse> {
-  const { id } = await params;
-
-  return handleDatabaseUpdate<Client>(request, id, {
-    entityName: "clients",
-    requiredFields: ["name", "email", "company"],
-    uniqueFields: ["email", "company"],
-    updateQuery: `
-      UPDATE clients SET
-        name = ?,
-        email = ?,
-        phone = ?,
-        website = ?,
-        comment = ?,
-        company = ?,
-        update_at = ?
-      WHERE id = ? AND userCompanyKey = ?
-    `,
-    prepareData: (data: Client, { userCompanyKey }, id) => [
-      data.name,
-      data.email ?? null,
-      data.phone ?? null,
-      data.website ?? null,
-      data.comment ?? null,
-      data.company ?? null,
-      new Date().toISOString(),
-      id,
-      userCompanyKey,
-    ],
-  });
-}
 
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
   try {
-    console.log("params debug", params, request);
     const { id } = await params;
 
     // 1. Проверка авторизации
@@ -54,8 +17,13 @@ export async function DELETE(
     const token = (await cookieStore).get("token")?.value;
 
     if (!token) {
+      (await cookies()).delete("token");
       return NextResponse.json(
-        { success: false, message: "Токен недействительный или устарел" },
+        {
+          success: false,
+          message: "Токен недействительный или устарел",
+          status: 401,
+        },
         { status: 401 }
       );
     }
@@ -66,47 +34,55 @@ export async function DELETE(
 
     // 3. Проверка существования клиента
     const existingClient = await turso.execute({
-      sql: "SELECT id FROM clients WHERE id = ? AND userCompanyKey = ?",
+      sql: "SELECT id FROM clients WHERE userId = ? AND userCompanyKey = ? AND is_active != 1",
       args: [id, userCompanyKey],
     });
 
     if (existingClient.rows.length === 0) {
+      (await cookies()).delete("token");
       return NextResponse.json(
-        { success: false, message: "Клиент не найден или нет прав доступа" },
-        { status: 404 }
+        {
+          success: false,
+          message: "Аккаунт не найден или нет прав доступа",
+          status: 403,
+        },
+        { status: 403 }
       );
     }
 
     // 4. "Мягкое" удаление (установка is_active = false)
     const result = await turso.execute({
       sql: `
-        UPDATE clients 
+        UPDATE users 
         SET 
           is_active = FALSE,
           update_at = CURRENT_TIMESTAMP
-        WHERE id = ? AND userCompanyKey = ?
+        WHERE userId = ? AND userCompanyKey = ?
       `,
       args: [id, userCompanyKey],
     });
 
     // 5. Проверка результата
     if (result.rowsAffected > 0) {
+      (await cookies()).delete("token");
+
       return NextResponse.json(
         {
           success: true,
-          message: "Клиент успешно деактивирован",
+          message: "Аккаунт успешно деактивирован",
           data: { id },
+          status: 200,
         },
         { status: 200 }
       );
     }
 
     return NextResponse.json(
-      { success: false, message: "Не удалось деактивировать клиента" },
+      { success: false, message: "Не удалось деактивировать аккаунт" },
       { status: 400 }
     );
   } catch (error) {
-    console.error("Error deactivating client:", error);
+    console.error("Error deactivating acc:", error);
     return NextResponse.json(
       {
         success: false,
