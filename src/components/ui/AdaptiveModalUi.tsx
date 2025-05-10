@@ -1,10 +1,7 @@
 "use client";
 
 import React, { Fragment, ReactNode } from "react";
-import {
-  Transition,
-  DialogPanel,
-} from "@headlessui/react";
+import { Transition, DialogPanel } from "@headlessui/react";
 import { Dialog } from "@headlessui/react";
 import { DialogBackdrop } from "@/components/shared/ModalContainer/ModalFix";
 import Link from "next/link";
@@ -85,7 +82,7 @@ export const AdaptiveModalUi: React.FC<AdaptiveModalUiProps> = ({
             >
               <DialogPanel className="w-full transform bg-white dark:bg-gray-900 flex flex-col overflow-hidden md:rounded-lg md:max-w-lg md:m-auto md:max-h-[80vh]">
                 {/* Шапка с кнопкой назад */}
-                <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <div className="block px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex md:hidden items-center justify-between">
                   {backLink ? (
                     <Link
                       href={backLink}
@@ -113,8 +110,19 @@ export const AdaptiveModalUi: React.FC<AdaptiveModalUiProps> = ({
                         className="rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
                         onClick={onClose}
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-6 h-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
                         </svg>
                       </button>
                     </div>
@@ -132,4 +140,4 @@ export const AdaptiveModalUi: React.FC<AdaptiveModalUiProps> = ({
       </Dialog>
     </Transition>
   );
-}; 
+};
