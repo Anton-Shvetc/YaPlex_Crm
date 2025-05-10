@@ -47,8 +47,8 @@ export async function POST(request: Request) {
     const result = await turso.execute({
       sql: `
         INSERT INTO users (
-          userId, firstName, lastName, email, username, userCompanyKey,  password, createdAt, updatedAt
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          userId, firstName, lastName, email, username, userCompanyKey,  password, createdAt, updatedAt, isActive
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       args: [
         userId,
@@ -60,6 +60,7 @@ export async function POST(request: Request) {
         hashedPassword,
         createdAt,
         updatedAt,
+        1,
       ],
     });
 

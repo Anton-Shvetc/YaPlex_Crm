@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
-import { UserLoginI } from "@/utils/types";
+import { LoginFormDataType } from "@/utils/types";
 import { useClientStore } from "@/store/clientStore";
 import { useStatisticsStore } from "@/store/statisticsStore";
 import { useTasksStore } from "@/store/tasksStore";
@@ -62,7 +62,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleLogin = async (requestData: UserLoginI) => {
+  const handleLogin = async (requestData: LoginFormDataType) => {
     const { success, message, data } = await login(requestData);
 
     enqueueSnackbar(message, { variant: success ? "success" : "error" });
