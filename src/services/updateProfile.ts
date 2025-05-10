@@ -1,6 +1,6 @@
 import { enqueueSnackbar } from "notistack";
 import { FetchService } from "./fetcher";
-import { ProfileFormData, UserI } from "@/utils/types";
+import { ProfileFormData } from "@/utils/types";
 
 export const updateProfile = async (userData: ProfileFormData) => {
   try {
@@ -16,6 +16,7 @@ export const updateProfile = async (userData: ProfileFormData) => {
       return { success, status };
     }
   } catch (error) {
+    console.error(error);
     return { success: false, message: "Непредвиденная ошибка" };
   }
 };

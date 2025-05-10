@@ -1,4 +1,4 @@
-import { DecodedToken, UserI } from "@/utils/types";
+import { DecodedToken } from "@/utils/types";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import turso from "@/lib/db";

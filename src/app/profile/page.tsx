@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { ButtonUi } from "@/components/ui/ButtonUi";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { enqueueSnackbar } from "notistack";
 import { AvatarUpload } from "@/components/ui/AvatarUpload";
 import { ConnectedAccounts } from "@/components/feature/ConnectedAccounts/ConnectedAccounts";
 import { useLoaderStore } from "@/store/useLoaderStore";
