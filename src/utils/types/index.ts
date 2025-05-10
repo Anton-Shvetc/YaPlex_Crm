@@ -118,30 +118,19 @@ export interface StatisticsI {
   quarter: number;
 }
 
-// export interface UserLoginI {
-//   email: string;
-//   password: string;
-// }
+export interface ProfileFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
 
-// Тип для сделки
-// export interface Deal {
-//   id?: number;
-//   dealName: string;
-//   clientId: number;
-//   amount?: number | null;
-//   status?: string | null;
-//   userCompanyKey: string;
-
-// }
-
-// Тип для задачи
-// export interface Task {
-//   id?: number;
-//   taskName: string;
-//   clientId?: number | null;
-//   dealId?: number | null;
-//   dueDate?: string | null;
-//   status?: string | null;
-//   userCompanyKey: string;
-
-// }
+export interface ConnectedAccount {
+  id: string;
+  type: "vk" | "google";
+  connected: boolean;
+  username?: string;
+}

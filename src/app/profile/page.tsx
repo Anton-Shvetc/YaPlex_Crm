@@ -13,24 +13,8 @@ import { useRouter } from "next/navigation";
 import { deleteItem } from "@/services/deleteItem";
 import { useUserStore } from "@/store/userStore";
 import { getSingleData } from "@/services/getSingleData";
-import { UserI } from "@/utils/types";
-
-interface ProfileFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  username: string;
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}
-
-interface ConnectedAccount {
-  id: string;
-  type: "vk" | "google";
-  connected: boolean;
-  username?: string;
-}
+import { ConnectedAccount, ProfileFormData, UserI } from "@/utils/types";
+import { updateProfile } from "@/services/updateProfile";
 
 export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -62,14 +46,18 @@ export default function ProfilePage() {
     formState: { errors, isDirty },
   } = useForm<ProfileFormData>();
 
-  const onSubmit = (data: ProfileFormData) => {
+  const onSubmit = async (data: ProfileFormData) => {
     // Логика сохранения данных профиля
-    console.log(data);
-    enqueueSnackbar("Профиль успешно обновлен", { variant: "success" });
+
+    const response = await updateProfile(data);
+
+    if (response?.success && response?.data) {
+      setUser(response.data as UserI);
+    }
+
+    setFormChanged(false);
 
     // Сброс состояния формы и флага изменений
-    reset(data);
-    setFormChanged(false);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
