@@ -14,6 +14,7 @@ export interface IServerAnswerDto<T = unknown> {
   success: boolean;
   message: string;
   data?: T;
+  status?: number;
 }
 
 export class FetchService {

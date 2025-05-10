@@ -1,4 +1,3 @@
-
 import { UserLoginI } from "@/utils/types";
 import { FetchService } from "./fetcher";
 
@@ -17,4 +16,3 @@ export const login = async (userData: UserLoginI): Promise<AuthResponse> => {
 export const logout = async () => {
   return await new FetchService().GET("/api/user/logout").send();
 };
-

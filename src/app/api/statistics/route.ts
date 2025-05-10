@@ -125,6 +125,22 @@ export async function GET() {
       { status: 200 }
     );
   } catch (error) {
+    if (
+      error instanceof jwt.TokenExpiredError ||
+      error instanceof jwt.JsonWebTokenError
+    ) {
+      (await cookies()).delete("token");
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Токен не действительный или устарел, выполните авторизацию снова",
+          error: "Token expired",
+          status: 401,
+        },
+        { status: 401 }
+      );
+    }
     console.error("Error fetching stats:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },

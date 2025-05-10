@@ -66,7 +66,24 @@ export async function handleDatabaseQuery(tableName: string, limit?: number) {
       { status: 200 }
     );
   } catch (error) {
-    console.error(error);
+    console.log("error", error);
+    if (
+      error instanceof jwt.TokenExpiredError ||
+      error instanceof jwt.JsonWebTokenError
+    ) {
+      (await cookies()).delete("token");
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Токен не действительный или устарел, выполните авторизацию снова",
+          error: "Token expired",
+          status: 401,
+        },
+        { status: 401 }
+      );
+    }
+
     return NextResponse.json(
       { success: false, message: "Internal server error" }, // Улучшенное сообщение об ошибке
       { status: 500 }
