@@ -134,3 +134,10 @@ export interface ConnectedAccount {
   connected: boolean;
   username?: string;
 }
+
+export interface MainPageInfoDesktopI {
+  statisticsTableData: StatisticsI[];
+  clients: Client[];
+  deals: Deal[];
+  tasks: Task[];
+}

@@ -1,19 +1,14 @@
 "use client";
 
-import {
-  CollapseIcon,
-  ExpandIcon,
-  UserIcon,
-  LogoutIcon,
-} from "@/styles/icons";
+import { CollapseIcon, ExpandIcon, UserIcon, LogoutIcon } from "@/styles/icons";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { 
-  navigationLinks, 
+import {
+  navigationLinks,
   LogoCloseNavBarMob,
   LogoOpenNavBarMob,
-  COMMON_CLASSES
+  COMMON_CLASSES,
 } from "@/components/navigation/NavigationComponents";
 import { logout } from "@/services/auth";
 
@@ -44,7 +39,7 @@ export default function AdaptiveNavbar() {
   }, [isSideMenuOpen]);
 
   const handleToggleSideMenu = () => {
-    setIsSideMenuOpen(prev => !prev);
+    setIsSideMenuOpen((prev) => !prev);
   };
 
   const handleCloseSideMenu = () => {
@@ -69,7 +64,7 @@ export default function AdaptiveNavbar() {
   return (
     <>
       {/* Мобильная верхняя панель навигации - отображается только на мобильных (md:hidden) */}
-      <header className="fixed top-0 left-0 right-0 h-[50px] bg-white dark:bg-gray-800 flex items-center justify-between px-4 z-40 shadow-sm rounded-b-xl mb-5 md:hidden">
+      <header className="top-0 left-0 right-0 h-[50px] bg-white dark:bg-gray-800 flex items-center justify-between px-4 z-40 shadow-sm rounded-b-xl mb-5 md:hidden">
         {/* Бургер-меню */}
         <button
           onClick={handleToggleSideMenu}
@@ -111,7 +106,11 @@ export default function AdaptiveNavbar() {
               key={link.href}
               href={link.href}
               className={`flex items-center rounded p-2 ${
-                pathname === link.href ? (mounted ? "bg-gray-200 dark:bg-gray-700" : "bg-gray-200") : ""
+                pathname === link.href
+                  ? mounted
+                    ? "bg-gray-200 dark:bg-gray-700"
+                    : "bg-gray-200"
+                  : ""
               } ${isCollapsed ? "justify-center" : "px-4"} ${
                 mounted
                   ? "text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -127,7 +126,11 @@ export default function AdaptiveNavbar() {
           <Link
             href="/profile"
             className={`flex items-center rounded p-2 ${
-              pathname === "/profile" ? (mounted ? "bg-gray-200 dark:bg-gray-700" : "bg-gray-200") : ""
+              pathname === "/profile"
+                ? mounted
+                  ? "bg-gray-200 dark:bg-gray-700"
+                  : "bg-gray-200"
+                : ""
             } ${isCollapsed ? "justify-center" : "px-4"} ${
               mounted
                 ? "text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -140,7 +143,7 @@ export default function AdaptiveNavbar() {
           </Link>
 
           {/* Кнопка выхода для десктопа */}
-          <button 
+          <button
             onClick={handleLogout}
             className={`flex items-center rounded p-2 cursor-pointer ${
               isCollapsed ? "justify-center" : "px-4"
@@ -158,26 +161,38 @@ export default function AdaptiveNavbar() {
       </div>
 
       {/* Выдвижное мобильное меню - отображается поверх содержимого при активации */}
-      <div 
-        className={`fixed inset-0 bg-black bg-opacity-50 z-50 transition-opacity duration-300 md:hidden ${
+      <div
+        className={`inset-0 bg-black bg-opacity-50 z-50 transition-opacity duration-300 md:hidden ${
           isSideMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={handleCloseSideMenu}
       >
-        <div 
-          className={`absolute top-0 left-0 h-full w-full ${COMMON_CLASSES.menuBackground} transform transition-transform duration-300 ease-in-out ${
+        <div
+          className={`absolute top-0 left-0 h-full w-full ${
+            COMMON_CLASSES.menuBackground
+          } transform transition-transform duration-300 ease-in-out ${
             isSideMenuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center pt-8 px-6 pb-6 border-b border-gray-200 dark:border-gray-700">
             <LogoOpenNavBarMob />
-            <button 
+            <button
               className="ml-auto text-gray-500 dark:text-gray-400"
               onClick={handleCloseSideMenu}
               aria-label="Закрыть меню"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
@@ -187,13 +202,13 @@ export default function AdaptiveNavbar() {
           {/* Навигационные ссылки для мобильного меню */}
           <nav className="px-2 pt-4">
             {navigationLinks.map((link) => (
-              <Link 
+              <Link
                 key={link.href}
-                href={link.href} 
+                href={link.href}
                 className={`flex items-center rounded-lg py-3 px-4 mb-1 ${
-                  pathname === link.href 
-                    ? 'bg-blue-50 dark:bg-gray-700 text-blue-500' 
-                    : 'text-gray-800 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-700'
+                  pathname === link.href
+                    ? "bg-blue-50 dark:bg-gray-700 text-blue-500"
+                    : "text-gray-800 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-700"
                 }`}
               >
                 {link.icon}
@@ -202,7 +217,7 @@ export default function AdaptiveNavbar() {
             ))}
 
             {/* Кнопка выхода для мобильного меню */}
-            <button 
+            <button
               onClick={handleLogout}
               className="flex items-center w-full rounded-lg py-3 px-4 text-gray-800 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-700 mt-4"
             >
@@ -214,4 +229,4 @@ export default function AdaptiveNavbar() {
       </div>
     </>
   );
-} 
+}
