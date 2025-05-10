@@ -5,6 +5,109 @@ import turso from "@/lib/db";
 
 import jwt from "jsonwebtoken";
 
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    // 1. Проверка авторизации
+    const cookieStore = cookies();
+    const token = (await cookieStore).get("token")?.value;
+
+    if (params.id === "undefined") {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Пользователь не найден",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (!token) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Требуется авторизация",
+          status: 401,
+        },
+        { status: 401 }
+      );
+    }
+
+    // 2. Верификация токена
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
+    const { userCompanyKey } = decoded;
+
+    // 3. Получение данных пользователя
+    const result = await turso.execute({
+      sql: `
+          SELECT 
+            userId, 
+            lastname,
+            firstname,
+            username,
+            email, 
+            name, 
+            is_active,
+
+          FROM users 
+          WHERE 
+            userId = ? 
+            AND userCompanyKey = ?
+            AND is_active = TRUE
+        `,
+      args: [params.id, userCompanyKey],
+    });
+
+    // 4. Проверка результата
+    if (result.rows.length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Пользователь не найден или нет прав доступа",
+        },
+        { status: 404 }
+      );
+    }
+
+    // 5. Возвращаем данные пользователя
+    const user = result.rows[0];
+    return NextResponse.json(
+      {
+        success: true,
+        data: user,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error fetching user:", error);
+
+    // Обработка ошибки верификации JWT
+    if (error instanceof jwt.JsonWebTokenError) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Недействительный токен",
+        },
+        { status: 401 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Internal server error",
+        error: error instanceof Error ? error.message : String(error),
+      },
+      { status: 500 }
+    );
+  }
+}
+// export async function POST() {
+
+// }
+
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -22,7 +125,6 @@ export async function DELETE(
         {
           success: false,
           message: "Токен недействительный или устарел",
-          status: 401,
         },
         { status: 401 }
       );
@@ -44,7 +146,6 @@ export async function DELETE(
         {
           success: false,
           message: "Аккаунт не найден или нет прав доступа",
-          status: 403,
         },
         { status: 403 }
       );
@@ -71,7 +172,6 @@ export async function DELETE(
           success: true,
           message: "Аккаунт успешно деактивирован",
           data: { id },
-          status: 200,
         },
         { status: 200 }
       );

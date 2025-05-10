@@ -2,7 +2,7 @@ import { enqueueSnackbar } from "notistack";
 import { FetchService } from "./fetcher";
 
 interface DeleteIteItem {
-  id: number | string;
+  id: number | string | undefined;
   endpoint: string;
   onSuccess?: () => void;
   loaderMethods?: {

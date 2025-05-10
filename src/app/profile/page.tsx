@@ -11,6 +11,9 @@ import { ConnectedAccounts } from "@/components/feature/ConnectedAccounts/Connec
 import { useLoaderStore } from "@/store/useLoaderStore";
 import { useRouter } from "next/navigation";
 import { deleteItem } from "@/services/deleteItem";
+import { useUserStore } from "@/store/userStore";
+import { getSingleData } from "@/services/getSingleData";
+import { UserI } from "@/utils/types";
 
 interface ProfileFormData {
   firstName: string;
@@ -46,6 +49,7 @@ export default function ProfilePage() {
   ]);
   const [formChanged, setFormChanged] = useState(false);
 
+  const { user, setUser } = useUserStore();
   const { startLoading, stopLoading } = useLoaderStore();
 
   const router = useRouter();
@@ -58,7 +62,7 @@ export default function ProfilePage() {
     formState: { errors, isDirty },
   } = useForm<ProfileFormData>();
 
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState<string>("undefined");
 
   const onSubmit = (data: ProfileFormData) => {
     // Логика сохранения данных профиля
@@ -121,6 +125,13 @@ export default function ProfilePage() {
       setFormChanged(true);
     }
   }, [watchFields, isDirty]);
+
+  useEffect(() => {
+    getSingleData<UserI>(`api/user/${userId}`, setUser, {
+      startLoading,
+      stopLoading,
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 dark:from-gray-900 dark:to-gray-800 md:bg-none md:bg-white md:dark:bg-gray-900">
