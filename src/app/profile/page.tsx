@@ -21,7 +21,7 @@ interface ProfileFormData {
 
 interface ConnectedAccount {
   id: string;
-  type: 'vk' | 'google';
+  type: "vk" | "google";
   connected: boolean;
   username?: string;
 }
@@ -30,16 +30,16 @@ export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [connectedAccounts] = useState<ConnectedAccount[]>([
     {
-      id: '1',
-      type: 'vk',
+      id: "1",
+      type: "vk",
       connected: true,
-      username: 'Ярополк Иванов'
+      username: "Ярополк Иванов",
     },
     {
-      id: '2',
-      type: 'google',
-      connected: false
-    }
+      id: "2",
+      type: "google",
+      connected: false,
+    },
   ]);
   const [formChanged, setFormChanged] = useState(false);
 
@@ -65,7 +65,7 @@ export default function ProfilePage() {
     // Логика сохранения данных профиля
     console.log(data);
     enqueueSnackbar("Профиль успешно обновлен", { variant: "success" });
-    
+
     // Сброс состояния формы и флага изменений
     reset(data);
     setFormChanged(false);
@@ -83,20 +83,24 @@ export default function ProfilePage() {
     }
   };
 
-  const handleConnectAccount = (type: 'vk' | 'google') => {
+  const handleConnectAccount = (type: "vk" | "google") => {
     // Логика подключения аккаунта
     console.log(`Connecting ${type} account`);
   };
 
   const handleDeleteAccount = () => {
-    if (window.confirm('Вы уверены, что хотите удалить свой аккаунт? Это действие необратимо.')) {
+    if (
+      window.confirm(
+        "Вы уверены, что хотите удалить свой аккаунт? Это действие необратимо."
+      )
+    ) {
       // Логика удаления аккаунта
-      console.log('Deleting account');
+      console.log("Deleting account");
     }
   };
 
   const watchFields = watch();
-  
+
   useEffect(() => {
     if (isDirty) {
       setFormChanged(true);
@@ -108,13 +112,18 @@ export default function ProfilePage() {
       <div className="pt-[70px] md:pt-0 px-6 max-w-5xl mx-auto">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-[0_4px_8px_0_rgba(229,231,235,0.5)] dark:shadow-[0_4px_8px_0_rgba(0,0,0,0.25)] p-8 pt-5 pb-0">
           {/* Заголовок только для десктопа */}
-          <h1 className="text-2xl font-bold mb-8 text-gray-800 dark:text-white hidden md:block">Настройка аккаунта</h1>
-          
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
+          <h1 className="text-2xl font-bold mb-8 text-gray-800 dark:text-white hidden md:block">
+            Настройка аккаунта
+          </h1>
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-6 md:space-y-8"
+          >
             {/* Секция с фото и переключателем темы (только для десктопа) */}
             <div className="flex justify-between items-start">
-              <AvatarUpload 
-                profileImage={profileImage} 
+              <AvatarUpload
+                profileImage={profileImage}
                 onImageChange={handleImageChange}
                 size={24}
               />
@@ -143,7 +152,9 @@ export default function ProfilePage() {
               <div className="mb-2 md:mb-0 order-3 md:order-none">
                 <InputFieldUi
                   label="Имя аккаунта"
-                  {...register("username", { required: "Имя аккаунта обязательно" })}
+                  {...register("username", {
+                    required: "Имя аккаунта обязательно",
+                  })}
                   error={errors.username?.message}
                 />
               </div>
@@ -165,13 +176,19 @@ export default function ProfilePage() {
             </div>
 
             <div>
-              <h2 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">Пароль</h2>
+              <h2 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">
+                Пароль
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div className="mb-2 md:mb-0">
                   <InputFieldUi
                     label="Существующий пароль"
                     type="password"
-                    {...register("currentPassword")}
+                    {...register("currentPassword", {
+                      required: watch("newPassword")
+                        ? "Обязательное поле"
+                        : false,
+                    })}
                     error={errors.currentPassword?.message}
                   />
                 </div>
@@ -207,8 +224,8 @@ export default function ProfilePage() {
             </div>
 
             {/* Подключенные аккаунты - только для десктопа, используя компонент ConnectedAccounts */}
-            <ConnectedAccounts 
-              accounts={connectedAccounts} 
+            <ConnectedAccounts
+              accounts={connectedAccounts}
               onConnect={handleConnectAccount}
               showHeader={true}
               className="hidden md:block"
@@ -231,11 +248,7 @@ export default function ProfilePage() {
 
               <div className="flex space-x-4">
                 {formChanged && (
-                  <ButtonUi
-                    variant="primary"
-                    type="submit"
-                    label="Сохранить"
-                  />
+                  <ButtonUi variant="primary" type="submit" label="Сохранить" />
                 )}
               </div>
             </div>
@@ -253,10 +266,10 @@ export default function ProfilePage() {
             )}
           </form>
         </div>
-        
+
         {/* Подключенные аккаунты - только для мобильных устройств */}
-        <ConnectedAccounts 
-          accounts={connectedAccounts} 
+        <ConnectedAccounts
+          accounts={connectedAccounts}
           onConnect={handleConnectAccount}
           showHeader={false}
           className="mt-10 md:hidden"
@@ -275,4 +288,4 @@ export default function ProfilePage() {
       </div>
     </div>
   );
-} 
+}
