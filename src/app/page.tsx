@@ -122,43 +122,53 @@ export default function Home() {
           )}
 
           <MainPageInfoContainer title="Топ 10 активных клиентов">
-            {clients?.map((client) => (
-              <MainPageClientCard
-                key={client?.id}
-                name={client.name}
-                company={client.company}
-                dealsCount={client?.dealsCount}
-              />
-            ))}
+            {clients?.length > 0
+              ? clients?.map((client) => (
+                  <MainPageClientCard
+                    key={client?.id}
+                    name={client.name}
+                    company={client.company}
+                    dealsCount={client?.dealsCount}
+                  />
+                ))
+              : null}
           </MainPageInfoContainer>
 
           <MainPageInfoContainer title="Топ 10 активных сделок" isGrid={false}>
-            {deals.map((deal) => {
+            {deals?.length
+              ? deals.map((deal) => {
+                  const clientName =
+                    clients.find((client) => client?.id === deal?.clientId)
+                      ?.name || undefined;
 
-              const clientName = clients.find(client => client?.id === deal?.clientId)?.name || undefined
-
-          return    <MainPageDealCard
-                key={deal?.id}
-                name={deal.name}
-                status={deal.status}
-                clientName={clientName}
-                amount = {deal?.amount}
-                created_at={deal?.created_at}
-              />
-})}
+                  return (
+                    <MainPageDealCard
+                      key={deal?.id}
+                      name={deal.name}
+                      status={deal.status}
+                      clientName={clientName}
+                      amount={deal?.amount}
+                      created_at={deal?.created_at}
+                    />
+                  );
+                })
+              : null}
           </MainPageInfoContainer>
           <MainPageInfoContainer title="Последние 10 задач">
-            {tasks?.map((task) => (
-              <MainPageTaskCard
-                key={task?.id}
-                name={task.name}
-                deal={
-                  deals?.find((el) => el?.id === task.dealId)?.name || undefined
-                }
-                deadline={task?.deadline}
-                status={task?.status}
-              />
-            ))}
+            {tasks?.length > 0
+              ? tasks?.map((task) => (
+                  <MainPageTaskCard
+                    key={task?.id}
+                    name={task.name}
+                    deal={
+                      deals?.find((el) => el?.id === task.dealId)?.name ||
+                      undefined
+                    }
+                    deadline={task?.deadline}
+                    status={task?.status}
+                  />
+                ))
+              : null}
           </MainPageInfoContainer>
         </div>
       </div>
