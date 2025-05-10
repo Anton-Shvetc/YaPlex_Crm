@@ -1,15 +1,8 @@
 "use client";
 
-import {
-  Client,
-  ColumnDefinition,
-  Deal,
-  StatisticsI,
-  Task,
-  UserI,
-} from "@/utils/types";
+import { Client, Deal, StatisticsI, Task, UserI } from "@/utils/types";
 
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { getParamsData } from "@/services/getParamsData";
 import { useLoaderStore } from "@/store/useLoaderStore";
 
@@ -26,7 +19,8 @@ import { Loader } from "@/components/shared/Loader";
 import { useClientStore } from "@/store/clientStore";
 import { useTasksStore } from "@/store/tasksStore";
 import { useDealsStore } from "@/store/dealsStore";
-import { MainPageInfoDesktop } from "@/components/feature/MainPageInfoDesktop";
+import { MainPageInfoDesktop } from "@/components/feature/MainPageInfo/MainPageInfoDesktop";
+import { MainPageInfoMobile } from "@/components/feature/MainPageInfo/MainPageInfoMobile";
 
 export default function Home() {
   const { user, setUser } = useUserStore();
@@ -84,6 +78,7 @@ export default function Home() {
                 tasks,
               }}
             />
+            <MainPageInfoMobile />
           </>
         )}
       </div>

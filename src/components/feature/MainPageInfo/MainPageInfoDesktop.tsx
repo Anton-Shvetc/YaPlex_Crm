@@ -5,11 +5,8 @@ import { MainPageTaskCard } from "@/components/ui/MainPageCards/MainPageTaskCard
 import { MainPageDealCard } from "@/components/ui/MainPageCards/MainPageDealCard";
 
 import {
-  Client,
   ColumnDefinition,
-  Deal,
   StatisticsI,
-  Task,
   MainPageInfoDesktopI,
 } from "@/utils/types";
 import { useMemo } from "react";

@@ -1,5 +1,3 @@
-
-
-export const MainPageStatisticsMobileCard = ({ data }: any) => {
-    
-}
+export const MainPageStatisticsMobileCard = () => {
+  return <>Мобильная версия</>;
+};
