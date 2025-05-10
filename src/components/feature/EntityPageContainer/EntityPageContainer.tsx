@@ -252,7 +252,6 @@ export const EntityPageContainer = <T extends EntityType>({
       </div>
 
       {/* Модальное окно */}
-
       <AdaptiveModalContainer
         modalTitle={getModalTitle(modalState.type, entityType)}
         isOpen={modalState.isOpen}

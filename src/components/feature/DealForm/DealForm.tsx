@@ -16,14 +16,14 @@ export const DealForm: React.FC<DealFormProps> = ({ register, errors }) => {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <InputFieldUi
           label="Название"
           {...register("name", { required: "Обязательное поле" })}
           error={errors.name?.message}
         />
 
-        <div className="mb-4">
+        <div>
           <label
             htmlFor="clientId"
             className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
@@ -50,7 +50,7 @@ export const DealForm: React.FC<DealFormProps> = ({ register, errors }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <InputFieldUi
           label="Сумма"
           type="text"
