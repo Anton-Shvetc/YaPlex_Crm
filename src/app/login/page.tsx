@@ -3,13 +3,17 @@
 import { login } from "@/services/auth";
 import { registerUser } from "@/services/registerUser";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { cookies } from 'next/headers';
 
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 import { UserLoginI } from "@/utils/types";
+import { useClientStore } from "@/store/clientStore";
+import { useStatisticsStore } from "@/store/statisticsStore";
+import { useTasksStore } from "@/store/tasksStore";
+import { useDealsStore } from "@/store/dealsStore";
 // import { AuthForm } from "@/components/feature/AuthForm/AuthForm";
 
 import { LoginForm } from "@/components/feature/LoginForm/LoginForm";
@@ -28,6 +32,19 @@ export default function LoginPage() {
   // const { reset } = useForm<UserLoginI>({
   //   resolver: zodResolver(loginSchema),
   // });
+  const { setClients } = useClientStore();
+  const { setDeals } = useDealsStore();
+  const { setTasks } = useTasksStore();
+  const { setStatisticsTableData } = useStatisticsStore();
+
+  // TODO - улучшить
+  useEffect(() => {
+    // Вынести в отдельный обработчик
+    setClients([]);
+    setDeals([]);
+    setTasks([]);
+    setStatisticsTableData([]);
+  }, []);
 
   const router = useRouter();
 
