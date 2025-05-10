@@ -21,15 +21,13 @@ import { TableContainer } from "@/components/shared/TableContainer/TableContaine
 import { MainPageClientCard } from "@/components/ui/MainPageCards/MainPageClientCard";
 import { MainPageTaskCard } from "@/components/ui/MainPageCards/MainPageTaskCard";
 import { MainPageDealCard } from "@/components/ui/MainPageCards/MainPageDealCard";
+import { useStatisticsStore } from "@/store/statisticsStore";
 
 export default function Home() {
   const { clients, setClients } = useClientStore();
   const { deals, setDeals } = useDealsStore();
   const { tasks, setTasks } = useTasksStore();
-
-  const [statisticsTableData, setStatisticsTableData] =
-    useState<StatisticsI[]>();
-
+  const { statisticsTableData, setStatisticsTableData } = useStatisticsStore();
   const { isLoading, startLoading, stopLoading } = useLoaderStore();
 
   const statisticsColumns: ColumnDefinition<StatisticsI>[] = useMemo(

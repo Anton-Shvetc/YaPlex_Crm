@@ -1,6 +1,9 @@
-
 import { UserLoginI } from "@/utils/types";
 import { FetchService } from "./fetcher";
+import { useClientStore } from "@/store/clientStore";
+import { useStatisticsStore } from "@/store/statisticsStore";
+import { useTasksStore } from "@/store/tasksStore";
+import { useDealsStore } from "@/store/dealsStore";
 
 interface AuthResponse {
   success: boolean;
@@ -15,6 +18,16 @@ export const login = async (userData: UserLoginI): Promise<AuthResponse> => {
 };
 
 export const logout = async () => {
+  const { setClients } = useClientStore();
+  const { setDeals } = useDealsStore();
+  const { setTasks } = useTasksStore();
+  const { setStatisticsTableData } = useStatisticsStore();
+
+  // Вынести в отдельный обработчик
+  setClients([]);
+  setDeals([]);
+  setTasks([]);
+  setStatisticsTableData([]);
+
   return await new FetchService().GET("/api/user/logout").send();
 };
-
