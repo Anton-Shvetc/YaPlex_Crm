@@ -25,6 +25,13 @@ export const getVariantClasses = (variant: string) => {
           text-white
           disabled:bg-red-400 disabled:cursor-not-allowed
         `;
+      case "link":
+        return `
+          bg-transparent
+          text-blue-500 hover:text-blue-600
+          p-0
+          disabled:text-gray-400 disabled:cursor-not-allowed
+        `;
       default:
         return `
           bg-gray-200 dark:bg-transparent 

@@ -1,28 +1,23 @@
 "use client";
 
 import { SnackbarProvider } from "notistack";
-import Navbar from "./Navbar";
-
+import AdaptiveNavbar from "./AdaptiveNavbar";
 import { usePathname } from "next/navigation";
-
-// import { ModalContainer } from "@/components/shared/ModalContainer/ModalContainer";
-// import {
-//   FieldErrors,
-//   SubmitHandler,
-//   useForm,
-//   UseFormRegister,
-// } from "react-hook-form";
-
-// import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
-// import {
-//   getPrimaryActionText,
-//   getSecondaryActionClass,
-//   getSecondaryActionText,
-// } from "@/utils/actionButtonsUtils";
-// import { getModalTitle } from "@/utils/modalUtils";
+import { useEffect } from "react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    
+    if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
 
   return (
     <SnackbarProvider
@@ -33,7 +28,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       }}
     >
       <div className="flex h-screen overflow-y-hidden bg-white dark:bg-gray-900">
-        {pathname !== "/login" && <Navbar />}
+        {pathname !== "/login" && <AdaptiveNavbar />}
         <div className="flex-1 overflow-auto">{children}</div>
       </div>
     </SnackbarProvider>

@@ -19,7 +19,7 @@ export const ClientForm: React.FC<ClientFormProps> = ({ register, errors }) => {
         error={errors?.name?.message}
       />
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="flex flex-col md:grid md:grid-cols-2 gap-4">
         <InputFieldUi
           label="Телефон"
           {...register("phone", {
@@ -38,7 +38,7 @@ export const ClientForm: React.FC<ClientFormProps> = ({ register, errors }) => {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="flex flex-col md:grid md:grid-cols-2 gap-4">
         <InputFieldUi
           label="Сайт"
           // type="url"

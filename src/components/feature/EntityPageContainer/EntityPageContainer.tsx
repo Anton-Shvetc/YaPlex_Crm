@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
-import { ModalContainer } from "@/components/shared/ModalContainer/ModalContainer";
 import {
   FieldErrors,
   SubmitHandler,
@@ -27,6 +26,7 @@ import { ButtonUi } from "@/components/ui/ButtonUi";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { SearchIcon } from "@/styles/icons";
+import { AdaptiveModalContainer } from "@/components/shared/ModalContainer/AdaptiveModalContainer";
 
 type EntityType = "client" | "deal" | "task";
 // type PageType = "clients" | "deals" | "tasks";
@@ -176,13 +176,14 @@ export const EntityPageContainer = <T extends EntityType>({
 
   useEffect(() => {
     if (updateTableData) updateTableData();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Отключаем правило eslint, так как функция стабильна
 
   useEffect(() => {
     setFilteredTableData(tableData || []);
   }, [tableData]);
 
-  const searchData = (data: EntityTableRowMap[T][], searchText: string) => {
+  const searchData = useCallback((data: EntityTableRowMap[T][], searchText: string) => {
     if (!searchText.trim()) return data || [];
     if (!data) return [];
 
@@ -194,14 +195,13 @@ export const EntityPageContainer = <T extends EntityType>({
         return fieldValue?.toString().toLowerCase().includes(searchLower);
       })
     );
-  };
+  }, [columns]);
 
   useEffect(() => {
-    console.log("searchParams", searchParams);
-
     const result = searchData(tableData || [], searchParams);
     setFilteredTableData(result);
-  }, [searchParams]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]); // Отключаем правило eslint для tableData и searchData, так как они стабильны
 
   return (
     <>
@@ -252,8 +252,7 @@ export const EntityPageContainer = <T extends EntityType>({
       </div>
 
       {/* Модальное окно */}
-
-      <ModalContainer
+      <AdaptiveModalContainer
         modalTitle={getModalTitle(modalState.type, entityType)}
         isOpen={modalState.isOpen}
         onClose={closeModal}
@@ -264,12 +263,12 @@ export const EntityPageContainer = <T extends EntityType>({
             primaryActionButton
               ? primaryActionButton(modalState.type)
               : {
-                  text: "Создать",
+                  text: modalState.type === "new" ? "Создать" : "Сохранить",
                   type: "submit",
                 }
           }
           secondaryAction={
-            secondaryActionButton && modalState.type !== "new"
+            secondaryActionButton && modalState.type === "edit"
               ? secondaryActionButton(modalState.type, modalState.modalId)
               : {
                   text: "Отмена",
@@ -281,7 +280,7 @@ export const EntityPageContainer = <T extends EntityType>({
             <FormComponent register={register} errors={errors} />
           </div>
         </FormWrapper>
-      </ModalContainer>
+      </AdaptiveModalContainer>
     </>
   );
 };

@@ -33,23 +33,27 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
 
   return (
     <form onSubmit={onSubmit} className={`space-y-4 ${additionalStyle}`}>
-      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
-        {title}
-      </h2>
-      {children}
+      {title && (
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+          {title}
+        </h2>
+      )}
+      <div className="space-y-4">
+        {children}
+      </div>
       {/* 
  TODO - пока нужно для авторизации, регистрации, потом тоже перевести на primaryAction и тд */}
       {btnTitle && (
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+          className="w-full mt-8 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
         >
           {btnTitle}
         </button>
       )}
 
       {(primaryAction || secondaryAction) && (
-        <div className="mt-6 flex gap-3">
+        <div className="mt-8 flex flex-col md:flex-row gap-3">
           {primaryAction && (
             <ButtonUi
               type="submit"
@@ -57,6 +61,7 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
               disabled={isLoading}
               label={primaryAction.text}
               onClick={primaryAction.onClick}
+              className="w-full"
             />
           )}
           {secondaryAction && (
@@ -65,6 +70,7 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
               disabled={isLoading}
               label={secondaryAction.text}
               onClick={secondaryAction.onClick}
+              className="hidden md:block"
             />
           )}
         </div>

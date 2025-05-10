@@ -22,14 +22,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ register, errors }) => {
         error={errors.name?.message}
       />
 
-      <div className="grid grid-cols-2 gap-4">
-        {/* <InputFieldUi
-          label="Сделка"
-          {...register("dealId")}
-          error={errors.dealId?.message}
-        /> */}
-
-        <div className="mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
           <label
             htmlFor="dealId"
             className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
@@ -80,7 +74,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ register, errors }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <InputFieldUi
           label="Выполнить до"
           type="date"
