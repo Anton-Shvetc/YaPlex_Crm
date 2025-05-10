@@ -2,7 +2,7 @@
 
 interface MainPageInfoI {
   showMobileForm: boolean;
-  setActiveForm: React.Dispatch<React.SetStateAction<"login" | "register" | "resetPassword" | "emailConfirm">>;
+  setActiveForm: React.Dispatch<React.SetStateAction<"login" | "register">>;
   activeForm: string;
   setShowMobileForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -48,7 +48,7 @@ export const MainPageInfo: React.FC<MainPageInfoI> = ({
         <div className="hidden flex-col md:flex">
           <p className="text-gray-500 dark:text-white">
             {" "}
-            У вас еще нет аккаунта?
+            У вас еще нет аккаунта
           </p>
 
           <button
@@ -56,36 +56,6 @@ export const MainPageInfo: React.FC<MainPageInfoI> = ({
             onClick={() => setActiveForm("register")}
           >
             Зарегестрироваться
-          </button>
-        </div>
-      )}
-      
-      {activeForm === "resetPassword" && !showMobileForm && (
-        <div className="hidden flex-col md:flex">
-          <p className="text-gray-500 dark:text-white">
-             Уже зарегистрированы?
-          </p>
-
-          <button
-            className="text-[#2563EB] w-fit"
-            onClick={() => setActiveForm("login")}
-          >
-            Войти в аккаунт
-          </button>
-        </div>
-      )}
-      
-      {activeForm === "emailConfirm" && !showMobileForm && (
-        <div className="hidden flex-col md:flex">
-          <p className="text-gray-500 dark:text-white">
-            Уже зарегистрированы?
-          </p>
-
-          <button
-            className="text-[#2563EB] w-fit"
-            onClick={() => setActiveForm("login")}
-          >
-            Войти в аккаунт
           </button>
         </div>
       )}

@@ -9,11 +9,9 @@ import { useForm } from "react-hook-form";
 export const LoginForm = ({
   onSubmit,
   showMobileForm,
-  onForgotPassword,
 }: {
   onSubmit: (data: { email: string; password: string }) => void;
   showMobileForm: boolean;
-  onForgotPassword: () => void;
 }) => {
   const {
     register,
@@ -64,7 +62,6 @@ export const LoginForm = ({
         <button
           type="button"
           className="text-sm text-blue-600 hover:text-blue-800"
-          onClick={onForgotPassword}
         >
           Забыли пароль?
         </button>
