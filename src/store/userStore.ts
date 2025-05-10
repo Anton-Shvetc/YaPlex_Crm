@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { UserI } from "@/utils/types";
 
 interface UserStoreI {
-  user: UserI | {};
+  user: Partial<UserI>; 
   setUser: (user: UserI) => void;
 }
 
