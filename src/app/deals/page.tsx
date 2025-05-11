@@ -58,7 +58,9 @@ export default function DealsPage() {
   };
 
   const finishedDeal = (id?: number) => {
-    console.log("12414", id);
+    if (window.confirm("Вы уверены, что хотите завершить сделку?")) {
+      console.log("12414", id);
+    }
   };
 
   return (
