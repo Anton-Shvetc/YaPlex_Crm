@@ -42,25 +42,23 @@ export default function ClientsPage() {
 
   const handleDelete = (id: number | undefined) => {
     if (id) {
-      alert("delete");
-      // deleteItem({
-      //   id: id,
-      //   endpoint: "api/clients",
-      //   onSuccess: () => updateTableData(),
-      //   loaderMethods: {
-      //     startLoading: startLoading,
-      //     stopLoading: stopLoading,
-      //   },
-      //   successMessage: "Клиент успешно деактивирован",
-      //   errorMessage: "Не удалось деактивировать клиента",
-      // });
+      deleteItem({
+        id: id,
+        endpoint: "api/clients",
+        onSuccess: () => updateTableData(),
+        loaderMethods: {
+          startLoading: startLoading,
+          stopLoading: stopLoading,
+        },
+        successMessage: "Клиент успешно деактивирован",
+        errorMessage: "Не удалось деактивировать клиента",
+      });
     }
   };
 
   return (
     <EntityPageContainer
       entityType="client"
-    
       // actionButtonText="Новый клиент"
       modalTargetText={(modalType: string) =>
         modalType === "new" ? "Новый клиент" : "Карточка клиента"

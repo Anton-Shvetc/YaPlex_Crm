@@ -10,10 +10,14 @@ import { useClientStore } from "@/store/clientStore";
 import { useMemo } from "react";
 import { getStatusColor } from "@/utils/ui/getStatusColor";
 import { formatDate } from "@/utils/formatters";
+import { useModalStore } from "@/store/modalStore";
 
 export default function DealsPage() {
   const { deals, setDeals } = useDealsStore();
   const { clients, setClients } = useClientStore();
+
+
+  const {closeModal} = useModalStore()
 
   const dealsTableColumns: ColumnDefinition<Deal>[] = useMemo(
     () => [
@@ -57,16 +61,41 @@ export default function DealsPage() {
     getParamsData<Deal>("api/deals", setDeals, { startLoading, stopLoading });
   };
 
+  const finishedDeal = (id: number | undefined) => {
+    if (id) {
+      alert("finished");
+   
+    }
+  };
+
+
   return (
     <EntityPageContainer
       entityType="deal"
-      actionButtonText="Новая сделка"
+   
+      modalTargetText={(modalType: string) =>
+        modalType === "new" ? "Новая сделка" : "Карточка сделки"
+      }
       requestLink="api/deals"
       pageTitle="Сделки"
       tableData={deals}
       columns={dealsTableColumns}
       updateTableData={updateTableData}
-      formComponent={DealForm}
+      primaryActionButton={(modalType: string) => ({
+        text: modalType === "new" ? "Создать" : "Редактировать",
+        type: "submit",
+        varinat: "submit",
+        // onClick: () => {},
+      })}
+      secondaryActionButton={(modalType: string, id: number | undefined) => ({
+        text: modalType === "new" ? "Отмена" : "Удалить клиента",
+        variant: "delete",
+        type: "button",
+        onClick: () => (modalType === "new" ? closeModal() : finishedDeal(id)),
+      })}
+  
     />
   );
 }
+
+

@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { useModalStore } from "@/store/modalStore";
 
 import { ClientForm } from "@/components/feature/ClientForm/ClientForm";
+import { DealForm } from "./feature/DealForm/DealForm";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -95,6 +96,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
           <div className="grid grid-cols-1 gap-4">
             {formFieldKey === "client" && (
               <ClientForm register={register} errors={errors} />
+            )}
+                  {formFieldKey === "deal" && (
+              <DealForm register={register} errors={errors} />
             )}
 
             {/* <ClientForm register={register} errors={errors} /> */}

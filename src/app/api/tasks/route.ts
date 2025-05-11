@@ -7,10 +7,11 @@ export async function GET() {
   return handleDatabaseQuery("tasks");
 }
 
-export async function POST(  request: NextRequest) {
+export async function POST(request: NextRequest) {
   return handleDatabaseCreate<Task>(request, {
     entityName: "tasks",
     requiredFields: ["name", "dealId", "executor"],
+    chechIsActive: false,
     // uniqueFields: ["email"],
     insertQuery: `
         INSERT INTO tasks (

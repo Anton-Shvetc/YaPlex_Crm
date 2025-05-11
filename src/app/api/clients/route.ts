@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
     entityName: "clients",
     requiredFields: ["name", 'email', 'company'],
     uniqueFields: ["email", "company"],
+    chechIsActive: true,
     insertQuery: `
         INSERT INTO clients (
           name,  email, phone, website, comment,  company, userCompanyKey,  authorId, created_at, update_at

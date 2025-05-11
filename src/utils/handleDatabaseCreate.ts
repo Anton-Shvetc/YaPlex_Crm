@@ -7,6 +7,7 @@ type EntityOperationParams<T> = {
   entityName: string;
   requiredFields: (keyof T)[];
   uniqueFields?: (keyof T)[];
+  chechIsActive: boolean;
   insertQuery: string;
   prepareData: (
     data: T,
@@ -50,11 +51,20 @@ export async function handleDatabaseCreate<T>(
     // 4. Проверка уникальности полей
     if (params.uniqueFields) {
       for (const field of params.uniqueFields) {
+        let sql = `SELECT * FROM ${params.entityName} WHERE ${String(
+          field
+        )} = ?`;
+
+        const args = [data[field]];
+
+        if (params.chechIsActive) {
+          args.push(0);
+          sql += ` AND is_active = ?`;
+        }
+
         const checkResult = await turso.execute({
-          sql: `SELECT * FROM ${params.entityName} WHERE ${String(
-            field
-          )} = ?           AND is_active != ?`,
-          args: [data[field], 0],
+          sql: sql,
+          args: args,
         });
 
         if (checkResult.rows.length > 0) {
@@ -87,6 +97,8 @@ export async function handleDatabaseCreate<T>(
       userId: decoded.userId,
       userCompanyKey: decoded.userCompanyKey,
     });
+
+    console.log("checks", params.insertQuery, args)
 
     const result = await turso.execute({
       sql: params.insertQuery,
