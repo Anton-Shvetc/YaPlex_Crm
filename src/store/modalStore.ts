@@ -82,6 +82,7 @@ export const useModalStore = create<ModalState>((set) => ({
       modalType: "new",
       primaryAction: undefined,
       secondaryAction: undefined,
+      formData: null,
     });
   },
 }));

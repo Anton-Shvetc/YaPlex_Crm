@@ -9,10 +9,10 @@ import {
   StatisticsI,
   MainPageInfoDesktopI,
 } from "@/utils/types";
-import { JSX, useMemo } from "react";
+import { useMemo } from "react";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import { ButtonUi } from "@/components/ui/ButtonUi";
-import { ClientForm } from "../ClientForm/ClientForm";
+// import { ClientForm } from "../ClientForm/ClientForm";
 import { useForm } from "react-hook-form";
 import { useModalStore } from "@/store/modalStore";
 
@@ -116,21 +116,19 @@ export const MainPageInfoDesktop = ({
           <ButtonUi
             onClick={() => {
               openModal({
-                content: <ClientForm register={register} errors={errors} />,
-                title: "Новый клиент",
+                formFieldKey: "deal",
+                title: "Новая сделка",
+                requestLink: "api/deals",
                 modalType: "new",
                 primaryAction: {
                   text: "Создать",
                   type: "submit",
                   variant: "submit",
-                  onClick: handleSubmit(() => { }),
-             
                 },
                 secondaryAction: {
                   text: "Отмена",
                   variant: "default",
                   onClick: closeModal,
-               
                 },
               });
             }}

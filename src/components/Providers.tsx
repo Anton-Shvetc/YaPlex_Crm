@@ -14,9 +14,10 @@ import { ClientForm } from "@/components/feature/ClientForm/ClientForm";
 import { DealForm } from "./feature/DealForm/DealForm";
 import { EntityFormMap } from "@/utils/types";
 import { FetchService } from "@/services/fetcher";
+import { useLoaderStore } from "@/store/useLoaderStore";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const { startLoading, stopLoading } = useLoadingStore();
+  const { startLoading, stopLoading } = useLoaderStore();
 
   const pathname = usePathname();
   const {
@@ -36,7 +37,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     formState: { errors },
   } = useForm<any>();
 
-  // const onSubmit = (data: any) => {};
+
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     alert(1213);
@@ -150,7 +151,4 @@ export function Providers({ children }: { children: React.ReactNode }) {
       </AdaptiveModalContainer>
     </SnackbarProvider>
   );
-}
-function useLoadingStore(): { startLoading: any; stopLoading: any } {
-  throw new Error("Function not implemented.");
 }
