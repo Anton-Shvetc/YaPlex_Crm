@@ -12,13 +12,21 @@ import { useModalStore } from "@/store/modalStore";
 
 import { ClientForm } from "@/components/feature/ClientForm/ClientForm";
 import { DealForm } from "./feature/DealForm/DealForm";
-import { EntityFormMap } from "@/utils/types";
+import { Client, Deal, EntityFormMap, Task } from "@/utils/types";
 import { FetchService } from "@/services/fetcher";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import { TaskForm } from "./feature/TaskForm/TaskForm";
+import { getParamsData } from "@/services/getParamsData";
+import { useClientStore } from "@/store/clientStore";
+import { useDealsStore } from "@/store/dealsStore";
+import { useTasksStore } from "@/store/tasksStore";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const { startLoading, stopLoading } = useLoaderStore();
+
+  const { setClients } = useClientStore();
+  const { setDeals } = useDealsStore();
+  const { setTasks } = useTasksStore();
 
   const pathname = usePathname();
   const {
@@ -63,6 +71,22 @@ export function Providers({ children }: { children: React.ReactNode }) {
         // reset();
         // setModalState((prev) => ({ ...prev, isOpen: false }));
         closeModal();
+
+        if (formFieldKey === "client")
+          getParamsData<Client>(
+            `api/clients${pathname === "/" ? "?limits=10" : ""}`,
+            setClients
+          );
+        if (formFieldKey === "deal")
+          getParamsData<Deal>(
+            `api/deals${pathname === "/" ? "?limits=10" : ""}`,
+            setDeals
+          );
+        if (formFieldKey === "task")
+          getParamsData<Task>(
+            `api/tasks${pathname === "/" ? "?limits=10" : ""}`,
+            setTasks
+          );
 
         // if (updateTableData) updateTableData();
       }
