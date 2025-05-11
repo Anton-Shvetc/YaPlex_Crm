@@ -16,7 +16,11 @@ export async function POST(request: NextRequest) {
     insertQuery: `
       INSERT INTO deals (
         name, clientId, amount, status, description, userCompanyKey, authorId, created_at, update_at
+<<<<<<< HEAD
       ) VALUES (?, ?, ?, ?, ?, ?, ?,?, ?)
+=======
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+>>>>>>> d6a2b7c53b0e16ba693b69681a9a4db2e2532dac
     `,
     prepareData: (data: Deal, { userId, userCompanyKey }: TokenDataI) => [
       data.name,

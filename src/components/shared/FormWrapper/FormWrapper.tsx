@@ -66,7 +66,7 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
               disabled={isLoading}
               label={primaryAction.text}
               onClick={primaryAction.onClick}
-              className="w-full"
+              className="flex-1"
             />
           )}
           {secondaryAction && (
