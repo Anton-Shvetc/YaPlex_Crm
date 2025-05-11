@@ -57,6 +57,10 @@ export default function DealsPage() {
     getParamsData<Deal>("api/deals", setDeals, { startLoading, stopLoading });
   };
 
+  const finishedDeal = (id?: number) => {
+    console.log("12414", id);
+  };
+
   return (
     <EntityPageContainer
       entityType="deal"
@@ -67,6 +71,17 @@ export default function DealsPage() {
       columns={dealsTableColumns}
       updateTableData={updateTableData}
       formComponent={DealForm}
+      primaryActionButton={(modalType: string) => ({
+        text: modalType === "new" ? "Создать" : "Редактировать",
+        type: "submit",
+        varinat: "submit",
+      })}
+      secondaryActionButton={(modalType: string, id: number | undefined) => ({
+        text: modalType === "new" ? "Отмена" : "Завершить сделку",
+        variant: "complete",
+        type: "button",
+        onClick: () => finishedDeal(id),
+      })}
     />
   );
 }
