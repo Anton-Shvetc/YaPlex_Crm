@@ -14,8 +14,15 @@ import { ClientForm } from "@/components/feature/ClientForm/ClientForm";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { isOpenModal, modalType, formData, onSubmit, modalTitle, closeModal } =
-    useModalStore();
+  const {
+    isOpenModal,
+    modalType,
+    formData,
+    formFieldKey,
+    onSubmit,
+    modalTitle,
+    closeModal,
+  } = useModalStore();
 
   const {
     register,
@@ -70,7 +77,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
         onClose={handleCloseModal}
       >
         <FormWrapper
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={onSubmit ? handleSubmit(onSubmit) : () => {}}
+
           // primaryAction={{
           //   text: modalType === "new" ? "Создать" : "Редактировать",
           //   type: "submit",
@@ -85,7 +93,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
           // }}
         >
           <div className="grid grid-cols-1 gap-4">
-            <ClientForm register={register} errors={errors} />
+            {formFieldKey === "client" && (
+              <ClientForm register={register} errors={errors} />
+            )}
+
+            {/* <ClientForm register={register} errors={errors} /> */}
           </div>
         </FormWrapper>
       </AdaptiveModalContainer>

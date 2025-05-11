@@ -1,11 +1,13 @@
 import { ButtonUi } from "@/components/ui/ButtonUi";
 import { useModalStore } from "@/store/modalStore";
 import { useLoaderStore } from "@/store/useLoaderStore";
+import React from "react";
 
 interface FormWrapperI {
   children: React.ReactNode;
   title?: string;
   btnTitle?: string;
+
   onSubmit: () => void;
   additionalStyle?: string;
   primaryAction?: {
@@ -25,6 +27,7 @@ interface FormWrapperI {
 export const FormWrapper: React.FC<FormWrapperI> = ({
   children,
   btnTitle = "",
+
   // title = "",
   onSubmit,
   additionalStyle = "",

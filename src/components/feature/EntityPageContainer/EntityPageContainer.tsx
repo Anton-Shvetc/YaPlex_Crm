@@ -78,16 +78,17 @@ interface EntityPageContainerProps<T extends EntityType> {
     | undefined;
 
   columns: ColumnDefinition<EntityTableRowMap[T]>[];
-  formComponent: React.FC<{
-    register: UseFormRegister<EntityFormMap[T]>;
-    errors: FieldErrors<EntityFormMap[T]>;
-  }>;
+  // formComponent: React.FC<{
+  //   register: UseFormRegister<EntityFormMap[T]>;
+  //   errors: FieldErrors<EntityFormMap[T]>;
+  // }>;
+  // formComponent: React.FC;
   extraContent?: React.ReactNode;
 }
 
 export const EntityPageContainer = <T extends EntityType>({
   entityType,
-  formComponent: FormComponent,
+  // formComponent: FormComponent,
   requestLink = undefined,
   tableData,
   updateTableData,
@@ -108,12 +109,12 @@ export const EntityPageContainer = <T extends EntityType>({
   //   modalId: undefined,
   // });
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<EntityFormMap[T]>();
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   reset,
+  //   formState: { errors },
+  // } = useForm<EntityFormMap[T]>();
 
   const { isLoading, startLoading, stopLoading } = useLoaderStore();
 
@@ -148,7 +149,7 @@ export const EntityPageContainer = <T extends EntityType>({
       enqueueSnackbar(message, { variant: success ? "success" : "error" });
 
       if (success) {
-        reset();
+        // reset();
         // setModalState((prev) => ({ ...prev, isOpen: false }));
         closeModal();
 
@@ -179,7 +180,7 @@ export const EntityPageContainer = <T extends EntityType>({
     // openModal("edit", data.id);
 
     openModal({
-      content: <FormComponent register={register} errors={errors} />,
+      formFieldKey: entityType,
       title: modalTargetText("edit"),
       modalType: "edit",
       modalId: data.id,
@@ -241,8 +242,9 @@ export const EntityPageContainer = <T extends EntityType>({
           <ButtonUi
             onClick={() => {
               openModal({
-                content: <FormComponent register={register} errors={errors} />,
-                title: "Новый клиент",
+                formFieldKey: entityType,
+                onSubmit: onSubmit,
+                title: modalTargetText("new"),
                 modalType: "new",
                 primaryAction: primaryActionButton
                   ? primaryActionButton("new")

@@ -60,6 +60,7 @@ export default function ClientsPage() {
   return (
     <EntityPageContainer
       entityType="client"
+    
       // actionButtonText="Новый клиент"
       modalTargetText={(modalType: string) =>
         modalType === "new" ? "Новый клиент" : "Карточка клиента"
@@ -81,7 +82,7 @@ export default function ClientsPage() {
         type: "button",
         onClick: () => (modalType === "new" ? closeModal() : handleDelete(id)),
       })}
-      formComponent={ClientForm}
+      // formComponent={ClientForm}
     />
   );
 }

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { ReactNode } from "react";
+import React from "react";
 
 interface ModalAction {
   text: string;
@@ -14,9 +15,11 @@ interface ModalAction {
 interface ModalState {
   modalId?: string | number | undefined;
   isOpenModal: boolean;
-  modalContent: ReactNode | null;
+  formFieldKey: string;
+
   modalTitle: string;
   modalType: "new" | "edit";
+
   primaryAction: ModalAction | undefined;
   secondaryAction: ModalAction | undefined;
   formData: any;
@@ -25,7 +28,7 @@ interface ModalState {
   openModal: (params: {
     title: string;
     modalType?: "new" | "edit";
-    content: ReactNode;
+    formFieldKey?: string;
     primaryAction?: ModalAction;
     secondaryAction?: ModalAction;
     modalId?: string | number | undefined;
@@ -38,7 +41,7 @@ interface ModalState {
 export const useModalStore = create<ModalState>((set) => ({
   modalId: undefined,
   isOpenModal: false,
-  modalContent: null,
+  formFieldKey: "",
   modalTitle: "",
   modalType: "new",
   primaryAction: undefined,
@@ -49,7 +52,8 @@ export const useModalStore = create<ModalState>((set) => ({
   openModal: ({
     title,
     modalType,
-    content,
+    formFieldKey,
+
     primaryAction,
     secondaryAction,
     modalId,
@@ -59,7 +63,9 @@ export const useModalStore = create<ModalState>((set) => ({
     set({
       isOpenModal: true,
       modalType: modalType || "new",
-      modalContent: content,
+
+      formFieldKey: formFieldKey,
+
       modalTitle: title,
       primaryAction: primaryAction || undefined,
       secondaryAction: secondaryAction || undefined,
@@ -73,7 +79,8 @@ export const useModalStore = create<ModalState>((set) => ({
     set({
       modalId: undefined,
       isOpenModal: false,
-      modalContent: null,
+
+      formFieldKey: "",
       modalTitle: "",
       modalType: "new",
       primaryAction: undefined,
