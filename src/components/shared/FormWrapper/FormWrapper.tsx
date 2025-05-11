@@ -12,7 +12,7 @@ interface FormWrapperI {
     onClick?: () => void;
     className?: string;
     type: "button" | "submit";
-  } ;
+  };
   secondaryAction?: {
     text: string;
     variant?: string;
@@ -38,9 +38,7 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
           {title}
         </h2>
       )}
-      <div className="space-y-4">
-        {children}
-      </div>
+      <div className="space-y-4">{children}</div>
       {/* 
  TODO - пока нужно для авторизации, регистрации, потом тоже перевести на primaryAction и тд */}
       {btnTitle && (
@@ -61,7 +59,7 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
               disabled={isLoading}
               label={primaryAction.text}
               onClick={primaryAction.onClick}
-              className="w-full"
+              className="flex-1"
             />
           )}
           {secondaryAction && (

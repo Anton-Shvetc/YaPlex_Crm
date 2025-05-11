@@ -8,6 +8,7 @@ type EntityUpdateParams<T> = {
   requiredFields: (keyof T)[];
   uniqueFields?: (keyof T)[];
   updateQuery: string;
+  chechIsActive?: boolean;
   prepareData: (
     data: T,
     tokenData: { userId: string; userCompanyKey: string },
