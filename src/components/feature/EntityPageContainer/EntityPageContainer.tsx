@@ -178,7 +178,7 @@ export const EntityPageContainer = <T extends EntityType>({
 
   const handelChangeFormData = (data: EntityFormMap[T]) => {
     // openModal("edit", data.id);
-
+    console.log("2222222", data, modalType);
     openModal({
       formFieldKey: entityType,
       title: modalTargetText("edit"),

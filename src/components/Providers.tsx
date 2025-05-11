@@ -56,7 +56,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     modalType === "edit" ? reset(formData) : reset({} as any);
 
     console.log("debug222", formData, modalType);
-  }, [formData]);
+  }, [formData, modalType]);
 
   return (
     <SnackbarProvider
