@@ -1,7 +1,7 @@
 "use client";
 
 import { EntityPageContainer } from "@/components/feature/EntityPageContainer/EntityPageContainer";
-import { DealForm } from "@/components/feature/DealForm/DealForm";
+
 import { Client, ColumnDefinition, Deal } from "@/utils/types";
 import { useDealsStore } from "@/store/dealsStore";
 import { getParamsData } from "@/services/getParamsData";

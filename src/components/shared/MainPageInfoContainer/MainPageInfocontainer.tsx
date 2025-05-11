@@ -1,8 +1,4 @@
-import { ButtonUi } from "@/components/ui/ButtonUi";
-import { useModalStore } from "@/store/modalStore";
-import { useLoaderStore } from "@/store/useLoaderStore";
 import { clsx } from "clsx";
-import { useForm } from "react-hook-form";
 
 interface MainPageInfoProps {
   title: string;
@@ -15,12 +11,10 @@ interface MainPageInfoProps {
 export const MainPageInfoContainer: React.FC<MainPageInfoProps> = ({
   title,
   children,
-  pageType,
+
   isGrid = true,
   actionButton,
 }) => {
-  const { isLoading } = useLoaderStore();
-
   return (
     <div>
       {title}

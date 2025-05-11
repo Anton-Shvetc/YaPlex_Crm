@@ -14,15 +14,8 @@ import { ButtonUi } from "@/components/ui/ButtonUi";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { SearchIcon } from "@/styles/icons";
-// import { AdaptiveModalContainer } from "@/components/shared/ModalContainer/AdaptiveModalContainer";
-// import { ClientForm } from "../ClientForm/ClientForm";
-import { useModalStore } from "@/store/modalStore";
 
-// type ColumnDefinition<T> = {
-//   key: string;
-//   label: string;
-//   render?: (value: number | string, row: T) => React.ReactNode;
-// };
+import { useModalStore } from "@/store/modalStore";
 
 interface EntityPageContainerProps<T extends EntityType> {
   entityType: T;
@@ -52,11 +45,7 @@ interface EntityPageContainerProps<T extends EntityType> {
     | undefined;
 
   columns: ColumnDefinition<EntityTableRowMap[T]>[];
-  // formComponent: React.FC<{
-  //   register: UseFormRegister<EntityFormMap[T]>;
-  //   errors: FieldErrors<EntityFormMap[T]>;
-  // }>;
-  // formComponent: React.FC;
+
   extraContent?: React.ReactNode;
 }
 
@@ -72,27 +61,9 @@ export const EntityPageContainer = <T extends EntityType>({
   modalTargetText,
   pageTitle,
 }: EntityPageContainerProps<T>) => {
-  // const [modalState, setModalState] = useState<{
-  //   isOpen: boolean;
-  //   type: "new" | "edit";
+  const { isLoading } = useLoaderStore();
 
-  //   modalId: number | undefined;
-  // }>({
-  //   isOpen: false,
-  //   type: "new",
-  //   modalId: undefined,
-  // });
-
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   reset,
-  //   formState: { errors },
-  // } = useForm<EntityFormMap[T]>();
-
-  const { isLoading, startLoading, stopLoading } = useLoaderStore();
-
-  const { isOpenModal, openModal, modalType, closeModal } = useModalStore();
+  const { isOpenModal, openModal } = useModalStore();
 
   const [searchParams, setSearchParams] = useState<string>("");
 
@@ -100,65 +71,7 @@ export const EntityPageContainer = <T extends EntityType>({
     EntityTableRowMap[T][]
   >(tableData || []);
 
-  // Вынести отдельно потом
-  // const onSubmit = useCallback<SubmitHandler<EntityFormMap[T]>>(
-  //   async (data) => {
-  //     alert(1213);
-  //     console.log("debig", modalType);
-
-  //     if (!requestLink) return;
-  //     try {
-  //       startLoading();
-  //       let response;
-
-  //       if (modalType === "new") {
-  //         response = await new FetchService().POST(requestLink, data).send();
-  //       } else if (modalType === "edit") {
-  //         response = await new FetchService()
-  //           .PUT(`${requestLink}/${data.id}`, data)
-  //           .send();
-  //       } else {
-  //         throw new Error("Неизвестный тип операции");
-  //       }
-
-  //       const { success, message } = response;
-
-  //       enqueueSnackbar(message, { variant: success ? "success" : "error" });
-
-  //       if (success) {
-  //         closeModal();
-  //         if (updateTableData) updateTableData();
-  //       }
-  //       stopLoading();
-  //     } catch (error) {
-  //       console.error(error);
-  //       enqueueSnackbar("Ошибка при создании", { variant: "error" });
-  //     }
-  //   },
-  //   [modalType, ]
-  // );
-
-  useEffect(() => {
-    console.log("debig", modalType);
-  }, [modalType]);
-
-  // const openModal = (type: "new" | "edit", id?: number) => {
-  //   reset({} as EntityFormMap[T]);
-  //   setModalState({
-  //     isOpen: true,
-  //     type,
-  //     modalId: id,
-  //   });
-  // };
-
-  // const closeModal = () => {
-  //   reset({} as EntityFormMap[T]);
-  //   setModalState((prev) => ({ ...prev, isOpen: false }));
-  // };
-
   const handelChangeFormData = (data: EntityFormMap[T]) => {
-    // openModal("edit", data.id);
-    console.log("2222222", data, modalType);
     openModal({
       formFieldKey: entityType,
       title: modalTargetText("edit"),
@@ -174,14 +87,11 @@ export const EntityPageContainer = <T extends EntityType>({
         : undefined,
       formData: data,
     });
-
-    // reset(data);
   };
 
   useEffect(() => {
     if (updateTableData) updateTableData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Отключаем правило eslint, так как функция стабильна
+  }, []);
 
   useEffect(() => {
     setFilteredTableData(tableData || []);
@@ -207,8 +117,7 @@ export const EntityPageContainer = <T extends EntityType>({
   useEffect(() => {
     const result = searchData(tableData || [], searchParams);
     setFilteredTableData(result);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]); // Отключаем правило eslint для tableData и searchData, так как они стабильны
+  }, [searchParams]);
 
   return (
     <>
@@ -249,12 +158,6 @@ export const EntityPageContainer = <T extends EntityType>({
               onSearchParams={(value: string) => setSearchParams(value)}
               icon={<SearchIcon />}
             />
-            {/* <input
-              type="text"
-              placeholder="Искать"
-              className="w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded px-4 py-2 pl-10"
-            /> */}
-            {/* <span className="absolute left-3 top-2.5 text-gray-400">🔍</span> */}
           </div>
         </div>
 
@@ -272,37 +175,6 @@ export const EntityPageContainer = <T extends EntityType>({
           </div>
         </div>
       </div>
-
-      {/* Модальное окно */}
-      {/* <AdaptiveModalContainer
-        modalTitle={getModalTitle(modalType, entityType)}
-        isOpen={isOpenModal}
-        onClose={closeModal}
-      >
-        <FormWrapper
-          onSubmit={handleSubmit(onSubmit)}
-          primaryAction={
-            primaryActionButton
-              ? primaryActionButton(modalType)
-              : {
-                  text: modalType === "new" ? "Создать" : "Сохранить",
-                  type: "submit",
-                }
-          }
-          secondaryAction={
-            secondaryActionButton && modalType === "edit"
-              ? secondaryActionButton(modalType, modalId)
-              : {
-                  text: "Отмена",
-                  onClick: closeModal,
-                }
-          }
-        >
-          <div className="grid grid-cols-1 gap-4">
-            <FormComponent register={register} errors={errors} />
-          </div>
-        </FormWrapper>
-      </AdaptiveModalContainer> */}
     </>
   );
 };

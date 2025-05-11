@@ -2,7 +2,7 @@
 
 import { Client, Deal, StatisticsI, Task, UserI } from "@/utils/types";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getParamsData } from "@/services/getParamsData";
 import { useLoaderStore } from "@/store/useLoaderStore";
 

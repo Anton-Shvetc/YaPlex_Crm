@@ -124,11 +124,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    modalType === "edit"
-      ? reset(formData as Client | Deal | Task)
-      : reset({} as EntityFormMap[keyof EntityFormMap]);
-
-    console.log("debug222", formData, modalType);
+    if (modalType === "edit") {
+      reset(formData as Client | Deal | Task);
+    } else {
+      reset({} as EntityFormMap[keyof EntityFormMap]);
+    }
   }, [formData, modalType]);
 
   return (

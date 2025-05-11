@@ -35,7 +35,7 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
   // secondaryAction,
 }) => {
   const { isLoading } = useLoaderStore();
-  const { isOpenModal, modalTitle, primaryAction, secondaryAction } =
+  const { primaryAction, secondaryAction } =
     useModalStore();
 
   return (

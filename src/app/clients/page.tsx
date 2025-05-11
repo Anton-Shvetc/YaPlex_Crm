@@ -1,6 +1,5 @@
 "use client";
 
-import { ClientForm } from "@/components/feature/ClientForm/ClientForm";
 import { EntityPageContainer } from "@/components/feature/EntityPageContainer/EntityPageContainer";
 import { deleteItem } from "@/services/deleteItem";
 import { getParamsData } from "@/services/getParamsData";

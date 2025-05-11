@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { ReactNode } from "react";
-import React from "react";
+
 import { Client, Deal, Task } from "@/utils/types";
 
 interface ModalAction {
@@ -26,7 +25,7 @@ interface ModalState {
   formData?: Client | Deal | Task | null; 
 
   openModal: (params: {
-    title: string;
+    title: string; 
     modalType?: "new" | "edit";
     formFieldKey?: string;
     requestLink?: string | undefined;
