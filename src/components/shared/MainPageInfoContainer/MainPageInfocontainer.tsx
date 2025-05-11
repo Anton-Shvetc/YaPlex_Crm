@@ -1,17 +1,26 @@
+import { ButtonUi } from "@/components/ui/ButtonUi";
+import { useModalStore } from "@/store/modalStore";
+import { useLoaderStore } from "@/store/useLoaderStore";
 import { clsx } from "clsx";
+import { useForm } from "react-hook-form";
 
 interface MainPageInfoProps {
   title: string;
   children?: React.ReactNode | null;
   isGrid?: boolean;
+  pageType?: string;
+  actionButton?: React.ReactNode | null;
 }
 
 export const MainPageInfoContainer: React.FC<MainPageInfoProps> = ({
   title,
   children,
+  pageType,
   isGrid = true,
+  actionButton,
 }) => {
-  console.log("child", typeof children, children);
+  const { isLoading } = useLoaderStore();
+
   return (
     <div>
       {title}
@@ -26,6 +35,8 @@ export const MainPageInfoContainer: React.FC<MainPageInfoProps> = ({
       >
         {children || "Нет данных"}
       </div>
+
+      {actionButton}
     </div>
   );
 };

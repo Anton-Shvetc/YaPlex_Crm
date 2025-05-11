@@ -2,7 +2,7 @@
 
 import { Client, Deal, StatisticsI, Task, UserI } from "@/utils/types";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getParamsData } from "@/services/getParamsData";
 import { useLoaderStore } from "@/store/useLoaderStore";
 
@@ -22,6 +22,9 @@ import { useDealsStore } from "@/store/dealsStore";
 import { MainPageInfoDesktop } from "@/components/feature/MainPageInfo/MainPageInfoDesktop";
 import { MainPageInfoMobile } from "@/components/feature/MainPageInfo/MainPageInfoMobile";
 
+// import { useForm } from "react-hook-form";
+// import { useModalStore } from "@/store/modalStore";
+
 export default function Home() {
   const { user, setUser } = useUserStore();
   const { clients, setClients } = useClientStore();
@@ -30,6 +33,17 @@ export default function Home() {
 
   const { statisticsTableData, setStatisticsTableData } = useStatisticsStore();
   const { isLoading, startLoading, stopLoading } = useLoaderStore();
+
+  // const [modalState, setModalState] = useState<{
+  //   isOpen: boolean;
+  //   type: "new" | "edit";
+
+  //   modalId: number | undefined;
+  // }>({
+  //   isOpen: false,
+  //   type: "new",
+  //   modalId: undefined,
+  // });
 
   useEffect(() => {
     const fetchData = async () => {

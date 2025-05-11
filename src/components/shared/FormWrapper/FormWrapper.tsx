@@ -1,4 +1,5 @@
 import { ButtonUi } from "@/components/ui/ButtonUi";
+import { useModalStore } from "@/store/modalStore";
 import { useLoaderStore } from "@/store/useLoaderStore";
 
 interface FormWrapperI {
@@ -11,8 +12,9 @@ interface FormWrapperI {
     text: string;
     onClick?: () => void;
     className?: string;
+    varinat?: string;
     type: "button" | "submit";
-  } ;
+  };
   secondaryAction?: {
     text: string;
     variant?: string;
@@ -23,24 +25,24 @@ interface FormWrapperI {
 export const FormWrapper: React.FC<FormWrapperI> = ({
   children,
   btnTitle = "",
-  title = "",
+  // title = "",
   onSubmit,
   additionalStyle = "",
-  primaryAction,
-  secondaryAction,
+  // primaryAction,
+  // secondaryAction,
 }) => {
   const { isLoading } = useLoaderStore();
+  const { isOpenModal, modalTitle, primaryAction, secondaryAction } =
+    useModalStore();
 
   return (
     <form onSubmit={onSubmit} className={`space-y-4 ${additionalStyle}`}>
-      {title && (
+      {/* {modalTitle && (
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
-          {title}
+          {modalTitle}
         </h2>
-      )}
-      <div className="space-y-4">
-        {children}
-      </div>
+      )} */}
+      <div className="space-y-4">{children}</div>
       {/* 
  TODO - пока нужно для авторизации, регистрации, потом тоже перевести на primaryAction и тд */}
       {btnTitle && (
@@ -56,7 +58,7 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
         <div className="mt-8 flex flex-col md:flex-row gap-3">
           {primaryAction && (
             <ButtonUi
-              type="submit"
+              type={primaryAction?.type || "submit"}
               variant="primary"
               disabled={isLoading}
               label={primaryAction.text}
