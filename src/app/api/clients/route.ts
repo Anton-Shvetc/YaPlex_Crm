@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
   return handleDatabaseCreate<Client>(request, {
     entityName: "clients",
     requiredFields: ["name", 'email', 'company'],
+    chechIsActive: true,
     uniqueFields: ["email", "company"],
     insertQuery: `
         INSERT INTO clients (

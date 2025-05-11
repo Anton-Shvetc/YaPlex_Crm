@@ -12,10 +12,11 @@ export async function POST(request: NextRequest) {
     entityName: "deals",
     requiredFields: ["name", "clientId"],
     uniqueFields: ["name"],
+    chechIsActive: false,
     insertQuery: `
       INSERT INTO deals (
         name, clientId, amount, status, description, userCompanyKey, authorId, created_at, update_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
     prepareData: (data: Deal, { userId, userCompanyKey }: TokenDataI) => [
       data.name,
