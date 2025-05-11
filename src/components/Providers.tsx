@@ -15,6 +15,7 @@ import { DealForm } from "./feature/DealForm/DealForm";
 import { EntityFormMap } from "@/utils/types";
 import { FetchService } from "@/services/fetcher";
 import { useLoaderStore } from "@/store/useLoaderStore";
+import { TaskForm } from "./feature/TaskForm/TaskForm";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const { startLoading, stopLoading } = useLoaderStore();
@@ -37,13 +38,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     formState: { errors },
   } = useForm<any>();
 
-
-
   const onSubmit: SubmitHandler<any> = async (data) => {
-    alert(1213);
-
-    console.log("debig", modalType);
-
     if (!requestLink) return;
     try {
       startLoading();
@@ -143,6 +138,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
             )}
             {formFieldKey === "deal" && (
               <DealForm register={register} errors={errors} />
+            )}
+            {formFieldKey === "task" && (
+              <TaskForm register={register} errors={errors} />
             )}
 
             {/* <ClientForm register={register} errors={errors} /> */}
