@@ -149,22 +149,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         isOpen={isOpenModal}
         onClose={handleCloseModal}
       >
-        <FormWrapper
-          onSubmit={onSubmit ? handleSubmit(onSubmit) : () => {}}
-
-          // primaryAction={{
-          //   text: modalType === "new" ? "Создать" : "Редактировать",
-          //   type: "submit",
-          //   varinat: "submit",
-          //   onClick: () => {},
-          // }}
-          // secondaryAction={{
-          //   text: modalType === "new" ? "Отмена" : "Удалить клиента",
-          //   variant: "delete",
-          //   onClick: () => closeModal(),
-          //   // onClick: () => handleDelete(id),
-          // }}
-        >
+        <FormWrapper onSubmit={onSubmit ? handleSubmit(onSubmit) : () => {}}>
           <div className="grid grid-cols-1 gap-4">
             {formFieldKey === "client" && (
               <ClientForm
