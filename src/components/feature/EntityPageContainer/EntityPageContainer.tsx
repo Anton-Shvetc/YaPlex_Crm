@@ -2,34 +2,21 @@
 
 import { useEffect, useState, useCallback } from "react";
 
-import {
-  FieldErrors,
-  SubmitHandler,
-  useForm,
-  UseFormRegister,
-} from "react-hook-form";
-
-import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
-// import {
-//   getPrimaryActionText,
-//   // getSecondaryActionClass,
-//   // getSecondaryActionText,
-// } from "@/utils/actionButtonsUtils";
-import { getModalTitle } from "@/utils/modalUtils";
-import { FetchService } from "@/services/fetcher";
-
-import { enqueueSnackbar } from "notistack";
 import { TableContainer } from "@/components/shared/TableContainer/TableContainer";
 
-import { Client, ColumnDefinition, Deal, EntityFormMap, EntityTableRowMap, EntityType, Task } from "@/utils/types";
+import {
+  ColumnDefinition,
+  EntityFormMap,
+  EntityTableRowMap,
+  EntityType,
+} from "@/utils/types";
 import { ButtonUi } from "@/components/ui/ButtonUi";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { SearchIcon } from "@/styles/icons";
-import { AdaptiveModalContainer } from "@/components/shared/ModalContainer/AdaptiveModalContainer";
-import { ClientForm } from "../ClientForm/ClientForm";
+// import { AdaptiveModalContainer } from "@/components/shared/ModalContainer/AdaptiveModalContainer";
+// import { ClientForm } from "../ClientForm/ClientForm";
 import { useModalStore } from "@/store/modalStore";
-
 
 // type ColumnDefinition<T> = {
 //   key: string;
@@ -118,12 +105,12 @@ export const EntityPageContainer = <T extends EntityType>({
   //   async (data) => {
   //     alert(1213);
   //     console.log("debig", modalType);
-  
+
   //     if (!requestLink) return;
   //     try {
   //       startLoading();
   //       let response;
-  
+
   //       if (modalType === "new") {
   //         response = await new FetchService().POST(requestLink, data).send();
   //       } else if (modalType === "edit") {
@@ -133,11 +120,11 @@ export const EntityPageContainer = <T extends EntityType>({
   //       } else {
   //         throw new Error("Неизвестный тип операции");
   //       }
-  
+
   //       const { success, message } = response;
-  
+
   //       enqueueSnackbar(message, { variant: success ? "success" : "error" });
-  
+
   //       if (success) {
   //         closeModal();
   //         if (updateTableData) updateTableData();
@@ -152,7 +139,7 @@ export const EntityPageContainer = <T extends EntityType>({
   // );
 
   useEffect(() => {
-    console.log("debig", modalType)
+    console.log("debig", modalType);
   }, [modalType]);
 
   // const openModal = (type: "new" | "edit", id?: number) => {

@@ -7,7 +7,12 @@ import { useEffect } from "react";
 
 import { AdaptiveModalContainer } from "@/components/shared/ModalContainer/AdaptiveModalContainer";
 import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
-import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  FieldErrors,
+  SubmitHandler,
+  useForm,
+  UseFormRegister,
+} from "react-hook-form";
 import { useModalStore } from "@/store/modalStore";
 
 import { ClientForm } from "@/components/feature/ClientForm/ClientForm";
@@ -44,9 +49,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<any>();
+  } = useForm<EntityFormMap[keyof EntityFormMap]>();
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
+  const onSubmit: SubmitHandler<EntityFormMap[keyof EntityFormMap]> = async (
+    data
+  ) => {
     if (!requestLink) return;
     try {
       startLoading();
@@ -111,13 +118,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }, []);
 
   const handleCloseModal = () => {
-    reset({} as any);
+    reset({} as EntityFormMap[keyof EntityFormMap]);
     // setModalState((prev) => ({ ...prev, isOpen: false }));
     closeModal();
   };
 
   useEffect(() => {
-    modalType === "edit" ? reset(formData) : reset({} as any);
+    modalType === "edit"
+      ? reset(formData as Client | Deal | Task)
+      : reset({} as EntityFormMap[keyof EntityFormMap]);
 
     console.log("debug222", formData, modalType);
   }, [formData, modalType]);
@@ -158,13 +167,22 @@ export function Providers({ children }: { children: React.ReactNode }) {
         >
           <div className="grid grid-cols-1 gap-4">
             {formFieldKey === "client" && (
-              <ClientForm register={register} errors={errors} />
+              <ClientForm
+                register={register as UseFormRegister<Client>}
+                errors={errors as FieldErrors<Client>}
+              />
             )}
             {formFieldKey === "deal" && (
-              <DealForm register={register} errors={errors} />
+              <DealForm
+                register={register as UseFormRegister<Deal>}
+                errors={errors as FieldErrors<Deal>}
+              />
             )}
             {formFieldKey === "task" && (
-              <TaskForm register={register} errors={errors} />
+              <TaskForm
+                register={register as UseFormRegister<Task>}
+                errors={errors as FieldErrors<Task>}
+              />
             )}
 
             {/* <ClientForm register={register} errors={errors} /> */}

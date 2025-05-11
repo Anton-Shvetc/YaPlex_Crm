@@ -25,13 +25,6 @@ export const MainPageInfoDesktop = ({
 
   const { openModal, closeModal } = useModalStore();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<any>();
-
   const { isLoading } = useLoaderStore();
 
   const statisticsColumns: ColumnDefinition<StatisticsI>[] = useMemo(

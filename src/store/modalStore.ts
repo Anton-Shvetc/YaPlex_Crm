@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { ReactNode } from "react";
 import React from "react";
+import { Client, Deal, Task } from "@/utils/types";
 
 interface ModalAction {
   text: string;
@@ -22,7 +23,7 @@ interface ModalState {
 
   primaryAction: ModalAction | undefined;
   secondaryAction: ModalAction | undefined;
-  formData: any;
+  formData?: Client | Deal | Task | null; 
 
   openModal: (params: {
     title: string;
@@ -32,7 +33,7 @@ interface ModalState {
     primaryAction?: ModalAction;
     secondaryAction?: ModalAction;
     modalId?: string | number | undefined;
-    formData?: any;
+    formData?: Client | Deal | Task | null; 
   }) => void;
   onClick?: () => void;
   closeModal: () => void;
