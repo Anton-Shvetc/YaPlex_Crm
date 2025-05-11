@@ -1,26 +1,30 @@
 "use client";
 
-import { SnackbarProvider } from "notistack";
+import { enqueueSnackbar, SnackbarProvider } from "notistack";
 import AdaptiveNavbar from "./AdaptiveNavbar";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 import { AdaptiveModalContainer } from "@/components/shared/ModalContainer/AdaptiveModalContainer";
 import { FormWrapper } from "@/components/shared/FormWrapper/FormWrapper";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useModalStore } from "@/store/modalStore";
 
 import { ClientForm } from "@/components/feature/ClientForm/ClientForm";
 import { DealForm } from "./feature/DealForm/DealForm";
+import { EntityFormMap } from "@/utils/types";
+import { FetchService } from "@/services/fetcher";
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  const { startLoading, stopLoading } = useLoadingStore();
+
   const pathname = usePathname();
   const {
     isOpenModal,
     modalType,
     formData,
     formFieldKey,
-    onSubmit,
+    requestLink,
     modalTitle,
     closeModal,
   } = useModalStore();
@@ -33,6 +37,45 @@ export function Providers({ children }: { children: React.ReactNode }) {
   } = useForm<any>();
 
   // const onSubmit = (data: any) => {};
+
+  const onSubmit: SubmitHandler<any> = async (data) => {
+    alert(1213);
+
+    console.log("debig", modalType);
+
+    if (!requestLink) return;
+    try {
+      startLoading();
+      let response;
+
+      if (modalType === "new") {
+        response = await new FetchService().POST(requestLink, data).send();
+      } else if (modalType === "edit") {
+        // Для PUT запроса обычно нужно добавлять ID в URL
+        response = await new FetchService()
+          .PUT(`${requestLink}/${data.id}`, data) // предполагая, что itemId есть в modalState
+          .send();
+      } else {
+        throw new Error("Неизвестный тип операции");
+      }
+
+      const { success, message } = response;
+
+      enqueueSnackbar(message, { variant: success ? "success" : "error" });
+
+      if (success) {
+        // reset();
+        // setModalState((prev) => ({ ...prev, isOpen: false }));
+        closeModal();
+
+        // if (updateTableData) updateTableData();
+      }
+      stopLoading();
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar("Ошибка при создании ", { variant: "error" });
+    }
+  };
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -97,7 +140,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             {formFieldKey === "client" && (
               <ClientForm register={register} errors={errors} />
             )}
-                  {formFieldKey === "deal" && (
+            {formFieldKey === "deal" && (
               <DealForm register={register} errors={errors} />
             )}
 
@@ -107,4 +150,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       </AdaptiveModalContainer>
     </SnackbarProvider>
   );
+}
+function useLoadingStore(): { startLoading: any; stopLoading: any } {
+  throw new Error("Function not implemented.");
 }

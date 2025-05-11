@@ -15,25 +15,24 @@ interface ModalAction {
 interface ModalState {
   modalId?: string | number | undefined;
   isOpenModal: boolean;
-  formFieldKey: string;
-
+  formFieldKey?: string;
+  requestLink: string | undefined;
   modalTitle: string;
   modalType: "new" | "edit";
 
   primaryAction: ModalAction | undefined;
   secondaryAction: ModalAction | undefined;
   formData: any;
-  onSubmit: any;
 
   openModal: (params: {
     title: string;
     modalType?: "new" | "edit";
     formFieldKey?: string;
+    requestLink?: string | undefined;
     primaryAction?: ModalAction;
     secondaryAction?: ModalAction;
     modalId?: string | number | undefined;
     formData?: any;
-    onSubmit?: any;
   }) => void;
   onClick?: () => void;
   closeModal: () => void;
@@ -44,26 +43,25 @@ export const useModalStore = create<ModalState>((set) => ({
   formFieldKey: "",
   modalTitle: "",
   modalType: "new",
+  requestLink: undefined,
   primaryAction: undefined,
   secondaryAction: undefined,
   formData: null,
-  onSubmit: undefined,
 
   openModal: ({
     title,
     modalType,
     formFieldKey,
-
+    requestLink,
     primaryAction,
     secondaryAction,
     modalId,
     formData,
-    onSubmit,
   }) => {
     set({
       isOpenModal: true,
       modalType: modalType || "new",
-
+      requestLink: requestLink,
       formFieldKey: formFieldKey,
 
       modalTitle: title,
@@ -71,7 +69,6 @@ export const useModalStore = create<ModalState>((set) => ({
       secondaryAction: secondaryAction || undefined,
       modalId: modalId,
       formData: formData,
-      onSubmit: onSubmit,
     });
   },
 
@@ -79,7 +76,7 @@ export const useModalStore = create<ModalState>((set) => ({
     set({
       modalId: undefined,
       isOpenModal: false,
-
+      requestLink: undefined,
       formFieldKey: "",
       modalTitle: "",
       modalType: "new",

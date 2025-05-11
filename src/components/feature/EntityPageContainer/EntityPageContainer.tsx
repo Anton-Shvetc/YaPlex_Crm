@@ -21,7 +21,7 @@ import { FetchService } from "@/services/fetcher";
 import { enqueueSnackbar } from "notistack";
 import { TableContainer } from "@/components/shared/TableContainer/TableContainer";
 
-import { Client, ColumnDefinition, Deal, Task } from "@/utils/types";
+import { Client, ColumnDefinition, Deal, EntityFormMap, EntityTableRowMap, EntityType, Task } from "@/utils/types";
 import { ButtonUi } from "@/components/ui/ButtonUi";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import { InputFieldUi } from "@/components/ui/InputFieldUi";
@@ -30,20 +30,7 @@ import { AdaptiveModalContainer } from "@/components/shared/ModalContainer/Adapt
 import { ClientForm } from "../ClientForm/ClientForm";
 import { useModalStore } from "@/store/modalStore";
 
-type EntityType = "client" | "deal" | "task";
-// type PageType = "clients" | "deals" | "tasks";
 
-type EntityFormMap = {
-  client: Client;
-  deal: Deal;
-  task: Task;
-};
-
-type EntityTableRowMap = {
-  client: Client;
-  deal: Deal;
-  task: Task;
-};
 // type ColumnDefinition<T> = {
 //   key: string;
 //   label: string;
@@ -126,41 +113,47 @@ export const EntityPageContainer = <T extends EntityType>({
     EntityTableRowMap[T][]
   >(tableData || []);
 
-  const onSubmit: SubmitHandler<EntityFormMap[T]> = async (data) => {
-    alert(1213);
-    if (!requestLink) return;
-    try {
-      startLoading();
-      let response;
+  // Вынести отдельно потом
+  // const onSubmit = useCallback<SubmitHandler<EntityFormMap[T]>>(
+  //   async (data) => {
+  //     alert(1213);
+  //     console.log("debig", modalType);
+  
+  //     if (!requestLink) return;
+  //     try {
+  //       startLoading();
+  //       let response;
+  
+  //       if (modalType === "new") {
+  //         response = await new FetchService().POST(requestLink, data).send();
+  //       } else if (modalType === "edit") {
+  //         response = await new FetchService()
+  //           .PUT(`${requestLink}/${data.id}`, data)
+  //           .send();
+  //       } else {
+  //         throw new Error("Неизвестный тип операции");
+  //       }
+  
+  //       const { success, message } = response;
+  
+  //       enqueueSnackbar(message, { variant: success ? "success" : "error" });
+  
+  //       if (success) {
+  //         closeModal();
+  //         if (updateTableData) updateTableData();
+  //       }
+  //       stopLoading();
+  //     } catch (error) {
+  //       console.error(error);
+  //       enqueueSnackbar("Ошибка при создании", { variant: "error" });
+  //     }
+  //   },
+  //   [modalType, ]
+  // );
 
-      if (modalType === "new") {
-        response = await new FetchService().POST(requestLink, data).send();
-      } else if (modalType === "edit") {
-        // Для PUT запроса обычно нужно добавлять ID в URL
-        response = await new FetchService()
-          .PUT(`${requestLink}/${data.id}`, data) // предполагая, что itemId есть в modalState
-          .send();
-      } else {
-        throw new Error("Неизвестный тип операции");
-      }
-
-      const { success, message } = response;
-
-      enqueueSnackbar(message, { variant: success ? "success" : "error" });
-
-      if (success) {
-        // reset();
-        // setModalState((prev) => ({ ...prev, isOpen: false }));
-        closeModal();
-
-        if (updateTableData) updateTableData();
-      }
-      stopLoading();
-    } catch (error) {
-      console.error(error);
-      enqueueSnackbar("Ошибка при создании ", { variant: "error" });
-    }
-  };
+  useEffect(() => {
+    console.log("debig", modalType)
+  }, [modalType]);
 
   // const openModal = (type: "new" | "edit", id?: number) => {
   //   reset({} as EntityFormMap[T]);
@@ -184,7 +177,8 @@ export const EntityPageContainer = <T extends EntityType>({
       title: modalTargetText("edit"),
       modalType: "edit",
       modalId: data.id,
-      onSubmit: onSubmit,
+      requestLink: requestLink,
+      // onSubmit: onSubmit,
       primaryAction: primaryActionButton
         ? primaryActionButton("edit")
         : undefined,
@@ -243,7 +237,8 @@ export const EntityPageContainer = <T extends EntityType>({
             onClick={() => {
               openModal({
                 formFieldKey: entityType,
-                onSubmit: onSubmit,
+                requestLink: requestLink,
+                // onSubmit: onSubmit,
                 title: modalTargetText("new"),
                 modalType: "new",
                 primaryAction: primaryActionButton

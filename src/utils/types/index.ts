@@ -149,3 +149,19 @@ export interface LoginPageInfoI {
   activeForm: string;
   setShowMobileForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+
+export type EntityType = "client" | "deal" | "task";
+// type PageType = "clients" | "deals" | "tasks";
+
+export type EntityFormMap = {
+  client: Client;
+  deal: Deal;
+  task: Task;
+};
+
+export type EntityTableRowMap = {
+  client: Client;
+  deal: Deal;
+  task: Task;
+};
