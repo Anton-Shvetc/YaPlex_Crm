@@ -14,9 +14,6 @@ export const SalesReport = () => {
       {
         label: "ID сделки",
         key: "id",
-        //   render: (value: number | string) => (
-        //     <span style={{ fontWeight: 700 }}>{value}</span>
-        //   ),
       },
       { key: "name", label: "Название" },
 

@@ -2,6 +2,7 @@ import { ColumnDefinition } from "@/utils/types";
 import { Loader } from "../Loader";
 import { getTableRowClasses } from "@/utils/ui/getTableRowClass";
 import { useState } from "react";
+import { DateTime } from "luxon";
 
 interface TableContainerProps<T> {
   tableData: T[];
@@ -78,6 +79,12 @@ export const TableContainer = <T extends object>({
             if ("status" in row && typeof row.status === "string")
               status = row.status;
 
+            if ("deadline" in row && typeof row.deadline === "string") {
+              const deadline = DateTime.fromISO(row.deadline.toString());
+              const now = DateTime.now();
+              status = deadline < now ? "Просрочена" : status;
+            }
+
             rowClasses = getTableRowClasses(status);
 
             return (
@@ -109,7 +116,7 @@ export const TableContainer = <T extends object>({
         </tbody>
       </table>
 
-      {pagination && tableData.length > pageSize && (
+      {pagination && (
         <div className="flex items-center gap-4">
           <button
             onClick={handlePrevPage}

@@ -1,4 +1,4 @@
-export const getTableRowClasses = (status?: string ) => {
+export const getTableRowClasses = (status?: string) => {
   let rowClasses =
     "rounded-lg border cursor-pointer shadow-md shadow-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors cursor-pointer dark:shadow-none";
 
@@ -23,6 +23,13 @@ export const getTableRowClasses = (status?: string ) => {
       rowClasses =
         "rounded-lg bg-[#EFF6FF]  hover:bg-red-100 transition-colors cursor-pointer";
       break;
+  }
+
+  // Обработка просроченных задач
+  if (status === "Просрочена") {
+    rowClasses =
+      "rounded-lg dark: bg-[#450A0A] text-gray-100 hover:bg-rose-100 dark:hover:bg-gray-700  transition-colors cursor-pointer";
+    return rowClasses;
   }
 
   return rowClasses;
