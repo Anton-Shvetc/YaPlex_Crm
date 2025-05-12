@@ -70,6 +70,7 @@ export interface Deal {
 
   created_at?: string;
   update_at?: string;
+  finish_at?: string;
 
   authorId: string;
 }

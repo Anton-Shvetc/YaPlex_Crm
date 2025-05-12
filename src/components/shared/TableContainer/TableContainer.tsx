@@ -10,6 +10,7 @@ interface TableContainerProps<T> {
   isLoading?: boolean;
   pagination?: boolean; // Флаг для включения пагинации
   pageSize?: number; // Количество строк на странице
+  noDataText?: string;
 }
 
 export const TableContainer = <T extends object>({
@@ -19,6 +20,7 @@ export const TableContainer = <T extends object>({
   isLoading = false,
   pagination = false,
   pageSize = 5,
+  noDataText = "Нет данных",
 }: TableContainerProps<T>) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -32,8 +34,8 @@ export const TableContainer = <T extends object>({
 
   if (!columns || tableData?.length === 0) {
     return (
-      <div className="grid place-items-center">
-        <p>Нет данных</p>
+      <div className="grid place-items-center dark:text-[#fff]">
+        <p>{noDataText}</p>
       </div>
     );
   }

@@ -33,7 +33,7 @@ export default function DealsPage() {
       { key: "description", label: "Описание" },
       {
         key: "status",
-        label: "Этап(стутс)",
+        label: "Этап(статус)",
         render: (value: number | string) => (
           <span className={getStatusColor(value.toString())}>{value}</span>
         ),

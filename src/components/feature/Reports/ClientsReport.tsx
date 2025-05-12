@@ -1,12 +1,15 @@
 "use client";
 import { ReportTableContainer } from "@/components/shared/ReportTableContainer/ReportTableContainer";
 import { useClientStore } from "@/store/clientStore";
+import { useLoaderStore } from "@/store/useLoaderStore";
 import { formatDate } from "@/utils/formatters";
 import { Client, ColumnDefinition } from "@/utils/types";
-import { use, useMemo } from "react";
+import { use, useEffect, useMemo } from "react";
 
 export const ClientReport = () => {
   const { clients } = useClientStore();
+
+ 
 
   const newClientColumn: ColumnDefinition<Client>[] = useMemo(
     () => [
@@ -34,7 +37,7 @@ export const ClientReport = () => {
     <div>
       <ReportTableContainer<Client>
         reportTitle="Новые клиенты"
-        tableData={clients}
+        tableData={clients.filter((client) => client?.is_active)}
         columns={newClientColumn}
       />
     </div>
