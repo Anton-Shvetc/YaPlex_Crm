@@ -11,6 +11,9 @@ import {
 } from "@/utils/types";
 import { useMemo } from "react";
 import { useLoaderStore } from "@/store/useLoaderStore";
+import { ButtonUi } from "@/components/ui/ButtonUi";
+
+import { useModalStore } from "@/store/modalStore";
 
 export const MainPageInfoDesktop = ({
   params,
@@ -18,6 +21,8 @@ export const MainPageInfoDesktop = ({
   params: MainPageInfoDesktopI;
 }) => {
   const { statisticsTableData, clients, deals, tasks } = params;
+
+  const { openModal, closeModal } = useModalStore();
 
   const { isLoading } = useLoaderStore();
 
@@ -79,7 +84,10 @@ export const MainPageInfoDesktop = ({
         />
       )}
 
-      <MainPageInfoContainer title="Топ 10 активных клиентов">
+      <MainPageInfoContainer
+        title="Топ 10 активных клиентов"
+        pageType="clients"
+      >
         {clients?.length > 0
           ? clients?.map((client) => (
               <MainPageClientCard
@@ -92,7 +100,37 @@ export const MainPageInfoDesktop = ({
           : null}
       </MainPageInfoContainer>
 
-      <MainPageInfoContainer title="Топ 10 активных сделок" isGrid={false}>
+      <MainPageInfoContainer
+        title="Топ 10 активных сделок"
+        isGrid={false}
+        pageType="deals"
+        actionButton={
+          <ButtonUi
+            onClick={() => {
+              openModal({
+                formFieldKey: "deal",
+                title: "Новая сделка",
+                requestLink: "api/deals",
+                modalType: "new",
+                primaryAction: {
+                  text: "Создать",
+                  type: "submit",
+                  variant: "submit",
+                },
+                secondaryAction: {
+                  text: "Отмена",
+                  variant: "default",
+                  onClick: closeModal,
+                },
+              });
+            }}
+            variant="primary"
+            disabled={isLoading}
+            label={"Добавить"}
+          />
+        }
+      >
+        {" "}
         {deals?.length
           ? deals.map((deal) => {
               const clientName =
@@ -112,7 +150,7 @@ export const MainPageInfoDesktop = ({
             })
           : null}
       </MainPageInfoContainer>
-      <MainPageInfoContainer title="Последние 10 задач">
+      <MainPageInfoContainer title="Последние 10 задач" pageType="tasks">
         {tasks?.length > 0
           ? tasks?.map((task) => (
               <MainPageTaskCard

@@ -14,6 +14,7 @@ export async function PUT(
       entityName: "deals",
       requiredFields: ["name"],
       uniqueFields: ["name"],
+      chechIsActive: false,
       updateQuery: `
       UPDATE deals SET
         name = ?,

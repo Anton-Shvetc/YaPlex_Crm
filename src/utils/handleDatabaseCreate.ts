@@ -98,6 +98,8 @@ export async function handleDatabaseCreate<T>(
       userCompanyKey: decoded.userCompanyKey,
     });
 
+    console.log("checks", params.insertQuery, args)
+
     const result = await turso.execute({
       sql: params.insertQuery,
       args: args.map((value) => value ?? null),

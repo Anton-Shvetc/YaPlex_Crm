@@ -1,7 +1,7 @@
 "use client";
 
 import { EntityPageContainer } from "@/components/feature/EntityPageContainer/EntityPageContainer";
-import { DealForm } from "@/components/feature/DealForm/DealForm";
+
 import { Client, ColumnDefinition, Deal } from "@/utils/types";
 import { useDealsStore } from "@/store/dealsStore";
 import { getParamsData } from "@/services/getParamsData";
@@ -10,10 +10,14 @@ import { useClientStore } from "@/store/clientStore";
 import { useMemo } from "react";
 import { getStatusColor } from "@/utils/ui/getStatusColor";
 import { formatDate } from "@/utils/formatters";
+import { useModalStore } from "@/store/modalStore";
 
 export default function DealsPage() {
   const { deals, setDeals } = useDealsStore();
   const { clients, setClients } = useClientStore();
+
+
+  const {closeModal} = useModalStore()
 
   const dealsTableColumns: ColumnDefinition<Deal>[] = useMemo(
     () => [
@@ -57,31 +61,41 @@ export default function DealsPage() {
     getParamsData<Deal>("api/deals", setDeals, { startLoading, stopLoading });
   };
 
-  const finishedDeal = (id?: number) => {
-    console.log("12414", id);
+  const finishedDeal = (id: number | undefined) => {
+    if (id) {
+      alert("finished");
+   
+    }
   };
+
 
   return (
     <EntityPageContainer
       entityType="deal"
-      actionButtonText="Новая сделка"
+   
+      modalTargetText={(modalType: string) =>
+        modalType === "new" ? "Новая сделка" : "Карточка сделки"
+      }
       requestLink="api/deals"
       pageTitle="Сделки"
       tableData={deals}
       columns={dealsTableColumns}
       updateTableData={updateTableData}
-      formComponent={DealForm}
       primaryActionButton={(modalType: string) => ({
         text: modalType === "new" ? "Создать" : "Редактировать",
         type: "submit",
         varinat: "submit",
+        // onClick: () => {},
       })}
       secondaryActionButton={(modalType: string, id: number | undefined) => ({
-        text: modalType === "new" ? "Отмена" : "Завершить сделку",
-        variant: "complete",
+        text: modalType === "new" ? "Отмена" : "Удалить клиента",
+        variant: "delete",
         type: "button",
-        onClick: () => finishedDeal(id),
+        onClick: () => (modalType === "new" ? closeModal() : finishedDeal(id)),
       })}
+  
     />
   );
 }
+
+

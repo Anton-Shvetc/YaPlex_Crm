@@ -1,7 +1,7 @@
 "use client";
 
 import { EntityPageContainer } from "@/components/feature/EntityPageContainer/EntityPageContainer";
-import { TaskForm } from "@/components/feature/TaskForm/TaskForm";
+
 import { getParamsData } from "@/services/getParamsData";
 
 import { useDealsStore } from "@/store/dealsStore";
@@ -62,13 +62,25 @@ export default function TasksPage() {
   return (
     <EntityPageContainer
       entityType="task"
-      actionButtonText="Новая задача"
+      modalTargetText={(modalType: string) =>
+        modalType === "new" ? "Новая сделка" : "Карточка задачи"
+      }
       requestLink="api/tasks"
       pageTitle="Задачи"
       tableData={tasks}
       columns={tasksTableColumns}
       updateTableData={updateTableData}
-      formComponent={TaskForm}
+      primaryActionButton={(modalType: string) => ({
+        text: modalType === "new" ? "Создать" : "Редактировать",
+        type: "submit",
+        varinat: "submit",
+      })}
+      // secondaryActionButton={(modalType: string, id: number | undefined) => ({
+      //   text: modalType === "new" ? "Отмена" : "Удалить клиента",
+      //   variant: "delete",
+      //   type: "button",
+      //   // onClick: () => (modalType === "new" ? closeModal() : finishedDeal(id)),
+      // })}
     />
   );
 }
