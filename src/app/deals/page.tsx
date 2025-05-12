@@ -16,8 +16,7 @@ export default function DealsPage() {
   const { deals, setDeals } = useDealsStore();
   const { clients, setClients } = useClientStore();
 
-
-  const {closeModal} = useModalStore()
+  const { closeModal } = useModalStore();
 
   const dealsTableColumns: ColumnDefinition<Deal>[] = useMemo(
     () => [
@@ -61,24 +60,15 @@ export default function DealsPage() {
     getParamsData<Deal>("api/deals", setDeals, { startLoading, stopLoading });
   };
 
-<<<<<<< HEAD
   const finishedDeal = (id?: number) => {
     if (window.confirm("Вы уверены, что хотите завершить сделку?")) {
       console.log("12414", id);
-=======
-  const finishedDeal = (id: number | undefined) => {
-    if (id) {
-      alert("finished");
-   
->>>>>>> e5ba1c3b03ff72fc5fde9ade90b4913934e02e37
     }
   };
-
 
   return (
     <EntityPageContainer
       entityType="deal"
-   
       modalTargetText={(modalType: string) =>
         modalType === "new" ? "Новая сделка" : "Карточка сделки"
       }
@@ -99,9 +89,6 @@ export default function DealsPage() {
         type: "button",
         onClick: () => (modalType === "new" ? closeModal() : finishedDeal(id)),
       })}
-  
     />
   );
 }
-
-
