@@ -4,14 +4,17 @@ interface MainPageInfoProps {
   title: string;
   children?: React.ReactNode | null;
   isGrid?: boolean;
+  pageType?: string;
+  actionButton?: React.ReactNode | null;
 }
 
 export const MainPageInfoContainer: React.FC<MainPageInfoProps> = ({
   title,
   children,
+
   isGrid = true,
+  actionButton,
 }) => {
-  console.log("child", typeof children, children);
   return (
     <div>
       {title}
@@ -26,6 +29,8 @@ export const MainPageInfoContainer: React.FC<MainPageInfoProps> = ({
       >
         {children || "Нет данных"}
       </div>
+
+      {actionButton}
     </div>
   );
 };

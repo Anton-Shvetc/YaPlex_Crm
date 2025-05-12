@@ -1,7 +1,12 @@
 "use client";
 
 import React, { Fragment, ReactNode } from "react";
-import { Transition, DialogPanel } from "@headlessui/react";
+import {
+  Transition,
+  DialogPanel,
+  TransitionChild,
+  DialogTitle,
+} from "@headlessui/react";
 import { Dialog } from "@headlessui/react";
 import { DialogBackdrop } from "@/components/shared/ModalContainer/ModalFix";
 import Link from "next/link";
@@ -57,7 +62,7 @@ export const AdaptiveModalUi: React.FC<AdaptiveModalUiProps> = ({
   return (
     <Transition show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
           enterFrom="opacity-0"
@@ -67,11 +72,11 @@ export const AdaptiveModalUi: React.FC<AdaptiveModalUiProps> = ({
           leaveTo="opacity-0"
         >
           <DialogBackdrop />
-        </Transition.Child>
+        </TransitionChild>
 
         <div className="fixed inset-0 overflow-y-auto">
           <div className="min-h-full flex">
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -112,12 +117,12 @@ export const AdaptiveModalUi: React.FC<AdaptiveModalUiProps> = ({
 
                 {/* Десктопная шапка */}
                 <div className="hidden md:block px-6 py-3">
-                  <Dialog.Title
+                  <DialogTitle
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
                   >
                     {title}
-                  </Dialog.Title>
+                  </DialogTitle>
                 </div>
 
                 {/* Основное содержимое */}
@@ -125,7 +130,7 @@ export const AdaptiveModalUi: React.FC<AdaptiveModalUiProps> = ({
                   {children}
                 </div>
               </DialogPanel>
-            </Transition.Child>
+            </TransitionChild>
           </div>
         </div>
       </Dialog>

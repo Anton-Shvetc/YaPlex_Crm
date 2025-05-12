@@ -11,6 +11,7 @@ export async function PUT(
     entityName: "tasks",
     requiredFields: ["name"],
     // uniqueFields: ["name"],
+    chechIsActive: false,
     updateQuery: `
       UPDATE tasks SET
         name = ?,  
