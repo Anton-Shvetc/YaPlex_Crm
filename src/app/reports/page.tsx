@@ -36,14 +36,14 @@ export default function ClientsPage() {
 
         {/* Контент табов */}
         <TabPanels className="mt-2">
-          <TabPanel className="rounded-xl bg-white p-3">
+          <TabPanel>
             <SalesReport />
           </TabPanel>
-          <TabPanel className="rounded-xl bg-white p-3">
+          <TabPanel>
             <ClientReport />{" "}
           </TabPanel>
 
-          <TabPanel className="rounded-xl bg-white p-3">
+          <TabPanel>
             <TasksReport />
           </TabPanel>
         </TabPanels>

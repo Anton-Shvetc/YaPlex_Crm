@@ -13,7 +13,7 @@ export const ReportTableContainer = <T extends object>({
 }: ReportTableContainerProps<T>) => {
   return (
     <div>
-      <h3 className="flex justify-center">{reportTitle}</h3>
+      <h3 className="flex ">{reportTitle}</h3>
 
       <TableContainer<T>
         tableData={tableData}

@@ -11,8 +11,8 @@ export const ClientReport = () => {
   const newClientColumn: ColumnDefinition<Client>[] = useMemo(
     () => [
       {
-        key: "ID клиента",
-        label: "id",
+        label: "ID клиента",
+        key: "id",
         //   render: (value: number | string) => (
         //     <span style={{ fontWeight: 700 }}>{value}</span>
         //   ),

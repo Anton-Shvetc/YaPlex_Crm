@@ -41,10 +41,7 @@ export const TableContainer = <T extends object>({
   // Логика пагинации
   const totalPages = Math.ceil(tableData.length / pageSize);
   const paginatedData = pagination
-    ? tableData.slice(
-        (currentPage - 1) * pageSize,
-        currentPage * pageSize
-      )
+    ? tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
     : tableData;
 
   const handlePrevPage = () => {
@@ -84,7 +81,9 @@ export const TableContainer = <T extends object>({
             return (
               <tr
                 key={rowIndex}
-                onClick={() => handelChangeFormData && handelChangeFormData(row)}
+                onClick={() =>
+                  handelChangeFormData && handelChangeFormData(row)
+                }
                 className={rowClasses}
               >
                 {columns.map((column) => {
@@ -109,21 +108,35 @@ export const TableContainer = <T extends object>({
       </table>
 
       {pagination && tableData.length > pageSize && (
-        <div className="flex justify-center items-center gap-4">
+        <div className="flex items-center gap-4">
           <button
             onClick={handlePrevPage}
             disabled={currentPage === 1}
-            className="px-3 py-1 rounded border disabled:opacity-50"
+            className="text-gray-100 px-3 py-1 rounded border disabled:opacity-50"
           >
             Назад
           </button>
-          <span>
-            Страница {currentPage} из {totalPages}
-          </span>
+          <div className="flex items-center gap-1">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`w-8 h-8 flex items-center justify-center rounded text-sm
+            ${
+              currentPage === page
+                ? "bg-blue-500 text-white"
+                : "border border-gray-300 dark:text-[#fff] hover:bg-gray-100"
+            }
+            transition-colors`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
           <button
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
-            className="px-3 py-1 rounded border disabled:opacity-50"
+            className="text-gray-100 px-3 py-1 rounded border disabled:opacity-50"
           >
             Вперед
           </button>
