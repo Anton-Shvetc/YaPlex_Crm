@@ -148,7 +148,7 @@ export async function handleDatabaseUpdate<T>(
 
     // 7. Подготовка данных и выполнение запроса на обновление
 
-    let sql = updateParams.updateQuery;
+    const sql = updateParams.updateQuery;
     let args = updateParams.prepareData(
       data,
       {

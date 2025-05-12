@@ -1,4 +1,4 @@
-import { ColumnDefinition, EntityTableRowMap, EntityType } from "@/utils/types";
+import { ColumnDefinition} from "@/utils/types";
 import { TableContainer } from "../TableContainer/TableContainer";
 
 interface ReportTableContainerProps<T> {

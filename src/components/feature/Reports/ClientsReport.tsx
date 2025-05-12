@@ -1,10 +1,10 @@
 "use client";
 import { ReportTableContainer } from "@/components/shared/ReportTableContainer/ReportTableContainer";
 import { useClientStore } from "@/store/clientStore";
-import { useLoaderStore } from "@/store/useLoaderStore";
+
 import { formatDate } from "@/utils/formatters";
 import { Client, ColumnDefinition } from "@/utils/types";
-import { use, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 export const ClientReport = () => {
   const { clients } = useClientStore();
