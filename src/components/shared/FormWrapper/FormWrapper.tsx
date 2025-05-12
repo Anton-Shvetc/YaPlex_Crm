@@ -51,7 +51,7 @@ export const FormWrapper: React.FC<FormWrapperI> = ({
       {btnTitle && (
         <button
           type="submit"
-          className="w-full mt-8 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+          className="w-full mt-4 md:mt-8 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
         >
           {btnTitle}
         </button>

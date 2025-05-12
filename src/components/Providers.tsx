@@ -129,7 +129,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     } else {
       reset({} as EntityFormMap[keyof EntityFormMap]);
     }
-  }, [formData, modalType]);
+  }, [formData, modalType, reset]);
 
   return (
     <SnackbarProvider
