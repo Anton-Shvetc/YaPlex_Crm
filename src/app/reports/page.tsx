@@ -1,7 +1,7 @@
 "use client";
 import { ClientReport } from "@/components/feature/Reports/ClientsReport";
 import { SalesReport } from "@/components/feature/Reports/SalesReport";
-import { TasksReport } from "@/components/feature/Reports/TesksReport";
+import { TasksReport } from "@/components/feature/Reports/TasksReport";
 import { PageContainer } from "@/components/shared/PageContainer";
 import { getParamsData } from "@/services/getParamsData";
 import { useClientStore } from "@/store/clientStore";

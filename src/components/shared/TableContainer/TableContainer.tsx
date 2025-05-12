@@ -100,7 +100,7 @@ export const TableContainer = <T extends object>({
                   return (
                     <td
                       key={String(column.key)}
-                      className="p-2 first:rounded-l-lg last:rounded-r-lg"
+                      className="p-2 text-left first:rounded-l-lg last:rounded-r-lg"
                     >
                       {column.render
                         ? column.render(value, row)

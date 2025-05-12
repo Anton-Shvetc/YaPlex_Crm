@@ -10,6 +10,7 @@ import { useLoaderStore } from "@/store/useLoaderStore";
 import { formatDate } from "@/utils/formatters";
 
 import { ColumnDefinition, Deal, Task } from "@/utils/types";
+import { DateTime } from "luxon";
 import { useMemo } from "react";
 
 export default function TasksPage() {
@@ -18,6 +19,8 @@ export default function TasksPage() {
   const { deals, setDeals } = useDealsStore();
 
   const { startLoading, stopLoading } = useLoaderStore();
+
+  const now = DateTime.now();
 
   const tasksTableColumns: ColumnDefinition<Task>[] = useMemo(
     () => [
@@ -38,7 +41,21 @@ export default function TasksPage() {
         ),
       },
       { key: "executor", label: "Исполнитель" },
-      { key: "status", label: "Статус" },
+      { key: "status", label: "Статус", 
+               render: (value: number | string, row: Task) => {
+                  if ("deadline" in row && row.deadline) {
+                    const deadline = DateTime.fromISO(row.deadline.toString());
+        
+                    if (!deadline.isValid) return <span>Неверная дата</span>;
+        
+                    if (deadline < now)
+                      return (
+                        <span className="text-red-500 font-medium">Просрочено</span>
+                      );
+                  }
+                  return <span>{value || "—"}</span>;
+                },
+       },
 
       {
         key: "created_at",

@@ -28,7 +28,7 @@ export const getTableRowClasses = (status?: string) => {
   // Обработка просроченных задач
   if (status === "Просрочена") {
     rowClasses =
-      "rounded-lg dark: bg-[#450A0A] text-gray-100 hover:bg-rose-100 dark:hover:bg-gray-700  transition-colors cursor-pointer";
+      "rounded-lg bg-rose-300 dark:bg-[#450A0A] text-gray-100 hover:bg-rose-100 dark:hover:bg-gray-700  transition-colors cursor-pointer";
     return rowClasses;
   }
 
