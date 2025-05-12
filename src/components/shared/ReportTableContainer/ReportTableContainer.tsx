@@ -15,7 +15,11 @@ export const ReportTableContainer = <T extends object>({
     <div>
       <h3 className="flex justify-center">{reportTitle}</h3>
 
-      <TableContainer<T> tableData={tableData} columns={columns} />
+      <TableContainer<T>
+        tableData={tableData}
+        columns={columns}
+        pagination={true}
+      />
     </div>
   );
 };
