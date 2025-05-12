@@ -19,6 +19,8 @@ import { useDealsStore } from "@/store/dealsStore";
 import { LoginForm } from "@/components/feature/LoginForm/LoginForm";
 import { LoginPageInfo } from "@/components/feature/LoginPageInfo/LoginPageInfo";
 import { RegisterForm } from "@/components/feature/RegisterForm/RegisterForm";
+import { PasswordResetForm } from "@/components/feature/PasswordResetForm/PasswordResetForm";
+import { EmailConfirmForm } from "@/components/feature/EmailConfirmForm/EmailConfirmForm";
 import { RegisterFormDataType } from "@/utils/types";
 import { enqueueSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
@@ -51,8 +53,8 @@ export default function LoginPage() {
   const router = useRouter();
 
   const [showMobileForm, setShowMobileForm] = useState(false);
-
-  const [activeForm, setActiveForm] = useState<"login" | "register">("login");
+  const [resetEmail, setResetEmail] = useState("");
+  const [activeForm, setActiveForm] = useState<"login" | "register" | "reset-password" | "email-confirm">("login");
 
   const handleRegister = async (requestData: RegisterFormDataType) => {
     const { success, message, data } = await registerUser(requestData);
@@ -78,6 +80,43 @@ export default function LoginPage() {
         router.push("/");
       }
     }
+  };
+  
+  const handlePasswordReset = async (email: string) => {
+    // Здесь будет отправка запроса на сервер для восстановления пароля
+    // На данном этапе просто имитируем успешную отправку
+    enqueueSnackbar(`Инструкции по восстановлению пароля отправлены на ${email}`, { 
+      variant: "success" 
+    });
+    
+    // Сохраняем email для формы подтверждения
+    setResetEmail(email);
+    
+    // Переходим к форме подтверждения email
+    setActiveForm("email-confirm");
+  };
+
+  const handleForgotPassword = () => {
+    setActiveForm("reset-password");
+  };
+  
+  const handleConfirmCode = (confirmCode: string) => {
+    // Здесь будет проверка кода подтверждения
+    enqueueSnackbar(`Код подтверждения принят`, { 
+      variant: "success" 
+    });
+    
+    // Переходим к форме входа после успешного подтверждения
+    setTimeout(() => {
+      setActiveForm("login");
+    }, 1500);
+  };
+  
+  const handleResendEmail = () => {
+    // Повторная отправка письма
+    enqueueSnackbar(`Письмо отправлено повторно на ${resetEmail}`, { 
+      variant: "info" 
+    });
   };
 
   return (
@@ -107,19 +146,99 @@ export default function LoginPage() {
             }`}
           >
             {activeForm === "register" && (
-              <RegisterForm
-                onSubmit={handleRegister}
-                showMobileForm={showMobileForm}
-              />
+              <>
+                <RegisterForm
+                  onSubmit={handleRegister}
+                  showMobileForm={showMobileForm}
+                />
+                <div className="absolute bottom-8 left-4 md:hidden">
+                  <p className="text-gray-500 dark:text-white text-sm">
+                    Уже зарегистрированы?
+                  </p>
+                  <button
+                    className="text-[#2563EB] text-sm font-medium"
+                    onClick={() => setActiveForm("login")}
+                  >
+                    Войти в аккаунт
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div
+            className={`${showMobileForm ? "block" : "hidden"} md:${
+              activeForm === "reset-password" ? "block" : "hidden"
+            }`}
+          >
+            {activeForm === "reset-password" && (
+              <>
+                <PasswordResetForm
+                  onSubmit={handlePasswordReset}
+                  showMobileForm={showMobileForm}
+                />
+                <div className="absolute bottom-8 left-4 md:hidden">
+                  <p className="text-gray-500 dark:text-white text-sm">
+                    Уже зарегистрированы?
+                  </p>
+                  <button
+                    className="text-[#2563EB] text-sm font-medium"
+                    onClick={() => setActiveForm("login")}
+                  >
+                    Войти в аккаунт
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+          
+          <div
+            className={`${showMobileForm ? "block" : "hidden"} md:${
+              activeForm === "email-confirm" ? "block" : "hidden"
+            }`}
+          >
+            {activeForm === "email-confirm" && (
+              <>
+                <EmailConfirmForm
+                  onConfirm={handleConfirmCode}
+                  onResendEmail={handleResendEmail}
+                  showMobileForm={showMobileForm}
+                />
+                <div className="absolute bottom-8 left-4 md:hidden">
+                  <p className="text-gray-500 dark:text-white text-sm">
+                    Уже зарегистрированы?
+                  </p>
+                  <button
+                    className="text-[#2563EB] text-sm font-medium"
+                    onClick={() => setActiveForm("login")}
+                  >
+                    Войти в аккаунт
+                  </button>
+                </div>
+              </>
             )}
           </div>
 
           <div className={`${showMobileForm ? "block" : "hidden"} md:block`}>
             {activeForm === "login" && (
-              <LoginForm
-                onSubmit={handleLogin}
-                showMobileForm={showMobileForm}
-              />
+              <>
+                <LoginForm
+                  onSubmit={handleLogin}
+                  showMobileForm={showMobileForm}
+                  onForgotPassword={handleForgotPassword}
+                />
+                <div className="absolute bottom-8 left-4 md:hidden">
+                  <p className="text-gray-500 dark:text-white text-sm">
+                    У вас еще нет аккаунта?
+                  </p>
+                  <button
+                    className="text-[#2563EB] text-sm font-medium"
+                    onClick={() => setActiveForm("register")}
+                  >
+                    Зарегистрироваться
+                  </button>
+                </div>
+              </>
             )}
           </div>
         </div>
