@@ -65,7 +65,7 @@ export default function Home() {
     };
 
     fetchData();
-  }, []);
+  }, [setClients, setDeals, setStatisticsTableData, setTasks, setUser, startLoading, stopLoading]);
 
   useEffect(() => {
     console.log("statisticsTableData", statisticsTableData);

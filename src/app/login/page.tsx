@@ -48,7 +48,7 @@ export default function LoginPage() {
     setDeals([]);
     setTasks([]);
     setStatisticsTableData([]);
-  }, []);
+  }, [setClients, setDeals, setTasks, setStatisticsTableData]);
 
   const router = useRouter();
 
@@ -102,7 +102,7 @@ export default function LoginPage() {
   
   const handleConfirmCode = (confirmCode: string) => {
     // Здесь будет проверка кода подтверждения
-    enqueueSnackbar(`Код подтверждения принят`, { 
+    enqueueSnackbar(`Код подтверждения "${confirmCode}" принят`, { 
       variant: "success" 
     });
     

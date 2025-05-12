@@ -112,10 +112,11 @@ export default function ProfilePage() {
       startLoading,
       stopLoading,
     });
-  }, []);
+  }, [setUser, startLoading, stopLoading]);
+  
   useEffect(() => {
     if (user) reset(user);
-  }, [user]);
+  }, [user, reset]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 dark:from-gray-900 dark:to-gray-800 md:bg-none md:bg-white md:dark:bg-gray-900">

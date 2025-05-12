@@ -91,7 +91,7 @@ export const EntityPageContainer = <T extends EntityType>({
 
   useEffect(() => {
     if (updateTableData) updateTableData();
-  }, []);
+  }, [updateTableData]);
 
   useEffect(() => {
     setFilteredTableData(tableData || []);
@@ -117,7 +117,7 @@ export const EntityPageContainer = <T extends EntityType>({
   useEffect(() => {
     const result = searchData(tableData || [], searchParams);
     setFilteredTableData(result);
-  }, [searchParams]);
+  }, [searchParams, searchData, tableData]);
 
   return (
     <>
