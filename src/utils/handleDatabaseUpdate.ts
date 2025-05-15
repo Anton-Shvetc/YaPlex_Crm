@@ -147,7 +147,9 @@ export async function handleDatabaseUpdate<T>(
     }
 
     // 7. Подготовка данных и выполнение запроса на обновление
-    const args = updateParams.prepareData(
+
+    const sql = updateParams.updateQuery;
+    let args = updateParams.prepareData(
       data,
       {
         userId: decoded.userId,
@@ -156,8 +158,29 @@ export async function handleDatabaseUpdate<T>(
       id
     );
 
+    // Добавление текущей даты и времени для поля finish_at в случае завершения сделки
+    if (updateParams.entityName === "deals") {
+      if (data?.status === "Завершена" && !data?.finish_at) {
+        data.finish_at = new Date().toISOString();
+      }
+      if (data?.status !== "Завершена" && data?.finish_at) {
+        data.finish_at = null;
+      }
+
+      args = updateParams.prepareData(
+        data,
+        {
+          userId: decoded.userId,
+          userCompanyKey,
+        },
+        id
+      );
+      // Исправить, данные finish_at не попадают в запрос к бд
+      console.log("degub degub", sql, args, data?.status, data?.finish_at);
+    }
+
     const result = await turso.execute({
-      sql: updateParams.updateQuery,
+      sql: sql,
       args: args.map((value) => value ?? null),
     });
 

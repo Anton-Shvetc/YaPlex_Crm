@@ -16,8 +16,7 @@ export default function DealsPage() {
   const { deals, setDeals } = useDealsStore();
   const { clients, setClients } = useClientStore();
 
-
-  const {closeModal} = useModalStore()
+  const { closeModal } = useModalStore();
 
   const dealsTableColumns: ColumnDefinition<Deal>[] = useMemo(
     () => [
@@ -33,7 +32,7 @@ export default function DealsPage() {
       { key: "description", label: "Описание" },
       {
         key: "status",
-        label: "Этап(стутс)",
+        label: "Этап (статус)",
         render: (value: number | string) => (
           <span className={getStatusColor(value.toString())}>{value}</span>
         ),
@@ -44,6 +43,13 @@ export default function DealsPage() {
         label: "Дата создания",
         render: (value: number | string) => (
           <span>{formatDate(value.toString())}</span>
+        ),
+      },
+      {
+        key: "finish_at",
+        label: "Дата завершения",
+        render: (value: number | string) => (
+          <span>{value?.toString() ? formatDate(value.toString()) : "-"}</span>
         ),
       },
     ],
@@ -64,15 +70,12 @@ export default function DealsPage() {
   const finishedDeal = (id: number | undefined) => {
     if (id) {
       alert("finished");
-   
     }
   };
-
 
   return (
     <EntityPageContainer
       entityType="deal"
-   
       modalTargetText={(modalType: string) =>
         modalType === "new" ? "Новая сделка" : "Карточка сделки"
       }
@@ -88,14 +91,11 @@ export default function DealsPage() {
         // onClick: () => {},
       })}
       secondaryActionButton={(modalType: string, id: number | undefined) => ({
-        text: modalType === "new" ? "Отмена" : "Удалить клиента",
-        variant: "delete",
+        text: modalType === "new" ? "Отмена" : "Закрыть сделку",
+        variant: "finish",
         type: "button",
         onClick: () => (modalType === "new" ? closeModal() : finishedDeal(id)),
       })}
-  
     />
   );
 }
-
-

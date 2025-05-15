@@ -7,15 +7,12 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
   const { id } = await params;
-  return handleDatabaseUpdate<Deal>(
-    request,
- id,
-    {
-      entityName: "deals",
-      requiredFields: ["name"],
-      uniqueFields: ["name"],
-      chechIsActive: false,
-      updateQuery: `
+  return handleDatabaseUpdate<Deal>(request, id, {
+    entityName: "deals",
+    requiredFields: ["name"],
+    uniqueFields: ["name"],
+    chechIsActive: false,
+    updateQuery: `
       UPDATE deals SET
         name = ?,
         clientId = ?,
@@ -25,16 +22,15 @@ export async function PUT(
         update_at = ?
       WHERE id = ? AND userCompanyKey = ?
     `,
-      prepareData: (data: Deal, { userCompanyKey }, id) => [
-        data.name,
-        data.clientId,
-        data.amount,
-        data.status,
-        data.description,
-        new Date().toISOString(),
-        id,
-        userCompanyKey,
-      ],
-    }
-  );
+    prepareData: (data: Deal, { userCompanyKey }, id) => [
+      data.name,
+      data.clientId,
+      data.amount,
+      data.status,
+      data.description,
+      new Date().toISOString(),
+      id,
+      userCompanyKey,
+    ],
+  });
 }
