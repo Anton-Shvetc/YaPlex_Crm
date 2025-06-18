@@ -32,7 +32,7 @@ export const MainPageInfoDesktop = ({
         key: "name",
         label: "",
         render: (value: number | string) => (
-          <span style={{ fontWeight: 700 }}>{value}</span>
+          <span className="dark:text-white font-bold">{value}</span>
         ),
       },
       {
@@ -87,6 +87,31 @@ export const MainPageInfoDesktop = ({
       <MainPageInfoContainer
         title="Топ 10 активных клиентов"
         pageType="clients"
+        actionButton={
+          <ButtonUi
+            onClick={() => {
+              openModal({
+                formFieldKey: "client",
+                title: "Новый клиент",
+                requestLink: "api/clients",
+                modalType: "new",
+                primaryAction: {
+                  text: "Создать",
+                  type: "submit",
+                  variant: "submit",
+                },
+                secondaryAction: {
+                  text: "Отмена",
+                  variant: "default",
+                  onClick: closeModal,
+                },
+              });
+            }}
+            variant="primary"
+            disabled={isLoading}
+            label={"Новый клиент"}
+          />
+        }
       >
         {clients?.length > 0
           ? clients?.map((client) => (
@@ -126,7 +151,7 @@ export const MainPageInfoDesktop = ({
             }}
             variant="primary"
             disabled={isLoading}
-            label={"Добавить"}
+            label={"Новая сделка"}
           />
         }
       >
@@ -150,7 +175,35 @@ export const MainPageInfoDesktop = ({
             })
           : null}
       </MainPageInfoContainer>
-      <MainPageInfoContainer title="Последние 10 задач" pageType="tasks">
+      <MainPageInfoContainer
+        title="Последние 10 задач"
+        pageType="tasks"
+        actionButton={
+          <ButtonUi
+            onClick={() => {
+              openModal({
+                formFieldKey: "task",
+                title: "Новая задача",
+                requestLink: "api/tasks",
+                modalType: "new",
+                primaryAction: {
+                  text: "Создать",
+                  type: "submit",
+                  variant: "submit",
+                },
+                secondaryAction: {
+                  text: "Отмена",
+                  variant: "default",
+                  onClick: closeModal,
+                },
+              });
+            }}
+            variant="primary"
+            disabled={isLoading}
+            label={"Новая задача"}
+          />
+        }
+      >
         {tasks?.length > 0
           ? tasks?.map((task) => (
               <MainPageTaskCard

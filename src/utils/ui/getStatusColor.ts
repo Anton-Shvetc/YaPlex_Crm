@@ -11,7 +11,7 @@ export const getStatusColor = (status?: string) => {
       btnColor = "text-amber-150";
       break;
     case "В работе":
-      btnColor = "text-[#EFF6FF]";
+      btnColor = "text-[#3f53d9]";
       break;
   }
 

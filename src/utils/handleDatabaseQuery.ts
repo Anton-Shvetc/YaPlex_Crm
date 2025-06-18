@@ -66,7 +66,7 @@ export async function handleDatabaseQuery(tableName: string, limit?: number) {
       { status: 200 }
     );
   } catch (error) {
-    console.log("error", error);
+
     if (
       error instanceof jwt.TokenExpiredError ||
       error instanceof jwt.JsonWebTokenError

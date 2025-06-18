@@ -175,8 +175,7 @@ export async function handleDatabaseUpdate<T>(
         },
         id
       );
-      // Исправить, данные finish_at не попадают в запрос к бд
-      console.log("degub degub", sql, args, data?.status, data?.finish_at);
+
     }
 
     const result = await turso.execute({

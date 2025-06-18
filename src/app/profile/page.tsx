@@ -115,7 +115,7 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 dark:from-gray-900 dark:to-gray-800 md:bg-none md:bg-white md:dark:bg-gray-900">
       <div className="pt-[70px] md:pt-0 px-6 max-w-5xl mx-auto">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-[0_4px_8px_0_rgba(229,231,235,0.5)] dark:shadow-[0_4px_8px_0_rgba(0,0,0,0.25)] p-8 pt-5 pb-0">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-[0_4px_8px_0_rgba(229,231,235,0.5)] dark:shadow-[0_4px_8px_0_rgba(0,0,0,0.25)] p-8 pt-5 pb-5">
           {/* Заголовок только для десктопа */}
           <h1 className="text-2xl font-bold mb-8 text-gray-800 dark:text-white hidden md:block">
             Настройка аккаунта

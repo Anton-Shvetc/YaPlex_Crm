@@ -54,7 +54,7 @@ export default function AdaptiveNavbar() {
     }
   };
 
-  const collapseButtonClasses = `absolute -right-3 top-4 rounded-full p-1 z-10 border-2 hover:bg-gray-300 cursor-pointer
+  const collapseButtonClasses = ` rounded-full p-1 z-10 border-2 hover:bg-gray-300 cursor-pointer
     ${
       mounted
         ? "bg-gray-200 dark:bg-gray-700 border-gray-100 dark:border-gray-800 dark:hover:bg-gray-600 text-gray-800 dark:text-white"
@@ -93,12 +93,18 @@ export default function AdaptiveNavbar() {
       >
         <nav className="flex-1 flex flex-col space-y-4 relative">
           {/* Кнопка сворачивания */}
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className={collapseButtonClasses}
+          <div
+            className={`w-full flex ${
+              isCollapsed ? "justify-center" : "justify-end"
+            }`}
           >
-            {isCollapsed ? <ExpandIcon /> : <CollapseIcon />}
-          </button>
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className={collapseButtonClasses}
+            >
+              {isCollapsed ? <ExpandIcon /> : <CollapseIcon />}
+            </button>
+          </div>
 
           {/* Навигационные ссылки для десктопа */}
           {navigationLinks.map((link) => (
