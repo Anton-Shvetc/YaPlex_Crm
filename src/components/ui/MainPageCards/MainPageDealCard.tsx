@@ -15,7 +15,7 @@ export const MainPageDealCard: React.FC<MainPageDealCardI> = ({
   created_at,
 }) => {
   let rowClasses =
-    "rounded-lg border cursor-pointer shadow-md shadow-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors cursor-pointer dark:shadow-none";
+    "rounded-lg cursor-pointer shadow-md/10 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors cursor-pointer dark:shadow-none";
 
   // Обработка статусов
   switch (status) {
@@ -34,14 +34,20 @@ export const MainPageDealCard: React.FC<MainPageDealCardI> = ({
   }
 
   return (
-    <div className={`w-fill flex ${rowClasses}`}>
-      <div className="p-2 first:rounded-l-lg last:rounded-r-lg">{name}</div>
-      <div className="p-2 first:rounded-l-lg last:rounded-r-lg">
+    <div className={`w-fill flex justify-between ${rowClasses}`}>
+      <div className="p-2 w-[40%] first:rounded-l-lg last:rounded-r-lg">
+        {name}
+      </div>
+      <div className="p-2 w-[20%] first:rounded-l-lg last:rounded-r-lg">
         {clientName}
       </div>
-      <div className="p-2 first:rounded-l-lg last:rounded-r-lg">{amount}</div>
-      <div className="p-2 first:rounded-l-lg last:rounded-r-lg">{status}</div>
-      <div className="p-2 first:rounded-l-lg last:rounded-r-lg">
+      <div className="p-2 w-[10%] first:rounded-l-lg last:rounded-r-lg font-bold">
+        {amount + " руб"}
+      </div>
+      <div className="p-2 w-[10%] first:rounded-l-lg last:rounded-r-lg">
+        {status}
+      </div>
+      <div className="p-2 w-[10%] first:rounded-l-lg last:rounded-r-lg">
         {formatDate(created_at, "d MMMM yyyy")}
       </div>
     </div>

@@ -67,10 +67,6 @@ export default function Home() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log("statisticsTableData", statisticsTableData);
-  }, [statisticsTableData]);
-
   return (
     <div className=" items-center justify-items-center p-6 gap-16  font-[family-name:var(--font-geist-sans)] ">
       <div className=" justify-between w-full">

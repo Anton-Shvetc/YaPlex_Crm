@@ -10,9 +10,6 @@ export const formatDate = (
   const formattedDate = DateTime.fromJSDate(date)
     .setLocale("ru")
     .toFormat(format);
-
-  console.log("formattedDate", formattedDate);
-
   return formattedDate;
 };
 

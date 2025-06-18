@@ -37,7 +37,7 @@ export function AvatarUpload({ profileImage, onImageChange, size = 24 }: AvatarU
           />
         )}
       </div>
-      <label
+      {/* <label
         htmlFor="profile-image"
         className="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full p-2 cursor-pointer"
       >
@@ -62,7 +62,7 @@ export function AvatarUpload({ profileImage, onImageChange, size = 24 }: AvatarU
         accept="image/*"
         onChange={onImageChange}
         className="hidden"
-      />
+      /> */}
     </div>
   );
 } 

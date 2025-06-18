@@ -47,7 +47,6 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
   try {
-    console.log("params debug", params, request);
     const { id } = await params;
 
     // 1. Проверка авторизации

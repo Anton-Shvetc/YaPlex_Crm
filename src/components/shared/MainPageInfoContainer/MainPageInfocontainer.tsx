@@ -16,8 +16,8 @@ export const MainPageInfoContainer: React.FC<MainPageInfoProps> = ({
   actionButton,
 }) => {
   return (
-    <div>
-      {title}
+    <div className="flex flex-col gap-3">
+      <h3 className="text-[16px] font-bold">{title}</h3>
 
       <div
         className={clsx(
@@ -30,7 +30,7 @@ export const MainPageInfoContainer: React.FC<MainPageInfoProps> = ({
         {children || "Нет данных"}
       </div>
 
-      {actionButton}
+      <div>{actionButton}</div>
     </div>
   );
 };
