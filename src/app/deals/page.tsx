@@ -91,10 +91,12 @@ export default function DealsPage() {
         // onClick: () => {},
       })}
       secondaryActionButton={(modalType: string, id: number | undefined) => ({
-        text: modalType === "new" ? "Отмена" : "Закрыть сделку",
+        // text: modalType === "new" ? "Отмена" : "Закрыть сделку",
+        text: "Отмена",
         variant: "finish",
         type: "button",
-        onClick: () => (modalType === "new" ? closeModal() : finishedDeal(id)),
+        // onClick: () => (modalType === "new" ? closeModal() : finishedDeal(id)),
+        onClick: () => closeModal(),
       })}
     />
   );

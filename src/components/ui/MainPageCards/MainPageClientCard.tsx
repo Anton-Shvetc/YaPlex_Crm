@@ -25,10 +25,10 @@ export const MainPageClientCard: React.FC<MainPageClientCardI> = ({
   };
 
   return (
-    <div className="flex flex-col justify-between p-4 h-[126px] rounded-lg shadow-md bg-white">
+    <div className="flex flex-col justify-between p-4 h-[126px] rounded-lg shadow-md bg-white dark:bg-gray-800 dark:text-white">
       <div>
-        <div className="font-bold text-gray-900 text-base">{name}</div>
-        <div className="text-gray-500 text-sm font-normal mt-1">{company}</div>
+        <div className="font-bold text-gray-900 text-base dark:text-white">{name}</div>
+        <div className="text-gray-500 text-sm font-normal mt-1 dark:text-white">{company}</div>
       </div>
       {(dealsCount || dealsCount === 0) && (
         <div className="flex items-center gap-1">
