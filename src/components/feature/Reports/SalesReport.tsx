@@ -28,7 +28,7 @@ export const SalesReport = () => {
         key: "finish_at",
         label: "Дата завершения",
         render: (value: number | string) => (
-          <span>{formatDate(value.toString())}</span>
+          <span>{value?.toString() ? formatDate(value.toString()) : "-"}</span>
         ),
       },
     ],
@@ -39,7 +39,7 @@ export const SalesReport = () => {
     <div>
       <ReportTableContainer<Deal>
         reportTitle="Общий, продажи"
-        tableData={deals.filter((deal) => deal?.finish_at)}
+        tableData={deals.filter((deal) => deal?.status === "Завершена")}
         columns={allSalesColumns}
         noDataText="Нет данных о завершенных сделках"
       />
