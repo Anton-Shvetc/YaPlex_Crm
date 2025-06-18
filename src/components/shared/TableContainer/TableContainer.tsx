@@ -63,7 +63,7 @@ export const TableContainer = <T extends object>({
             {columns.map((column) => (
               <th
                 key={String(column.key)}
-                className="p-2 text-left text-gray-400 text-xs font-medium"
+                className="p-2 text-left dard:text-white text-gray-400 text-xs font-medium"
               >
                 {column.label}
               </th>
@@ -100,7 +100,7 @@ export const TableContainer = <T extends object>({
                   return (
                     <td
                       key={String(column.key)}
-                      className="p-2 text-left first:rounded-l-lg last:rounded-r-lg"
+                      className="p-2 text-left dark:text-white first:rounded-l-lg last:rounded-r-lg"
                     >
                       {column.render
                         ? column.render(value, row)

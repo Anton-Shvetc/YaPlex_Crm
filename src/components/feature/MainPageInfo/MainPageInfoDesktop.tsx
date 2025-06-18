@@ -32,7 +32,7 @@ export const MainPageInfoDesktop = ({
         key: "name",
         label: "",
         render: (value: number | string) => (
-          <span style={{ fontWeight: 700 }}>{value}</span>
+          <span className="dark:text-white font-bold">{value}</span>
         ),
       },
       {

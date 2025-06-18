@@ -34,20 +34,22 @@ export const MainPageDealCard: React.FC<MainPageDealCardI> = ({
   }
 
   return (
-    <div className={`w-fill flex justify-between ${rowClasses}`}>
-      <div className="p-2 w-[40%] first:rounded-l-lg last:rounded-r-lg">
+    <div
+      className={`w-fill flex justify-between dark:bg-amber-100 ${rowClasses}`}
+    >
+      <div className="p-2 flex-4 first:rounded-l-lg last:rounded-r-lg">
         {name}
       </div>
-      <div className="p-2 w-[20%] first:rounded-l-lg last:rounded-r-lg">
+      <div className="p-2 flex-2 first:rounded-l-lg last:rounded-r-lg">
         {clientName}
       </div>
-      <div className="p-2 w-[10%] first:rounded-l-lg last:rounded-r-lg font-bold">
+      <div className="p-2 flex-1 first:rounded-l-lg last:rounded-r-lg font-bold">
         {amount + " руб"}
       </div>
-      <div className="p-2 w-[10%] first:rounded-l-lg last:rounded-r-lg">
+      <div className="p-2 flex-1 first:rounded-l-lg last:rounded-r-lg">
         {status}
       </div>
-      <div className="p-2 w-[10%] first:rounded-l-lg last:rounded-r-lg">
+      <div className="p-2 flex-1 first:rounded-l-lg last:rounded-r-lg">
         {formatDate(created_at, "d MMMM yyyy")}
       </div>
     </div>
