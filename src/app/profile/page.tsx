@@ -71,11 +71,6 @@ export default function ProfilePage() {
     }
   };
 
-  const handleConnectAccount = (type: "vk" | "google") => {
-    // Логика подключения аккаунта
-    console.log(`Connecting ${type} account`);
-  };
-
   const handleDeleteAccount = () => {
     if (
       window.confirm(
