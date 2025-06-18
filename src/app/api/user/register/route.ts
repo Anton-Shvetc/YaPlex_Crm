@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     const result = await turso.execute({
       sql: `
         INSERT INTO users (
-          userId, firstName, lastName, email, username, userCompanyKey,  password, createdAt, updatedAt, isActive
+          userId, firstName, lastName, email, username, userCompanyKey,  password, createdAt, updatedAt, is_active
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       args: [

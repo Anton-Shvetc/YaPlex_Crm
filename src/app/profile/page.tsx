@@ -6,30 +6,30 @@ import { InputFieldUi } from "@/components/ui/InputFieldUi";
 import { ButtonUi } from "@/components/ui/ButtonUi";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AvatarUpload } from "@/components/ui/AvatarUpload";
-import { ConnectedAccounts } from "@/components/feature/ConnectedAccounts/ConnectedAccounts";
+// import { ConnectedAccounts } from "@/components/feature/ConnectedAccounts/ConnectedAccounts";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import { useRouter } from "next/navigation";
 import { deleteItem } from "@/services/deleteItem";
 import { useUserStore } from "@/store/userStore";
 import { getSingleData } from "@/services/getSingleData";
-import { ConnectedAccount, ProfileFormData, UserI } from "@/utils/types";
+import { ProfileFormData, UserI } from "@/utils/types";
 import { updateProfile } from "@/services/updateProfile";
 
 export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [connectedAccounts] = useState<ConnectedAccount[]>([
-    {
-      id: "1",
-      type: "vk",
-      connected: true,
-      username: "Ярополк Иванов",
-    },
-    {
-      id: "2",
-      type: "google",
-      connected: false,
-    },
-  ]);
+  // const [connectedAccounts] = useState<ConnectedAccount[]>([
+  //   {
+  //     id: "1",
+  //     type: "vk",
+  //     connected: true,
+  //     username: "Ярополк Иванов",
+  //   },
+  //   {
+  //     id: "2",
+  //     type: "google",
+  //     connected: false,
+  //   },
+  // ]);
   const [formChanged, setFormChanged] = useState(false);
 
   const { user, setUser } = useUserStore();
@@ -69,11 +69,6 @@ export default function ProfilePage() {
       };
       reader.readAsDataURL(file);
     }
-  };
-
-  const handleConnectAccount = (type: "vk" | "google") => {
-    // Логика подключения аккаунта
-    console.log(`Connecting ${type} account`);
   };
 
   const handleDeleteAccount = () => {
@@ -234,12 +229,13 @@ export default function ProfilePage() {
             </div>
 
             {/* Подключенные аккаунты - только для десктопа, используя компонент ConnectedAccounts */}
-            <ConnectedAccounts
+            {/* TODO - идея для развития */}
+            {/* <ConnectedAccounts
               accounts={connectedAccounts}
               onConnect={handleConnectAccount}
               showHeader={true}
               className="hidden md:block"
-            />
+            /> */}
 
             {/* Переключатель темы для мобильных устройств */}
             <div className="md:hidden flex items-center justify-start">
@@ -278,12 +274,13 @@ export default function ProfilePage() {
         </div>
 
         {/* Подключенные аккаунты - только для мобильных устройств */}
-        <ConnectedAccounts
+        {/* TODO - идея для развития */}
+        {/* <ConnectedAccounts
           accounts={connectedAccounts}
           onConnect={handleConnectAccount}
           showHeader={false}
           className="mt-10 md:hidden"
-        />
+        /> */}
 
         {/* Кнопка удаления аккаунта - только для мобильных устройств */}
         <div className="flex justify-center md:hidden mt-10">
