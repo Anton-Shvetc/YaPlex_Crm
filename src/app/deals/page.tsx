@@ -67,11 +67,11 @@ export default function DealsPage() {
     getParamsData<Deal>("api/deals", setDeals, { startLoading, stopLoading });
   };
 
-  const finishedDeal = (id: number | undefined) => {
-    if (id) {
-      alert("finished");
-    }
-  };
+  // const finishedDeal = (id: number | undefined) => {
+  //   if (id) {
+  //     alert("finished");
+  //   }
+  // };
 
   return (
     <EntityPageContainer
@@ -90,7 +90,7 @@ export default function DealsPage() {
         varinat: "submit",
         // onClick: () => {},
       })}
-      secondaryActionButton={(modalType: string, id: number | undefined) => ({
+      secondaryActionButton={() => ({
         // text: modalType === "new" ? "Отмена" : "Закрыть сделку",
         text: "Отмена",
         variant: "finish",
