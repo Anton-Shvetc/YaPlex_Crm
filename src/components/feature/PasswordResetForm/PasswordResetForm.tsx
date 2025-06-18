@@ -34,6 +34,9 @@ export const PasswordResetForm: React.FC<PasswordResetFormProps> = ({
           : "bg-transparent"
       }
     >
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
+        Восстановление пароля
+      </h2>
       <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
         Укажите почту, на которую вы регистрировали аккаунт, и мы отправим вам инструкцию по восстановлению пароля.
       </p>

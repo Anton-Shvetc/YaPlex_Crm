@@ -146,7 +146,7 @@ export interface MainPageInfoDesktopI {
 
 export interface LoginPageInfoI {
   showMobileForm: boolean;
-  setActiveForm: React.Dispatch<React.SetStateAction<"login" | "register">>;
+  setActiveForm: React.Dispatch<React.SetStateAction<"login" | "register" | "reset-password" | "email-confirm">>;
   activeForm: string;
   setShowMobileForm: React.Dispatch<React.SetStateAction<boolean>>;
 }

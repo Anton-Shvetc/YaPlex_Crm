@@ -9,9 +9,11 @@ import { useForm } from "react-hook-form";
 export const LoginForm = ({
   onSubmit,
   showMobileForm,
+  onForgotPassword,
 }: {
   onSubmit: (data: { email: string; password: string }) => void;
   showMobileForm: boolean;
+  onForgotPassword?: () => void;
 }) => {
   const {
     register,
@@ -30,7 +32,10 @@ export const LoginForm = ({
           ? "bg-white/80 dark:bg-gray-900 backdrop-blur-sm rounded-2xl shadow-xl p-6"
           : "bg-transparent"
       }
-    >
+    > 
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
+        Вход в систему
+      </h2>
       <InputFieldUi
         label="Email"
         type="email"
@@ -62,6 +67,7 @@ export const LoginForm = ({
         <button
           type="button"
           className="text-sm text-blue-600 hover:text-blue-800"
+          onClick={onForgotPassword}
         >
           Забыли пароль?
         </button>
