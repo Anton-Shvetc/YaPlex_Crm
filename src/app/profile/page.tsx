@@ -234,12 +234,13 @@ export default function ProfilePage() {
             </div>
 
             {/* Подключенные аккаунты - только для десктопа, используя компонент ConnectedAccounts */}
-            <ConnectedAccounts
+            {/* TODO - идея для развития */}
+            {/* <ConnectedAccounts
               accounts={connectedAccounts}
               onConnect={handleConnectAccount}
               showHeader={true}
               className="hidden md:block"
-            />
+            /> */}
 
             {/* Переключатель темы для мобильных устройств */}
             <div className="md:hidden flex items-center justify-start">
@@ -278,12 +279,13 @@ export default function ProfilePage() {
         </div>
 
         {/* Подключенные аккаунты - только для мобильных устройств */}
-        <ConnectedAccounts
+           {/* TODO - идея для развития */}
+        {/* <ConnectedAccounts
           accounts={connectedAccounts}
           onConnect={handleConnectAccount}
           showHeader={false}
           className="mt-10 md:hidden"
-        />
+        /> */}
 
         {/* Кнопка удаления аккаунта - только для мобильных устройств */}
         <div className="flex justify-center md:hidden mt-10">
